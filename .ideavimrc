@@ -69,7 +69,7 @@ noremap <Space>l  $
 " insert mode settings {{{
 " 挿入モードからコマンドモードに戻るキーバインド
 " <c-]>となっているが、idea上では<c-[>で認識される
-inoremap <c-]> <esc>
+"inoremap <c-]> <esc>
 inoremap <c-c> <esc>
 " インサートモードの移動
 inoremap <c-e><c-h> <left>
