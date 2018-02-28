@@ -1,0 +1,50 @@
+[[plugins]] # 補完
+repo = 'Shougo/deoplete.nvim'
+depends = 'context_filetype.vim'
+on_event = 'InsertEnter'
+hook_source = '''
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#enable_ignore_case = 1
+    let g:deoplete#enable_smart_case = 1
+
+    "" <TAB>: completion.
+    imap <silent><expr> <TAB> pumvisible() ? "\<C-n>" :
+        \ neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" :
+        \ <SID>check_back_space() ? "\<TAB>" : deoplete#mappings#manual_complete()
+    function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~ '\s'
+    endfunction
+
+    " <S-TAB>: completion back.
+    inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-h>"
+'''
+
+[[plugins]] # LanguageClient-neovim
+repo  = 'autozimu/LanguageClient-neovim'
+rev = 'binary-*-x86_64-apple-darwin'
+on_ft = ['rust', 'ruby']
+hook_add = '''
+  " Required for operations modifying multiple buffers like rename.
+  set hidden
+  let g:LanguageClient_serverCommands = {
+      \ 'rust': ['rustup', 'run', 'beta', 'rls'],
+      \ 'ruby': ['language_server-ruby'],
+      \ }
+
+  " Automatically start language servers.
+  let g:LanguageClient_autoStart = 1
+
+  nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+  nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+  nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+'''
+
+#[[plugins]]
+#repo='kassio/neoterm'
+
+[[plugins]]
+repo  = 'rhysd/nyaovim-markdown-preview'
+on_ft = ['markdown']
+[[plugins]]
+repo  = 'rhysd/nyaovim-mini-browser'

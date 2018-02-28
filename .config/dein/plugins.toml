@@ -1,0 +1,293 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+#########################
+# 全般
+#########################
+[[plugins]] # カーソル位置のコンテキストに合わせてftを切り替える
+repo = 'osyo-manga/vim-precious'
+depends = ['context_filetype.vim']
+
+[[plugins]] # カーソル位置のコンテキストのftを判定するライブラリ
+repo = 'Shougo/context_filetype.vim'
+
+[[plugins]] # Denite source
+repo = 'chemzqm/denite-extra'
+depends = 'denite.nvim'
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+depends = 'denite.nvim'
+on_path = '.*'
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+
+[[plugins]]
+repo='Shougo/vimfiler.vim'
+hook_add = '''
+  let g:vimfiler_as_default_explorer = 1
+  nnoremap <silent> <C-e> :<C-u>VimFilerBufferDir -split -simple -winwidth=45 -toggle -no-quit<CR>
+'''
+
+[[plugins]]
+repo='Shougo/vimproc'
+build='make'
+
+[[plugins]]
+repo='Shougo/vimshell.vim'
+hook_add='''
+  nnoremap <silent> <C-t> :VimShellPop<CR>
+'''
+
+[[plugins]]
+repo='Shougo/unite.vim'
+hook_add='''
+  " 挿入モードで開始する
+  let g:unite_enable_start_insert=1
+
+  " 大文字小文字を区別しない
+  let g:unite_enable_ignore_case = 1
+  let g:unite_enable_smart_case = 1
+
+  " ESCキーを2回押すと終了する
+  au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
+  au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
+'''
+
+[[plugins]]
+repo='tpope/vim-surround'
+on_i = 1
+
+[[plugins]]
+repo='tpope/vim-abolish'
+
+[[plugins]]
+repo='nelstrom/vim-qargs'
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+[[plugins]]
+repo='Shougo/junkfile.vim'
+hook_add='''
+let g:junkfile#directory = '~/.junkfile'
+'''
+
+[[plugins]]
+repo='w0rp/ale'
+hook_add='''
+  let g:ale_sign_column_always = 1
+  let g:lightline = {
+    \'active': {
+    \  'left': [
+    \    ['mode', 'paste'],
+    \    ['readonly', 'filename', 'modified', 'ale'],
+    \  ]
+    \},
+    \'component_function': {
+    \  'ale': 'ALEGetStatusLine'
+    \}
+  \ }
+'''
+
+#[[plugins]]
+#repo='jpo/vim-railscasts-theme'
+#hook_add = '''
+#  set background=dark
+#  " colorscheme
+#  au MyAutoCmd VimEnter * nested colorscheme railscasts
+#'''
+[[plugins]]
+repo='rakr/vim-one'
+hook_add = '''
+  if (empty($TMUX))
+    if (has("nvim"))
+    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+    endif
+    "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+    "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+    " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+    if (has("termguicolors"))
+      set termguicolors
+    endif
+  endif
+  set background=dark
+  " colorscheme
+  au MyAutoCmd VimEnter * nested colorscheme one
+'''
+
+[[plugins]]
+repo='nathanaelkane/vim-indent-guides'
+hook_add = '''
+  let g:indent_guides_auto_colors=0
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd   ctermbg=52
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven  ctermbg=94
+  let g:indent_guides_enable_on_vim_startup=1
+  let g:indent_guides_guide_size=1
+'''
+
+[[plugins]]
+repo='osyo-manga/vim-over'
+
+#[[plugins]]
+#repo='vim-syntastic/syntastic'
+#hook_add = '''
+#  let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['rust'] }
+#  let g:syntastic_rust_checkers = ['rustc', 'cargo']
+#'''
+
+#########################
+# ステータスライン
+#########################
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+    let g:lightline = {
+        \ 'colorscheme': 'wombat',
+        \ 'mode_map': {'c': 'NORMAL'},
+        \ 'active': {
+        \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
+        \ },
+        \ 'component_function': {
+        \   'modified': 'LightlineModified',
+        \   'readonly': 'LightlineReadonly',
+        \   'fugitive': 'LightlineFugitive',
+        \   'filename': 'LightlineFilename',
+        \   'fileformat': 'LightlineFileformat',
+        \   'filetype': 'LightlineFiletype',
+        \   'fileencoding': 'LightlineFileencoding',
+        \   'mode': 'LightlineMode'
+        \ }
+        \ }
+
+    function! LightlineModified()
+      return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+    endfunction
+
+    function! LightlineReadonly()
+      return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? 'x' : ''
+    endfunction
+
+    function! LightlineFilename()
+      return ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
+            \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+            \  &ft == 'unite' ? unite#get_status_string() :
+            \  &ft == 'vimshell' ? vimshell#get_status_string() :
+            \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+            \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
+    endfunction
+
+    function! LightlineFugitive()
+      if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
+        return fugitive#head()
+      else
+        return ''
+      endif
+    endfunction
+
+    function! LightlineFileformat()
+      return winwidth(0) > 70 ? &fileformat : ''
+    endfunction
+
+    function! LightlineFiletype()
+      return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+    endfunction
+
+    function! LightlineFileencoding()
+      return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
+    endfunction
+
+    function! LightlineMode()
+      return winwidth(0) > 60 ? lightline#mode() : ''
+    endfunction
+'''
+
+#########################
+# Git
+#########################
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+#########################
+# Lang
+#########################
+
+[[plugins]] # Ruby
+repo  = 'Shougo/deoplete-rct'
+depends = 'deoplete'
+
+[[plugins]] # Ruby
+repo  = 'tpope/vim-endwise'
+on_ft = ['ruby']
+hook_add = '''
+  let g:endwise_no_mappings=1
+'''
+
+[[plugins]] # Ruby
+repo = 'osyo-manga/vim-monster'
+on_ft = ['ruby']
+hook_add = '''
+  let g:monster#completion#rcodetools#backend = "async_rct_complete"
+  let g:deoplete#sources#omni#input_patterns = {
+  \   "ruby" : '[^. *\t]\.\w*\|\h\w*::',
+  \}
+'''
+
+# [[plugins]] # Rust
+# repo  = 'racer-rust/vim-racer'
+
+[[plugins]] # Rust
+repo  = 'rust-lang/rust.vim'
+on_ft = 'rust'
+hook_add = '''
+  let g:rustfmt_autosave = 1
+  let g:rustfmt_command = '$HOME/.cargo/bin/rustfmt'
+'''
+
+[[plugins]] # JavaScript
+repo  = 'kchmck/vim-coffee-script'
+
+[[plugins]] # JavaScript
+repo  = 'vim-scripts/JavaScript-syntax'
+
+[[plugins]] # JavaScript
+repo  = 'vim-scripts/jQuery'
+
+[[plugins]] # JavaScript
+repo  = 'marijnh/tern_for_vim'
+build = 'npm install'
+
+[[plugins]] # Haml
+repo  = 'tpope/vim-haml'
+on_ft = 'haml'
+
+[[plugins]] # Html5
+repo  = 'othree/html5.vim'
+on_ft = 'html'
+hook_add = '''
+  let g:html5_event_handler_attributes_complete = 1
+  let g:html5_rdfa_attributes_complete = 1
+  let g:html5_microdata_attributes_complete = 1
+  let g:html5_aria_attributes_complete = 1'''
+
+[[plugins]] # Html5
+repo  = 'alvan/vim-closetag'
+on_ft = ['html', 'xhtml']
+
+[[plugins]] # Toml
+repo  = 'cespare/vim-toml'
+on_ft = 'toml'
+
+[[plugins]] # Markdown
+repo = 'rcmdnk/vim-markdown'
+on_ft = ['markdown','mkd']
+hook_add = '''
+    let g:vim_markdown_frontmatter = 1
+    let g:vim_markdown_math = 1
+'''
+
+[[plugins]] # golang
+repo = 'fatih/vim-go'
+on_ft = ['go']
