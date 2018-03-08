@@ -28,6 +28,9 @@ repo='Shougo/vimfiler.vim'
 hook_add = '''
   let g:vimfiler_as_default_explorer = 1
   nnoremap <silent> <C-e> :<C-u>VimFilerBufferDir -split -simple -winwidth=45 -toggle -no-quit<CR>
+  autocmd FileType vimfiler
+          \ nnoremap <buffer><silent>/
+          \ :<C-u>Unite file -default-action=vimfiler<CR>
 '''
 
 [[plugins]]
@@ -60,6 +63,9 @@ repo='tpope/vim-surround'
 on_i = 1
 
 [[plugins]]
+repo='tpope/vim-rails'
+
+[[plugins]]
 repo='tpope/vim-abolish'
 
 [[plugins]]
@@ -73,6 +79,20 @@ repo='Shougo/junkfile.vim'
 hook_add='''
 let g:junkfile#directory = '~/.junkfile'
 '''
+
+[[plugins]]
+repo='easymotion/vim-easymotion'
+hook_add='''
+" s{char}{char} to move to {char}{char}
+nmap z <Plug>(easymotion-overwin-f2)
+
+" Move to line
+map <Space>L <Plug>(easymotion-bd-jk)
+nmap <Space>L <Plug>(easymotion-overwin-line)
+
+" Move to word
+map  <Space>w <Plug>(easymotion-bd-w)
+nmap <Space>w <Plug>(easymotion-overwin-w)'''
 
 [[plugins]]
 repo='w0rp/ale'
