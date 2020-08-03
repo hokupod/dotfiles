@@ -4,13 +4,15 @@ depends = 'context_filetype.vim'
 on_event = 'InsertEnter'
 hook_source = '''
     let g:deoplete#enable_at_startup = 1
-    let g:deoplete#enable_ignore_case = 1
-    let g:deoplete#enable_smart_case = 1
-
+    call deoplete#custom#option({
+    \ 'auto_complete_delay': 200,
+    \ 'smart_case': v:true,
+    \ 'ignore_case': v:true,
+    \ })
     "" <TAB>: completion.
-    imap <silent><expr> <TAB> pumvisible() ? "\<C-n>" :
-        \ neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" :
-        \ <SID>check_back_space() ? "\<TAB>" : deoplete#mappings#manual_complete()
+    smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+    \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
     function! s:check_back_space() abort
         let col = col('.') - 1
         return !col || getline('.')[col - 1]  =~ '\s'
@@ -20,31 +22,134 @@ hook_source = '''
     inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-h>"
 '''
 
+[[plugins]] # unite.vim 後継
+repo = 'Shougo/denite.nvim'
+on_cmd = 'Denite'
+hook_source = '''
+    if executable('rg')
+        " file_rec
+        call denite#custom#var('file_rec', 'command', ['rg', '--files', '--glob', '!.git'])
+        " grep
+        call denite#custom#var('grep', {
+                    \ 'command': ['rg'],
+                    \ 'default_opts': ['-i', '--vimgrep', '--no-heading'],
+                    \ 'recursive_opts': [],
+                    \ 'pattern_opt': ['--regexp'],
+                    \ 'separator': ['--'],
+                    \ 'final_opts': [],
+                    \ })
+    endif
+
+    call denite#custom#source('file_mru', 'matchers', ['matcher_cpsm', 'matcher_project_files'])
+    " call denite#custom#source('file_mru', 'matchers', ['matcher_fuzzy', 'matcher_project_files'])
+    call denite#custom#source('file_mru', 'converters', ['converter_relative_word'])
+
+    call denite#custom#map('insert', '<C-r>',
+          \ '<denite:toggle_matchers:matcher_substring>', 'noremap')
+    call denite#custom#map('insert', '<C-s>',
+          \ '<denite:toggle_sorters:sorter_reverse>', 'noremap')
+    call denite#custom#map('insert', '<C-j>',
+          \ '<denite:move_to_next_line>', 'noremap')
+    call denite#custom#map('insert', '<C-k>',
+          \ '<denite:move_to_previous_line>', 'noremap')
+    call denite#custom#map('insert', "'",
+          \ '<denite:move_to_next_line>', 'noremap')
+    call denite#custom#map('normal', '<C-a>',
+          \ '<denite:multiple_mappings:denite:toggle_select_all>',
+          \ '<denite:do_action:quickfix>', 'noremap')
+'''
+
+hook_add = '''
+    augroup denite_filter
+      autocmd FileType denite call s:denite_my_settings()
+      function! s:denite_my_settings() abort
+        nnoremap <silent><buffer><expr> <CR>
+        \ denite#do_map('do_action')
+        nnoremap <silent><buffer><expr> d
+        \ denite#do_map('do_action', 'delete')
+        nnoremap <silent><buffer><expr> p
+        \ denite#do_map('do_action', 'preview')
+        nnoremap <silent><buffer><expr> q
+        \ denite#do_map('quit')
+        nnoremap <silent><buffer><expr> i
+        \ denite#do_map('open_filter_buffer')
+        nnoremap <silent><buffer><expr> <Space>
+        \ denite#do_map('toggle_select').'j'
+      endfunction
+    augroup END
+    " Deniteの設定
+    nnoremap [denite] <Nop>
+    nmap <space> [denite]
+
+    " -buffer-name=
+    nnoremap <silent> [denite]g  :<C-u>Denite grep -auto-preview -buffer-name=search-buffer-denite<CR>
+
+    " Denite grep検索結果を再表示する
+    nnoremap <silent> [denite]q :<C-u>Denite -resume -buffer-name=search-buffer-denite<CR>
+    " resumeした検索結果の次の行の結果へ飛ぶ
+    nnoremap <silent> [denite]n :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=+1 -immediately<CR>
+    " resumeした検索結果の前の行の結果へ飛ぶ
+    nnoremap <silent> [denite]p :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=-1 -immediately<CR>   " key-binds
+    nnoremap <silent> [denite]u :<C-u>Denite file_mru<CR>
+    nnoremap <silent> [denite]t :<C-u>Denite filetype<CR>
+    nnoremap <silent> [denite]p :<C-u>Denite file/rec<CR>
+    nnoremap <silent> [denite]l :<C-u>Denite line<CR>
+    nnoremap <silent> [denite]y :<C-u>Denite neoyank<CR>
+    nnoremap <silent> [denite]r :<C-u>Denite register<CR>
+    nnoremap <silent> [denite]: :<C-u>Denite command_history -default-action=edit_and_execute<CR>
+    nnoremap <silent> [denite]/ :<C-u>Denite history:search<CR>
+    nnoremap <silent> [denite]j :<C-u>Denite junkfile:new junkfile<CR>
+    nnoremap <silent> [denite]b :<C-u>Denite buffer -auto-preview<CR>
+    " nnoremap <silent> * :<C-u>DeniteCursorWord -buffer-name=search
+    "        \ -auto-highlight -mode=normal line<CR>
+    " use floating
+    let s:denite_win_width_percent = 0.85
+    let s:denite_win_height_percent = 0.7
+    let s:denite_default_options = {
+        \ 'split': 'floating',
+        \ 'winwidth': float2nr(&columns * s:denite_win_width_percent),
+        \ 'wincol': float2nr((&columns - (&columns * s:denite_win_width_percent)) / 2),
+        \ 'winheight': float2nr(&lines * s:denite_win_height_percent),
+        \ 'winrow': float2nr((&lines - (&lines * s:denite_win_height_percent)) / 2),
+        \ 'highlight_filter_background': 'DeniteFilter',
+        \ 'prompt': '$ ',
+        \ 'start_filter': v:true,
+        \ }
+    let s:denite_option_array = []
+    for [key, value] in items(s:denite_default_options)
+      call add(s:denite_option_array, '-'.key.'='.value)
+    endfor
+    call denite#custom#option('default', s:denite_default_options)
+'''
+hook_post_source = '''
+'''
+
 [[plugins]] # LanguageClient-neovim
 repo  = 'autozimu/LanguageClient-neovim'
-rev = 'binary-*-x86_64-apple-darwin'
+rev = 'next'
+build = 'bash ./install.sh'
 on_ft = ['rust', 'ruby']
 hook_add = '''
   " Required for operations modifying multiple buffers like rename.
   set hidden
   let g:LanguageClient_serverCommands = {
       \ 'rust': ['rustup', 'run', 'beta', 'rls'],
-      \ 'ruby': ['language_server-ruby'],
+      \ 'ruby': ['solargraph', 'stdio'],
       \ }
 
   " Automatically start language servers.
   let g:LanguageClient_autoStart = 1
-
   nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
   nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
   nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 '''
 
+# [[plugins]]
+# repo  = 'bfredl/nvim-miniyank'
+# hook_add = '''
+#     map p <Plug>(miniyank-autoput)
+#     map P <Plug>(miniyank-autoPut)
+# '''
+
 #[[plugins]]
 #repo='kassio/neoterm'
-
-[[plugins]]
-repo  = 'rhysd/nyaovim-markdown-preview'
-on_ft = ['markdown']
-[[plugins]]
-repo  = 'rhysd/nyaovim-mini-browser'

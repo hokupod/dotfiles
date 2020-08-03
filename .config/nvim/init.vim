@@ -97,7 +97,7 @@ set smartcase
 " 検索結果をハイライト表示する
 set hlsearch
 " 暗い背景色に合わせた配色にする
-set background=dark
+"set background=dark
 " タブ入力を複数の空白入力に置き換える
 set expandtab
 " 検索ワードの最初の文字を入力した時点で検索を開始する
@@ -108,8 +108,8 @@ set hidden
 set list
 " タブと行の続きを可視化する
 set listchars=tab:>\ ,extends:<
-" 行番号を表示する
-set number
+" " 行番号を表示する
+" set number
 " 対応する括弧やブレースを表示する
 set showmatch
 " 改行時に前の行のインデントを継続する
@@ -117,9 +117,11 @@ set autoindent
 " 改行時に入力された行の末尾に合わせて次の行のインデントを増減する
 set smartindent
 " タブ文字の表示幅
-set tabstop=2
+set tabstop=4
+" set tabstop=2
 " Vimが挿入するインデントの幅
-set shiftwidth=2
+set shiftwidth=4
+" set shiftwidth=2
 " 行頭の余白内で Tab を打ち込むと、'shiftwidth' の数だけインデントする
 set smarttab
 " カーソルを行頭、行末で止まらないようにする
@@ -127,10 +129,12 @@ set whichwrap=b,s,h,l,<,>,[,]
 " バックスペースで文字を消せるようにする
 set backspace=indent,eol,start
 " バックアップ
-set backupdir=$HOME/Dropbox/Vim/backup
-set directory=$HOME/Dropbox/Vim/backup
+set backupdir=$HOME/.vim_backup
+set directory=$HOME/.vim_backup
 set backup
 set writebackup
+set undodir=$HOME/.vim_undo
+set undofile
 au BufWritePre * let &bex = '.' . strftime("%Y%m%d_%H%M%S")
 " 無名レジスタに入るデータを、*レジスタにも入れる。
 set clipboard+=unnamedplus
@@ -146,6 +150,12 @@ highlight LineNr ctermfg=darkyellow
 """"""""""""""""""""""""""""""
 " grep検索の実行後にQuickFix Listを表示する
 autocmd QuickFixCmdPost *grep* cwindow
+if executable('rg')
+    set grepprg=rg\ --vimgrep\ --no-heading
+    set grepformat=%f:%l:%c:%m,%f:%l:%m
+    let g:ackprg='rg --vimgrep --no-heading'
+endif
+
 " http://blog.remora.cx/2010/12/vim-ref-with-unite.html
 " 全角スペースの表示
 """"""""""""""""""""""""""""""
@@ -221,14 +231,11 @@ endif
 """"""""""""""""""""""""""""""
 "set pastetoggle=<C-Y>
 """"""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""
-" 自動的に閉じ括弧を入力
-""""""""""""""""""""""""""""""
-inoremap { {}<LEFT>
-inoremap [ []<LEFT>
-inoremap ( ()<LEFT>
-inoremap " ""<LEFT>
-inoremap ' ''<LEFT>
+" inoremap { {}<LEFT>
+" inoremap [ []<LEFT>
+" inoremap ( ()<LEFT>
+" inoremap " ""<LEFT>
+" inoremap ' ''<LEFT>
 
 """"""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""
@@ -260,21 +267,43 @@ cnoremap <C-n> <Down>
 " 0番レジスタを使いやすくした
 " via http://qiita.com/items/bd97a9b963dae40b63f5
 vnoremap <silent> <C-p> "0p
+" x ではレジスタ書き込みさせない
+nnoremap x "_x
+nnoremap X "_x
+vnoremap x "_x
+vnoremap X "_x
+"" visual モードでの貼り付けの場合は、ヤンクしたくない
+"vnoremap p "0p
 
 "" ノーマルモードでも改行挿入
 "noremap <CR> o<ESC>
 "noremap <S-CR> O<ESC>
 " 検索は常に very magic
 nnoremap /  /\v
+" " tagsジャンプの時に複数ある時は一覧表示
+" nnoremap <C-]> g<C-]>
+" 行番号の相対表示
+nnoremap <F3> :<C-u>setlocal number! \| :setlocal relativenumber!<CR>
 
 " ESC*2 でハイライトやめる
-nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
+let hlstate=0
+nnoremap <Esc><Esc> :if (hlstate == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=1-hlstate<cr>
 
 tnoremap <silent> <ESC> <C-\><C-n>
 tnoremap <silent> jj <C-\><C-n>
 
 " 保存時に行末の空白を除去する
-autocmd BufWritePre * :%s/\s\+$//ge
+function! s:remove_dust()
+    let cursor = getpos(".")
+    " 保存時に行末の空白を除去する
+    %s/\s\+$//ge
+    "" 保存時にtabを2スペースに変換する
+    "%s/\t/  /ge
+    call setpos(".", cursor)
+    unlet cursor
+endfunction
+autocmd BufWritePre * call <SID>remove_dust()
+" autocmd BufWritePost *.rb Dispatch! ripper-tags -R
 
 " 2バイトの記号対策
 set ambiwidth=double
