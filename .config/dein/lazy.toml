@@ -1,26 +1,27 @@
-[[plugins]]
-repo = 'Shougo/neosnippet.vim'
-hook_source = '''
-  "Ctrl+Kにターゲットジャンプ割当
-  imap <C-k> <Plug>(neosnippet_expand_or_jump)
-  smap <C-k> <Plug>(neosnippet_expand_or_jump)
-  xmap <C-k> <Plug>(neosnippet_expand_target)
-  "imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-  smap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-  imap <expr><CR> neosnippet#expandable() ?
-      \ "\<Plug>(neosnippet_expand)" :
-      \ pumvisible() ? "\<C-y>" : "\<CR>\<Plug>DiscretionaryEnd"
-  if has('conceal')
-    set conceallevel=2 concealcursor=niv
-  endif
+[[plugins]] # 日本語マニュアル
+repo = 'vim-jp/vimdoc-ja'
+hook_add = '''
+    set helplang=ja
 '''
-on_i  = 1
-on_ft = ['snippet']
-depends = ['neosnippet-snippets']
+
+[[plugins]] # 補完
+repo = 'Shougo/deol.nvim'
+hook_add = '''
+    " 【Ctrl + p】 float windowでターミナルを表示
+    nnoremap <silent><C-p> :<C-u>Deol -split=floating<CR>
+    " 【ESC】 ターミナルモードから抜ける
+    tnoremap <ESC>   <C-\><C-n>
+'''
 
 [[plugins]] # Codic
 repo = 'koron/codic-vim'
 on_cmd = 'Codic'
+
+[[plugins]] # 翻訳
+repo = 'skanehira/translate.vim'
+
+[[plugins]] # Docker
+repo = 'skanehira/docker.vim'
 
 [[plugins]] # Emmet
 repo = 'mattn/emmet-vim'
@@ -36,6 +37,11 @@ hook_source = '''
     \'indentation': '  '
     \}
 '''
+[[plugins]] # Markdown
+repo = 'mattn/vim-maketable'
+
+[[plugins]] # Template
+repo = 'mattn/vim-sonictemplate'
 
 [[plugins]] # EditorConfig
 repo = 'editorconfig/editorconfig-vim'

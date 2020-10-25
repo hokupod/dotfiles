@@ -4,9 +4,6 @@ repo = 'Shougo/dein.vim'
 #########################
 # 全般
 #########################
-# [[plugins]]
-# repo = 'yuttie/comfortable-motion.vim'
-
 [[plugins]] # カーソル位置のコンテキストに合わせてftを切り替える
 repo = 'osyo-manga/vim-precious'
 depends = ['context_filetype.vim']
@@ -22,9 +19,6 @@ depends = 'denite.nvim'
 repo = 'Shougo/neomru.vim'
 depends = 'denite.nvim'
 on_path = '.*'
-
-[[plugins]]
-repo = 'Shougo/neosnippet-snippets'
 
 [[plugins]]
 repo='Shougo/defx.nvim'
@@ -130,6 +124,9 @@ repo='tpope/vim-surround'
 on_i = 1
 
 [[plugins]]
+repo='tpope/vim-repeat'
+
+[[plugins]]
 repo='tpope/vim-rails'
 
 [[plugins]]
@@ -139,6 +136,17 @@ repo='tpope/vim-abolish'
 repo='tpope/vim-dispatch'
 hook_add = '''
   autocmd FileType ruby nnoremap <F9> :Dispatch! !ripper-tags -R --exclude=vendor<CR>
+'''
+
+[[plugins]]
+repo = 'markonm/traces.vim'
+
+[[plugins]]
+repo='kana/vim-operator-user'
+[[plugins]]
+repo='kana/vim-operator-replace'
+hook_add = '''
+  map R  <Plug>(operator-replace)
 '''
 
 [[plugins]]
@@ -153,11 +161,15 @@ repo = 'Shougo/context_filetype.vim'
 [[plugins]]
 repo='Shougo/junkfile.vim'
 hook_add='''
-let g:junkfile#directory = '~/.junkfile'
+if exists('$WINHOME')
+    let g:junkfile#directory = $WINHOME . '/iCloudDrive/junkfile'
+else
+    let g:junkfile#directory = $HOME . '/junkfile'
+endif
 " Open junk file."{{{
 command! -nargs=0 JunkFile call s:open_junk_file()
 function! s:open_junk_file()
-  let l:junk_dir = $HOME . '/.junkfile'. strftime('/%Y/%m')
+  let l:junk_dir = g:junkfile#directory . strftime('/%Y/%m')
   if !isdirectory(l:junk_dir)
     call mkdir(l:junk_dir, 'p')
   endif
@@ -191,7 +203,16 @@ hook_add='''
 nmap <space>e :<C-u>Files<CR>
 " <C-]>でタグ検索
 nnoremap <silent> <C-]> :call fzf#vim#tags(expand('<cword>'))<CR>
+nnoremap <silent> <space>z :<C-u>silent call <SID>find_rip_grep()<CR>
 
+function! s:find_rip_grep() abort
+    call fzf#vim#grep(
+                \   'rg --ignore-file ~/.ignore --column --line-number --no-heading --hidden --smart-case .+',
+                \   1,
+                \   fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%', '?'),
+                \   0,
+                \ )
+endfunction
 " fzfからファイルにジャンプできるようにする
 let g:fzf_buffers_jump = 1
 '''
@@ -230,41 +251,6 @@ map g* <Plug>(asterisk-gz*)
 map g# <Plug>(asterisk-gz#)
 '''
 
-# [[plugins]]
-# repo='w0rp/ale'
-# hook_add='''
-#   let g:ale_sign_column_always = 1
-#   let g:lightline = {
-#     \'active': {
-#     \  'left': [
-#     \    ['mode', 'paste'],
-#     \    ['readonly', 'filename', 'modified', 'ale'],
-#     \  ]
-#     \},
-#     \'component_function': {
-#     \  'ale': 'ALEGetStatusLine'
-#     \}
-#   \ }
-# '''
-
-#[[plugins]]
-#repo='jpo/vim-railscasts-theme'
-#hook_add = '''
-#  set background=dark
-#  " colorscheme
-#  au MyAutoCmd VimEnter * nested colorscheme railscasts
-#'''
-# [[plugins]]
-# repo='yasukotelin/shirotelin'
-# hook_add = '''
-#   " colorscheme
-#   au MyAutoCmd VimEnter * nested colorscheme shirotelin
-#   set cursorcolumn
-#   set list
-#   set listchars=tab:»-,eol:↲,extends:»,precedes:«,space:.
-#   set background=light
-# '''
-
 [[plugins]]
 repo='rakr/vim-one'
 hook_add = '''
@@ -300,13 +286,6 @@ hook_add = '''
 #[[plugins]]
 #repo='osyo-manga/vim-over'
 
-#[[plugins]]
-#repo='vim-syntastic/syntastic'
-#hook_add = '''
-#  let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['rust'] }
-#  let g:syntastic_rust_checkers = ['rustc', 'cargo']
-#'''
-
 #########################
 # ステータスライン
 #########################
@@ -317,7 +296,14 @@ hook_add = '''
         \ 'colorscheme': 'wombat',
         \ 'mode_map': {'c': 'NORMAL'},
         \ 'active': {
-        \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
+        \   'left': [
+        \     [ 'mode', 'paste' ],
+        \     [ 'gitbranch', 'readonly', 'filename'] ],
+        \   'right': [
+        \     ['lineinfo', 'syntastic'],
+        \     ['percent'],
+        \     ['charcode', 'fileformat', 'fileencoding', 'filetype'],
+        \   ]
         \ },
         \ 'component_function': {
         \   'modified': 'LightlineModified',
@@ -327,7 +313,9 @@ hook_add = '''
         \   'fileformat': 'LightlineFileformat',
         \   'filetype': 'LightlineFiletype',
         \   'fileencoding': 'LightlineFileencoding',
-        \   'mode': 'LightlineMode'
+        \   'charcode': 'LightlineCharCode',
+        \   'mode': 'LightlineMode',
+        \   'gitbranch': 'gina#component#repo#branch'
         \ }
         \ }
 
@@ -371,6 +359,41 @@ hook_add = '''
     function! LightlineMode()
       return winwidth(0) > 60 ? lightline#mode() : ''
     endfunction
+
+    function! LightlineCharCode()
+      if winwidth('.') <= 70
+        return ''
+      endif
+    
+      " Get the output of :ascii
+      redir => ascii
+      silent! ascii
+      redir END
+    
+      if match(ascii, 'NUL') != -1
+        return 'NUL'
+      endif
+    
+      " Zero pad hex values
+      let nrformat = '0x%02x'
+    
+      let encoding = (&fenc == '' ? &enc : &fenc)
+    
+      if encoding == 'utf-8'
+        " Zero pad with 4 zeroes in unicode files
+        let nrformat = '0x%04x'
+      endif
+    
+      " Get the character and the numeric value from the return value of :ascii
+      " This matches the two first pieces of the return value, e.g.
+      " "<F>  70" => char: 'F', nr: '70'
+      let [str, char, nr; rest] = matchlist(ascii, '\v\<(.{-1,})\>\s*([0-9]+)')
+    
+      " Format the numeric value
+      let nr = printf(nrformat, nr)
+    
+      return "'". char ."' ". nr
+    endfunction
 '''
 
 #########################
@@ -379,35 +402,30 @@ hook_add = '''
 [[plugins]]
 repo = 'tpope/vim-fugitive'
 
+[[plugins]]
+repo = 'lambdalisue/gina.vim'
 #########################
 # Lang
 #########################
 
-[[plugins]] # Ruby
-repo  = 'Shougo/deoplete-rct'
-depends = 'deoplete'
+[[plugins]] # 括弧の補完
+repo  = 'kana/vim-smartinput'
 
-[[plugins]] # Ruby
-repo  = 'tpope/vim-endwise'
-on_ft = ['ruby']
-on_i = 1
+[[plugins]] # end の補完
+repo  = 'cohama/vim-smartinput-endwise'
 hook_add = '''
-  let g:endwise_no_mappings=1
+  call smartinput_endwise#define_default_rules()
 '''
 
 [[plugins]] # Ruby
 repo = 'osyo-manga/vim-monster'
 on_ft = ['ruby']
 hook_add = '''
-  " let g:monster#completion#rcodetools#backend = "async_rct_complete"
   let g:monster#completion#rcodetools#backend = "async_solargraph_suggest"
   let g:deoplete#sources#omni#input_patterns = {
   \   "ruby" : '[^. *\t]\.\w*\|\h\w*::',
   \}
 '''
-
-# [[plugins]] # Rust
-# repo  = 'racer-rust/vim-racer'
 
 [[plugins]] # Rust
 repo  = 'rust-lang/rust.vim'
@@ -478,10 +496,6 @@ let g:vim_markdown_conceal = 0
 [[plugins]]
 repo = 'joker1007/vim-markdown-quote-syntax'
 on_ft = ['markdown','mkd','md']
-
-[[plugins]] # golang
-repo = 'fatih/vim-go'
-on_ft = ['go']
 
 [[plugins]] # graphql
 repo = 'jparise/vim-graphql'
