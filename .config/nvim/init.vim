@@ -137,12 +137,23 @@ set undodir=$HOME/.vim_undo
 set undofile
 au BufWritePre * let &bex = '.' . strftime("%Y%m%d_%H%M%S")
 " 無名レジスタに入るデータを、*レジスタにも入れる。
+if system('uname -a | grep microsoft') != ""
+  let g:clipboard = {
+        \   'name': 'myClipboard',
+        \   'copy': {
+        \      '+': 'win32yank.exe -i',
+        \      '*': 'win32yank.exe -i',
+        \    },
+        \   'paste': {
+        \      '+': 'win32yank.exe -o',
+        \      '*': 'win32yank.exe -o',
+        \   },
+        \   'cache_enabled': 1,
+        \ }
+endif
 set clipboard+=unnamedplus
 
-" シェルをZSHに
-set sh=zsh
-
-let g:python3_host_prog='/usr/local/bin/python3'
+let g:python3_host_prog='/usr/bin/python3'
 " 構文毎に文字色を変化させる
 "syntax on
 " 行番号の色
@@ -225,6 +236,8 @@ if executable('osascript')
     \ call system(g:force_alphanumeric_input_command)
 endif
 
+" leader をカンマに
+let mapleader = ","
 """"""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""
 " ペーストモード切替
