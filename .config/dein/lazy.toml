@@ -40,9 +40,6 @@ hook_source = '''
 [[plugins]] # Markdown
 repo = 'mattn/vim-maketable'
 
-[[plugins]] # Template
-repo = 'mattn/vim-sonictemplate'
-
 [[plugins]] # EditorConfig
 repo = 'editorconfig/editorconfig-vim'
 on_path = '.*'

@@ -40,8 +40,15 @@ hook_source = '''
 [[plugins]] # 補完
 repo = 'Shougo/neosnippet-snippets'
 
-[[plugins]] # 補完
-repo = 'Shougo/deoplete-lsp'
+
+[[plugins]] # Denite source
+repo = 'chemzqm/denite-extra'
+depends = 'denite.nvim'
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+depends = 'denite.nvim'
+on_path = '.*'
 
 [[plugins]] # unite.vim 後継
 repo = 'Shougo/denite.nvim'
@@ -78,6 +85,25 @@ hook_source = '''
     call denite#custom#map('normal', '<C-a>',
           \ '<denite:multiple_mappings:denite:toggle_select_all>',
           \ '<denite:do_action:quickfix>', 'noremap')
+
+    " use floating
+    let s:denite_win_width_percent = 0.85
+    let s:denite_win_height_percent = 0.7
+    let s:denite_default_options = {
+        \ 'split': 'floating',
+        \ 'winwidth': float2nr(&columns * s:denite_win_width_percent),
+        \ 'wincol': float2nr((&columns - (&columns * s:denite_win_width_percent)) / 2),
+        \ 'winheight': float2nr(&lines * s:denite_win_height_percent),
+        \ 'winrow': float2nr((&lines - (&lines * s:denite_win_height_percent)) / 2),
+        \ 'highlight_filter_background': 'DeniteFilter',
+        \ 'prompt': '$ ',
+        \ 'start_filter': v:true,
+        \ }
+    let s:denite_option_array = []
+    for [key, value] in items(s:denite_default_options)
+      call add(s:denite_option_array, '-'.key.'='.value)
+    endfor
+    call denite#custom#option('default', s:denite_default_options)
 '''
 
 hook_add = '''
@@ -121,76 +147,5 @@ hook_add = '''
     nnoremap <silent> [denite]/ :<C-u>Denite history:search<CR>
     nnoremap <silent> [denite]j :<C-u>Denite junkfile:new junkfile<CR>
     nnoremap <silent> [denite]b :<C-u>Denite buffer -auto-preview<CR>
-    " nnoremap <silent> * :<C-u>DeniteCursorWord -buffer-name=search
-    "        \ -auto-highlight -mode=normal line<CR>
-    " use floating
-    let s:denite_win_width_percent = 0.85
-    let s:denite_win_height_percent = 0.7
-    let s:denite_default_options = {
-        \ 'split': 'floating',
-        \ 'winwidth': float2nr(&columns * s:denite_win_width_percent),
-        \ 'wincol': float2nr((&columns - (&columns * s:denite_win_width_percent)) / 2),
-        \ 'winheight': float2nr(&lines * s:denite_win_height_percent),
-        \ 'winrow': float2nr((&lines - (&lines * s:denite_win_height_percent)) / 2),
-        \ 'highlight_filter_background': 'DeniteFilter',
-        \ 'prompt': '$ ',
-        \ 'start_filter': v:true,
-        \ }
-    let s:denite_option_array = []
-    for [key, value] in items(s:denite_default_options)
-      call add(s:denite_option_array, '-'.key.'='.value)
-    endfor
-    call denite#custom#option('default', s:denite_default_options)
-'''
-hook_post_source = '''
 '''
 
-# [[plugins]]
-# repo = 'neovim/nvim-lspconfig'
-# hook_add = '''
-#   nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-#   nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-#   nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-#   nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-#   nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-#   nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-#   nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-#   nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-#   nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-# '''
-
-[[plugins]] # LanguageClient-neovim
-repo  = 'autozimu/LanguageClient-neovim'
-rev = 'next'
-build = 'bash ./install.sh'
-on_ft = ['rust', 'ruby', 'go']
-hook_add = '''
-  " Required for operations modifying multiple buffers like rename.
-  set hidden
-  let g:LanguageClient_serverCommands = {
-      \ 'rust': ['rustup', 'run', 'beta', 'rls'],
-      \ 'ruby': ['solargraph', 'stdio'],
-      \ 'go':   ['gopls'],
-      \ }
-  " Golang
-  autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
-  " Automatically start language servers.
-  let g:LanguageClient_autoStart = 1
-  nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-  nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-  nnoremap <silent> gi :call LanguageClient_textDocument_implementation()<CR>
-  nnoremap <silent> gc :call LanguageClient_textDocument_codeLens()<CR>
-  nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-  nnoremap <silent> <F1> :call LanguageClient_contextMenu()<CR>
-
-'''
-
-# [[plugins]]
-# repo  = 'bfredl/nvim-miniyank'
-# hook_add = '''
-#     map p <Plug>(miniyank-autoput)
-#     map P <Plug>(miniyank-autoPut)
-# '''
-
-#[[plugins]]
-#repo='kassio/neoterm'
