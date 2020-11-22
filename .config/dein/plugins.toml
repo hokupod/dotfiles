@@ -4,6 +4,11 @@ repo = 'Shougo/dein.vim'
 #########################
 # 全般
 #########################
+[[plugins]] # 英単語 typo 防止
+repo = 'ujihisa/neco-look'
+on_event = 'InsertEnter'
+depends = [ 'deoplete.nvim']
+
 [[plugins]] # Template
 repo = 'mattn/vim-sonictemplate'
 
@@ -115,7 +120,7 @@ repo='davidoc/taskpaper.vim'
 
 [[plugins]]
 repo='tpope/vim-surround'
-on_i = 1
+on_event = 'InsertEnter'
 
 [[plugins]]
 repo='tpope/vim-repeat'

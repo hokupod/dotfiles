@@ -10,8 +10,9 @@ hook_source = '''
     \ 'ignore_case': v:true,
     \ })
     "" <TAB>: completion.
-    smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-    \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+    inoremap <expr><tab> pumvisible() ? "\<C-n>" :
+        \ neosnippet#expandable_or_jumpable() ?
+        \    "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
 
     function! s:check_back_space() abort
         let col = col('.') - 1
@@ -22,23 +23,37 @@ hook_source = '''
     inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-h>"
 '''
 
+[[plugins]] # Deoplete
+repo = 'lighttiger2505/deoplete-vim-lsp'
+depends = 'deoplete.nvim'
+on_event = 'InsertEnter'
 
-[[plugins]] # 補完
-repo = 'Shougo/deoppet.nvim'
-hook_source = '''
-    call deoppet#initialize()
-    call deoppet#custom#option('snippets_dirs',
-    \ globpath(&runtimepath, 'neosnippets', 1, 1))
-    
-    imap <C-k>  <Plug>(deoppet_expand)
-    imap <C-f>  <Plug>(deoppet_jump_forward)
-    imap <C-b>  <Plug>(deoppet_jump_backward)
-    smap <C-f>  <Plug>(deoppet_jump_forward)
-    smap <C-b>  <Plug>(deoppet_jump_backward)
+[[plugins]]
+repo =  'Shougo/neosnippet.vim'
+depends = [ 'neosnippet-snippets']
+on_event = 'InsertEnter'
+hook_add='''
+imap <expr><c-k> neosnippet#expandable_or_jumpable() ?
+            \ "\<Plug>(neosnippet_expand_or_jump)" : "\<c-k>"
+smap <expr><tab> neosnippet#expandable_or_jumpable() ?
+            \ "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
+smap <expr><c-k> neosnippet#expandable_or_jumpable() ?
+            \ "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
+xmap <expr><c-k> neosnippet#expandable_or_jumpable() ?
+            \ "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
+" For conceal markers.
+if has('conceal')
+    set conceallevel=2 concealcursor=niv
+endif
 '''
 
 [[plugins]] # 補完
 repo = 'Shougo/neosnippet-snippets'
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete-neosnippet.vim'
+on_event = 'InsertEnter'
+depends=['neosnippet.vim']
 
 
 [[plugins]] # Denite source
