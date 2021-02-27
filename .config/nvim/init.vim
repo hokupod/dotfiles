@@ -244,11 +244,11 @@ let mapleader = ","
 """"""""""""""""""""""""""""""
 "set pastetoggle=<C-Y>
 """"""""""""""""""""""""""""""
-" inoremap { {}<LEFT>
-" inoremap [ []<LEFT>
-" inoremap ( ()<LEFT>
-" inoremap " ""<LEFT>
-" inoremap ' ''<LEFT>
+inoremap { {}<LEFT>
+inoremap [ []<LEFT>
+inoremap ( ()<LEFT>
+inoremap " ""<LEFT>
+inoremap ' ''<LEFT>
 
 """"""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""
