@@ -29,10 +29,12 @@ let g:plug_shallow = 0
 
 call plug#begin('~/.vim/plugged')
 Plug 'thinca/vim-quickrun'
+Plug 'thinca/vim-qfreplace', { 'for': ['qf'] }
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-repeat'
 Plug 'lambdalisue/gina.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'itchyny/lightline.vim'
@@ -47,6 +49,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'sgur/ctrlp-extensions.vim'
 Plug 'mattn/ctrlp-matchfuzzy'
 Plug 'haya14busa/vim-asterisk'
+Plug 'jremmen/vim-ripgrep'
 " Move
 Plug 'easymotion/vim-easymotion'
 " LSP
@@ -200,8 +203,15 @@ syntax on
 colorscheme onedark
 " 行番号の色
 highlight LineNr ctermfg=darkyellow
+
+" rg があれば使う
+if executable('rg')
+  set grepprg=rg\ --vimgrep
+  set grepformat=%f:%l:%c:%m
+endif
 " grep検索の実行後にQuickFix Listを表示する
 autocmd QuickFixCmdPost *grep* cwindow
+
 """"""""""""""""""""""""""""""
 " 全角スペースの表示
 """"""""""""""""""""""""""""""
