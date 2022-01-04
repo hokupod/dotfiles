@@ -1,5 +1,5 @@
-UsePlugin 'asyncomplete'
-let g:asyncomplete_auto_popup = 0
+UsePlugin 'asyncomplete.vim'
+"let g:asyncomplete_auto_popup = 0
 
 function! s:check_back_space() abort
     let col = col('.') - 1
