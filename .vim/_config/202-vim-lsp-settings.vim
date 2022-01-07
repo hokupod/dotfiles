@@ -6,6 +6,7 @@ let g:lsp_diagnostics_enabled = 1
 let g:asyncomplete_popup_delay = 200
 let g:lsp_text_edit_enabled = 1
 let g:lsp_virtual_text_enabled = 0
+let g:lsp_settings_filetype_ruby = ['solargraph', 'steep']
 
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '‼'}

@@ -39,17 +39,23 @@ Plug 'lambdalisue/gina.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
+" Memo
+Plug 'Shougo/junkfile.vim'
 " ColorScheme
 Plug 'joshdick/onedark.vim'
 " Filer
+Plug 'mattn/vim-findroot'
 Plug 'mattn/vim-molder'
 Plug 'mattn/vim-molder-operations'
 " Search
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'sgur/ctrlp-extensions.vim'
+Plug 'ompugao/ctrlp-history'
 Plug 'mattn/ctrlp-matchfuzzy'
+Plug 'mattn/ctrlp-ghq'
 Plug 'haya14busa/vim-asterisk'
 Plug 'jremmen/vim-ripgrep'
+Plug 'tacahiroy/ctrlp-funky'
 " Move
 Plug 'easymotion/vim-easymotion'
 " LSP
@@ -80,8 +86,25 @@ setglobal laststatus=2
 setglobal fileformat=unix
 setglobal formatoptions+=mb
 
+if has('win32') || has('win64')
+  " バックアップ
+  set backupdir="G:\\マイドライブ\\vim_backup"
+  set directory="G:\\マイドライブ\\vim_backup"
+endif
+
 if !has('win32') && !has('win64')
   setglobal shell=/bin/bash
+endif
+
+if system('uname -a | grep -i microsoft') != ''
+  augroup myYank
+    autocmd!
+    autocmd TextYankPost * :call system('win32yank.exe -i', @")
+  augroup END
+  nnoremap <silent> p :call setreg('"',system('win32yank.exe -o'))<CR>""p
+  " バックアップ
+  set backupdir=/mnt/g/マイドライブ/vim_backup
+  set directory=/mnt/g/マイドライブ/vim_backup
 endif
 
 if exists('&termguicolors')
@@ -188,15 +211,16 @@ set smarttab
 set whichwrap=b,s,h,l,<,>,[,]
 " バックスペースで文字を消せるようにする
 set backspace=indent,eol,start
-" バックアップ
-" "set backupdir=$HOME/OneDrive\ -\ 武宮北斗/Apps/vim_backup
-" "set directory=$HOME/OneDrive\ -\ 武宮北斗/Apps/vim_backup
-" "set backup
-" "set writebackup
 au BufWritePre * let &bex = '.' . strftime("%Y%m%d_%H%M%S")
 " 無名レジスタに入るデータを、*レジスタにも入れる。
-set clipboard=unnamedplus
-
+set clipboard&
+set clipboard^=unnamedplus
+" バックアップ
+set backup
+set writebackup
+" undo
+set undodir=$HOME/.vim_undo
+set undofile
 " 構文毎に文字色を変化させる
 syntax on
 " カラースキーマの指定
@@ -303,7 +327,8 @@ vnoremap X "_x
 " 検索は常に very magic
 nnoremap /  /\v
 " ESC*2 でハイライトやめる
-nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
+let hlstate=0
+nnoremap <Esc><Esc> :if (hlstate == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=1-hlstate<cr>
 " 保存時に行末の空白を除去する
 function! s:remove_dust()
     let cursor = getpos(".")
