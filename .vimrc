@@ -90,22 +90,24 @@ if has('win32') || has('win64')
   " バックアップ
   set backupdir="G:\\マイドライブ\\vim_backup"
   set directory="G:\\マイドライブ\\vim_backup"
-endif
-
-if !has('win32') && !has('win64')
+else
   setglobal shell=/bin/bash
+  " バックアップ
+  set backupdir=$HOME/.vim_backup
+  set directory=$HOME/.vim_backup
+  " WSL
+  if system('uname -a | grep -i microsoft') != ''
+    augroup myYank
+      autocmd!
+      autocmd TextYankPost * :call system('win32yank.exe -i', @")
+    augroup END
+    nnoremap <silent> p :call setreg('"',system('win32yank.exe -o'))<CR>""p
+    " バックアップ
+    set backupdir=/mnt/g/マイドライブ/vim_backup
+    set directory=/mnt/g/マイドライブ/vim_backup
+  endif
 endif
 
-if system('uname -a | grep -i microsoft') != ''
-  augroup myYank
-    autocmd!
-    autocmd TextYankPost * :call system('win32yank.exe -i', @")
-  augroup END
-  nnoremap <silent> p :call setreg('"',system('win32yank.exe -o'))<CR>""p
-  " バックアップ
-  set backupdir=/mnt/g/マイドライブ/vim_backup
-  set directory=/mnt/g/マイドライブ/vim_backup
-endif
 
 if exists('&termguicolors')
   setglobal termguicolors
