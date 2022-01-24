@@ -30,7 +30,7 @@ let g:plug_shallow = 0
 call plug#begin('~/.vim/plugged')
 Plug 'thinca/vim-quickrun'
 Plug 'thinca/vim-qfreplace', { 'for': ['qf'] }
-Plug 'tpope/vim-surround'
+Plug 'machakann/vim-sandwich'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
@@ -38,7 +38,8 @@ Plug 'tpope/vim-repeat'
 Plug 'lambdalisue/gina.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'itchyny/lightline.vim'
-Plug 'jiangmiao/auto-pairs'
+Plug 'cohama/lexima.vim'
+Plug 'lambdalisue/guise.vim'
 " Memo
 Plug 'Shougo/junkfile.vim'
 " ColorScheme
@@ -63,6 +64,7 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'htlsne/asyncomplete-look'
 " Syntax check
 Plug 'dense-analysis/ale'
 " Syntax
@@ -97,11 +99,13 @@ else
   set directory=$HOME/.vim_backup
   " WSL
   if system('uname -a | grep -i microsoft') != ''
+    let win32yankIn="$WINHOME/win32yank.exe -i"
+    let win32yankOut="$WINHOME/win32yank.exe -o --lf"
     augroup myYank
       autocmd!
-      autocmd TextYankPost * :call system('win32yank.exe -i', @")
+      autocmd TextYankPost * :call system(win32yankIn, @")
     augroup END
-    nnoremap <silent> p :call setreg('"',system('win32yank.exe -o'))<CR>""p
+    nnoremap <silent> p :call setreg('"',system(win32yankOut))<CR>""p
     " バックアップ
     set backupdir=/mnt/g/マイドライブ/vim_backup
     set directory=/mnt/g/マイドライブ/vim_backup
@@ -157,6 +161,8 @@ end
 " カレント行のハイライト
 set cursorline
 hi clear CursorLine
+" カレント列のハイライト
+set cursorcolumn
 " タグファイルの指定
 " set tags=~/.tags
 " スワップファイル

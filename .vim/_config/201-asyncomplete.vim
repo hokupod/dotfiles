@@ -15,3 +15,10 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 " enable preview window
 let g:asyncomplete_auto_completeopt = 0
 set completeopt=menuone,noinsert,noselect,preview
+
+UsePlugin 'asyncomplete-look'
+au User asyncomplete_setup call asyncomplete#register_source({
+    \ 'name': 'look',
+    \ 'allowlist': ['text', 'markdown'],
+    \ 'completor': function('asyncomplete#sources#look#completor'),
+    \ })
