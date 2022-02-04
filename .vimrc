@@ -37,9 +37,11 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'lambdalisue/gina.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'cohama/lexima.vim'
 Plug 'lambdalisue/guise.vim'
+Plug 'markonm/traces.vim'
 " Memo
 Plug 'Shougo/junkfile.vim'
 " ColorScheme
@@ -65,6 +67,9 @@ Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'htlsne/asyncomplete-look'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'hrsh7th/vim-searchx'
 " Syntax check
 Plug 'dense-analysis/ale'
 " Syntax
