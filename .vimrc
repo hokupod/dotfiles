@@ -76,6 +76,8 @@ Plug 'dense-analysis/ale'
 Plug 'sheerun/vim-polyglot'
 " HTML
 Plug 'mattn/emmet-vim'
+" Go
+Plug 'mattn/vim-goimports'
 call plug#end()
 
 let s:plugs = get(s:, 'plugs', get(g:, 'plugs', {}))
@@ -356,3 +358,4 @@ autocmd BufWritePre * call <SID>remove_dust()
 set ambiwidth=double
 " filetypeの自動検出(最後の方に書いた方がいいらしい)
 filetype on
+filetype plugin indent on
