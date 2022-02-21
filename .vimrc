@@ -77,7 +77,7 @@ Plug 'sheerun/vim-polyglot'
 " HTML
 Plug 'mattn/emmet-vim'
 " Go
-Plug 'mattn/vim-goimports'
+Plug 'mattn/vim-goimports', { 'for': ['go'] }
 call plug#end()
 
 let s:plugs = get(s:, 'plugs', get(g:, 'plugs', {}))
