@@ -59,6 +59,7 @@ Plug 'mattn/ctrlp-ghq'
 Plug 'haya14busa/vim-asterisk'
 Plug 'jremmen/vim-ripgrep'
 Plug 'tacahiroy/ctrlp-funky'
+Plug 'hrsh7th/vim-searchx'
 " Move
 Plug 'easymotion/vim-easymotion'
 " LSP
@@ -67,9 +68,10 @@ Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'htlsne/asyncomplete-look'
+" Snippet
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'hrsh7th/vim-searchx'
+Plug 'mattn/vim-sonictemplate'
 " Syntax check
 Plug 'dense-analysis/ale'
 " Syntax
@@ -319,11 +321,6 @@ endif
 "   autocmd! FocusGained *
 "     \ call system(g:force_alphanumeric_input_command)
 " endif
-
-""""""""""""""""""""""""""""""
-" ペーストモード切替
-""""""""""""""""""""""""""""""
-set pastetoggle=<C-Y>
 
 """"""""""""""""""""""""""""""
 " インサートモード時の移動
