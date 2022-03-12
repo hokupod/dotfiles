@@ -68,9 +68,11 @@ Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'htlsne/asyncomplete-look'
+Plug 'liuchengxu/vista.vim'
 " Snippet
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'rafamadriz/friendly-snippets'
 Plug 'mattn/vim-sonictemplate'
 " Syntax check
 Plug 'dense-analysis/ale'

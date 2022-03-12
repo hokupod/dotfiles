@@ -10,9 +10,16 @@ let g:lsp_settings_filetype_ruby = ['solargraph', 'steep']
 
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '‼'}
-nmap <silent> gd :LspDefinition<CR>
-nmap <silent> <f2> :LspRename<CR>
-nmap <silent> <Leader>d :LspTypeDefinition<CR>
-nmap <silent> <Leader>r :LspReferences<CR>
-nmap <silent> <Leader>i :LspImplementation<CR>
-nmap <silent> <Leader>h :LspHover<CR>
+
+nmap <buffer> gd <plug>(lsp-definition)
+nmap <buffer> gs <plug>(lsp-document-symbol-search)
+nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+nmap <buffer> gr <plug>(lsp-references)
+nmap <buffer> gi <plug>(lsp-implementation)
+nmap <buffer> gt <plug>(lsp-type-definition)
+nmap <buffer> <f2> <plug>(lsp-rename)
+nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+nmap <buffer> K <plug>(lsp-hover)
+nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
