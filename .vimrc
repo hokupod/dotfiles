@@ -40,8 +40,11 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'cohama/lexima.vim'
-Plug 'lambdalisue/guise.vim'
 Plug 'markonm/traces.vim'
+" denops
+Plug 'vim-denops/denops.vim'
+Plug 'vim-denops/denops-helloworld.vim'
+Plug 'lambdalisue/guise.vim'
 " Memo
 Plug 'Shougo/junkfile.vim'
 " ColorScheme
@@ -59,7 +62,7 @@ Plug 'mattn/ctrlp-ghq'
 Plug 'haya14busa/vim-asterisk'
 Plug 'jremmen/vim-ripgrep'
 Plug 'tacahiroy/ctrlp-funky'
-Plug 'hrsh7th/vim-searchx'
+"Plug 'monaqa/modesearch.vim'
 " Move
 Plug 'easymotion/vim-easymotion'
 " LSP
@@ -233,7 +236,7 @@ set backspace=indent,eol,start
 au BufWritePre * let &bex = '.' . strftime("%Y%m%d_%H%M%S")
 " 無名レジスタに入るデータを、*レジスタにも入れる。
 set clipboard&
-set clipboard^=unnamedplus
+set clipboard=unnamed,autoselect
 " バックアップ
 set backup
 set writebackup
