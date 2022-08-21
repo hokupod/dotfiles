@@ -1,14 +1,19 @@
 " 挙動を vi 互換ではなく、Vim のデフォルト設定にする
 set nocompatible
-" マウスを有効にする
-if has('mouse')
-  set mouse=a
-  if has('mouse_sgr')
-    set ttymouse=sgr
-  elseif v:version > 703 || v:version is 703 && has('patch632') " I couldn't use has('mouse_sgr') :-(
-    set ttymouse=sgr
-  else
-    set ttymouse=xterm2
+if !has('nvim')
+  " 無名レジスタに入るデータを、*レジスタにも入れる。
+  set clipboard&
+  set clipboard=unnamed,autoselect
+  " マウスを有効にする
+  if has('mouse')
+    set mouse=a
+    if has('mouse_sgr')
+      set ttymouse=sgr
+    elseif v:version > 703 || v:version is 703 && has('patch632') " I couldn't use has('mouse_sgr') :-(
+      set ttymouse=sgr
+    else
+      set ttymouse=xterm2
+    endif
   endif
 endif
 " Insertモードのときカーソルの形状を変更
@@ -28,6 +33,20 @@ filetype off
 let g:plug_shallow = 0
 
 call plug#begin('~/.vim/plugged')
+
+if has('nvim')
+  Plug 'monaqa/modesearch.vim'
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+else
+  " LSP
+  Plug 'prabirshrestha/vim-lsp'
+  Plug 'mattn/vim-lsp-settings'
+  Plug 'prabirshrestha/asyncomplete.vim'
+  Plug 'prabirshrestha/asyncomplete-lsp.vim'
+  Plug 'htlsne/asyncomplete-look'
+  Plug 'liuchengxu/vista.vim'
+endif
 Plug 'thinca/vim-quickrun'
 Plug 'thinca/vim-qfreplace', { 'for': ['qf'] }
 Plug 'machakann/vim-sandwich'
@@ -62,16 +81,8 @@ Plug 'mattn/ctrlp-ghq'
 Plug 'haya14busa/vim-asterisk'
 Plug 'jremmen/vim-ripgrep'
 Plug 'tacahiroy/ctrlp-funky'
-"Plug 'monaqa/modesearch.vim'
 " Move
 Plug 'easymotion/vim-easymotion'
-" LSP
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'htlsne/asyncomplete-look'
-Plug 'liuchengxu/vista.vim'
 " Snippet
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
@@ -234,9 +245,6 @@ set whichwrap=b,s,h,l,<,>,[,]
 " バックスペースで文字を消せるようにする
 set backspace=indent,eol,start
 au BufWritePre * let &bex = '.' . strftime("%Y%m%d_%H%M%S")
-" 無名レジスタに入るデータを、*レジスタにも入れる。
-set clipboard&
-set clipboard=unnamed,autoselect
 " バックアップ
 set backup
 set writebackup

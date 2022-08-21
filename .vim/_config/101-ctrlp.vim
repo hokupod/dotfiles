@@ -17,6 +17,7 @@ UsePlugin 'ctrlp-extensions.vim'
 let g:ctrlp_extensions = ['tag', 'quickfix', 'dir', 'line', 'mixed', 'cmdline', 'yankring', 'menu']
 nnoremap <silent><Space>: :<C-U>CtrlPCmdline<CR><F5>
 nnoremap <silent><Space>m :<C-U>CtrlPMenu<CR><F5>
+nnoremap <silent><Space>u :<C-U>CtrlPMRUFiles<CR><F5>
 
 UsePlugin 'ctrlp-ghq'
 nnoremap <silent><Space>g :<C-U>CtrlPGhq<CR><F5>
