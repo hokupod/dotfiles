@@ -3,7 +3,7 @@ set nocompatible
 if !has('nvim')
   " 無名レジスタに入るデータを、*レジスタにも入れる。
   set clipboard&
-  set clipboard=unnamed,autoselect
+  set clipboard^=unnamedplus
   " マウスを有効にする
   if has('mouse')
     set mouse=a
@@ -38,6 +38,11 @@ if has('nvim')
   Plug 'monaqa/modesearch.vim'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+    Plug 'yioneko/nvim-yati'
+  Plug 'SirVer/ultisnips'
+    Plug 'honza/vim-snippets'
 else
   " LSP
   Plug 'prabirshrestha/vim-lsp'
@@ -46,6 +51,11 @@ else
   Plug 'prabirshrestha/asyncomplete-lsp.vim'
   Plug 'htlsne/asyncomplete-look'
   Plug 'liuchengxu/vista.vim'
+  " Snippet
+  Plug 'hrsh7th/vim-vsnip'
+  Plug 'hrsh7th/vim-vsnip-integ'
+  Plug 'rafamadriz/friendly-snippets'
+  Plug 'mattn/vim-sonictemplate'
 endif
 Plug 'thinca/vim-quickrun'
 Plug 'thinca/vim-qfreplace', { 'for': ['qf'] }
@@ -83,19 +93,21 @@ Plug 'jremmen/vim-ripgrep'
 Plug 'tacahiroy/ctrlp-funky'
 " Move
 Plug 'easymotion/vim-easymotion'
-" Snippet
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'rafamadriz/friendly-snippets'
-Plug 'mattn/vim-sonictemplate'
 " Syntax check
-Plug 'dense-analysis/ale'
+"Plug 'dense-analysis/ale'
+Plug 'editorconfig/editorconfig-vim'
 " Syntax
 Plug 'sheerun/vim-polyglot'
 " HTML
 Plug 'mattn/emmet-vim'
 " Go
 Plug 'mattn/vim-goimports', { 'for': ['go'] }
+Plug 'sebdah/vim-delve', { 'for': ['go'] }
+" JS/TS
+Plug 'pangloss/vim-javascript', { 'for': ['javascript','javascriptreact','typescript','typescriptreact'] }
+Plug 'leafgarland/typescript-vim', { 'for': ['javascript','javascriptreact','typescript','typescriptreact'] }
+Plug 'peitalin/vim-jsx-typescript', { 'for': ['javascript','javascriptreact','typescript','typescriptreact'] }
+Plug 'styled-components/vim-styled-components', { 'for': ['javascript','javascriptreact','typescript','typescriptreact'] }
 call plug#end()
 
 let s:plugs = get(s:, 'plugs', get(g:, 'plugs', {}))
@@ -187,7 +199,7 @@ end
 set cursorline
 hi clear CursorLine
 " カレント列のハイライト
-set cursorcolumn
+"set cursorcolumn
 " タグファイルの指定
 " set tags=~/.tags
 " スワップファイル
@@ -358,8 +370,7 @@ nnoremap <Esc><Esc> :if (hlstate == 0) \| nohlsearch \| else \| set hlsearch \| 
 function! s:remove_dust()
     let cursor = getpos(".")
     %s/\s\+$//ge
-    "" 保存時にtabを2スペースに変換する
-    "%s/\t/  /ge
+    %s/^M$//ge
     call setpos(".", cursor)
     unlet cursor
 endfunction

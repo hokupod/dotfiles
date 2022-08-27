@@ -53,9 +53,5 @@ tnoremap <C-W>z       <cmd>pclose<cr>
 tnoremap <C-W><C-Z>   <cmd>pclose<cr>
 " }}
 
-" バックアップ
-set backupdir=$HOME/.nvim_backup
-set directory=$HOME/.nvim_backup
-
 " undo
 set undodir=$HOME/.nvim_undo
