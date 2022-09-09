@@ -45,10 +45,12 @@ if has('nvim')
     Plug 'honza/vim-snippets'
 else
   " LSP
-  Plug 'prabirshrestha/vim-lsp'
-  Plug 'mattn/vim-lsp-settings'
+  Plug 'dense-analysis/ale', { 'for': ['typescript','typescriptreact'] }
   Plug 'prabirshrestha/asyncomplete.vim'
-  Plug 'prabirshrestha/asyncomplete-lsp.vim'
+  Plug 'prabirshrestha/vim-lsp'
+    Plug 'prabirshrestha/asyncomplete-lsp.vim'
+    Plug 'mattn/vim-lsp-settings'
+    Plug 'rhysd/vim-lsp-ale', { 'for': ['typescript','typescriptreact'] }
   Plug 'htlsne/asyncomplete-look'
   Plug 'liuchengxu/vista.vim'
   " Snippet
@@ -70,10 +72,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'cohama/lexima.vim'
 Plug 'markonm/traces.vim'
-" denops
-Plug 'vim-denops/denops.vim'
-Plug 'vim-denops/denops-helloworld.vim'
-Plug 'lambdalisue/guise.vim'
 " Memo
 Plug 'Shougo/junkfile.vim'
 " ColorScheme
@@ -94,7 +92,6 @@ Plug 'tacahiroy/ctrlp-funky'
 " Move
 Plug 'easymotion/vim-easymotion'
 " Syntax check
-"Plug 'dense-analysis/ale'
 Plug 'editorconfig/editorconfig-vim'
 " Syntax
 Plug 'sheerun/vim-polyglot'
@@ -104,10 +101,10 @@ Plug 'mattn/emmet-vim'
 Plug 'mattn/vim-goimports', { 'for': ['go'] }
 Plug 'sebdah/vim-delve', { 'for': ['go'] }
 " JS/TS
-Plug 'pangloss/vim-javascript', { 'for': ['javascript','javascriptreact','typescript','typescriptreact'] }
-Plug 'leafgarland/typescript-vim', { 'for': ['javascript','javascriptreact','typescript','typescriptreact'] }
-Plug 'peitalin/vim-jsx-typescript', { 'for': ['javascript','javascriptreact','typescript','typescriptreact'] }
-Plug 'styled-components/vim-styled-components', { 'for': ['javascript','javascriptreact','typescript','typescriptreact'] }
+Plug 'pangloss/vim-javascript', { 'for': ['typescript','typescriptreact'] }
+Plug 'leafgarland/typescript-vim', { 'for': ['typescript','typescriptreact'] }
+Plug 'peitalin/vim-jsx-typescript', { 'for': ['typescript','typescriptreact'] }
+Plug 'styled-components/vim-styled-components', { 'for': ['typescript','typescriptreact'] }
 call plug#end()
 
 let s:plugs = get(s:, 'plugs', get(g:, 'plugs', {}))
@@ -116,6 +113,9 @@ function! FindPlugin(name) abort
 endfunction
 command! -nargs=1 UsePlugin if !FindPlugin(<args>) | finish | endif
 
+if has('win32') || has('win64')
+  set runtimepath+=$HOME/.vim
+endif
 runtime! _config/*.vim
 """"""""""""""""""""""""""""""
 " 各種オプションの設定
@@ -127,8 +127,8 @@ setglobal formatoptions+=mb
 
 if has('win32') || has('win64')
   " バックアップ
-  set backupdir="G:\\マイドライブ\\vim_backup"
-  set directory="G:\\マイドライブ\\vim_backup"
+  set backupdir=G:/マイドライブ/vim_backup
+  set directory=G:/マイドライブ/vim_backup
 else
   setglobal shell=/bin/bash
   " バックアップ

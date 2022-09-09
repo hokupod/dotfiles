@@ -1,4 +1,5 @@
 UsePlugin 'lightline.vim'
+if has('nvim')
 let g:lightline = {
     \ 'colorscheme': 'onedark',
     \ 'mode_map': {'c': 'NORMAL'},
@@ -9,7 +10,7 @@ let g:lightline = {
     \   'right': [
     \     ['lineinfo', 'ale'],
     \     ['percent'],
-    \     ['charcode', 'fileformat', 'fileencoding', 'filetype'],
+    \     ['fileformat', 'fileencoding', 'filetype'],
     \   ]
     \ },
     \ 'component_function': {
@@ -22,9 +23,44 @@ let g:lightline = {
     \   'fileencoding': 'LightlineFileencoding',
     \   'charcode': 'LightlineCharCode',
     \   'mode': 'LightlineMode',
-    \   'gitbranch': 'gina#component#repo#branch'
+    \   'gitbranch': 'gina#component#repo#branch',
+    \ },
     \ }
+else
+let g:lightline = {
+    \ 'colorscheme': 'onedark',
+    \ 'mode_map': {'c': 'NORMAL'},
+    \ 'active': {
+    \   'left': [
+    \     [ 'mode', 'paste' ],
+    \     [ 'gitbranch', 'readonly', 'filename'] ],
+    \   'right': [
+    \     ['lsp_errors', 'lsp_warnings'],
+    \     ['lineinfo', 'ale'],
+    \     ['percent'],
+    \     ['fileformat', 'fileencoding', 'filetype'],
+    \   ]
+    \ },
+    \ 'component_function': {
+    \   'modified': 'LightlineModified',
+    \   'readonly': 'LightlineReadonly',
+    \   'fugitive': 'LightlineFugitive',
+    \   'filename': 'LightlineFilename',
+    \   'fileformat': 'LightlineFileformat',
+    \   'filetype': 'LightlineFiletype',
+    \   'fileencoding': 'LightlineFileencoding',
+    \   'charcode': 'LightlineCharCode',
+    \   'mode': 'LightlineMode',
+    \   'gitbranch': 'gina#component#repo#branch',
+    \   'lsp_errors': 'LightlineLSPErrors',
+    \   'lsp_warnings': 'LightlineLSPWarnings',
+    \ },
+    \ 'component_type': {
+    \   'lsp_errors': 'error',
+    \   'lsp_warnings': 'warning',
+    \   },
     \ }
+endif
 
 function! LightlineModified()
   return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
@@ -101,3 +137,18 @@ function! LightlineCharCode()
 
   return "'". char ."' ". nr
 endfunction
+
+function! LightlineLSPWarnings() abort
+  let l:counts = lsp#get_buffer_diagnostics_counts()
+  return l:counts.warning == 0 ? '' : printf('W:%d', l:counts.warning)
+endfunction
+
+function! LightlineLSPErrors() abort
+  let l:counts = lsp#get_buffer_diagnostics_counts()
+  return l:counts.error == 0 ? '' : printf('E:%d', l:counts.error)
+endfunction
+
+augroup lightlineAutocmd
+  autocmd!
+  autocmd User lsp_diagnostics_updated call lightline#update()
+augroup END
