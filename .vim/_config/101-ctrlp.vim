@@ -3,7 +3,7 @@ UsePlugin 'ctrlp.vim'
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_use_caching = 1
 let g:ctrlp_custom_ignore = {
-            \ 'dir': 'node_modules$\|\.git$',
+            \ 'dir': 'node_modules$\|\.git$\|\.next$',
             \ 'file': 'DS_STORE'
             \ }
 let g:ctrlp_show_hidden = 1

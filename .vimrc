@@ -72,6 +72,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'cohama/lexima.vim'
 Plug 'markonm/traces.vim'
+Plug 'github/copilot.vim'
 " Memo
 Plug 'Shougo/junkfile.vim'
 " ColorScheme
