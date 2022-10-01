@@ -67,7 +67,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'lambdalisue/gina.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'cohama/lexima.vim'
@@ -92,6 +92,7 @@ Plug 'jremmen/vim-ripgrep'
 Plug 'tacahiroy/ctrlp-funky'
 " Move
 Plug 'easymotion/vim-easymotion'
+Plug 'haya14busa/vim-edgemotion'
 " Syntax check
 Plug 'editorconfig/editorconfig-vim'
 " Syntax
