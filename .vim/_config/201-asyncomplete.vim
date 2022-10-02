@@ -1,5 +1,6 @@
 UsePlugin 'asyncomplete.vim'
-"let g:asyncomplete_auto_popup = 0
+" Type `<C-x><C-o>` to display completion suggestions
+let g:asyncomplete_auto_popup = 0
 
 function! s:check_back_space() abort
     let col = col('.') - 1

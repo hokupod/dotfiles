@@ -45,12 +45,13 @@ if has('nvim')
     Plug 'honza/vim-snippets'
 else
   " LSP
-  Plug 'dense-analysis/ale', { 'for': ['typescript','typescriptreact'] }
+  "Plug 'dense-analysis/ale', { 'for': ['typescript','typescriptreact'] }
   Plug 'prabirshrestha/asyncomplete.vim'
   Plug 'prabirshrestha/vim-lsp'
     Plug 'prabirshrestha/asyncomplete-lsp.vim'
+    Plug 'tsuyoshicho/vim-efm-langserver-settings'
     Plug 'mattn/vim-lsp-settings'
-    Plug 'rhysd/vim-lsp-ale', { 'for': ['typescript','typescriptreact'] }
+    "Plug 'rhysd/vim-lsp-ale', { 'for': ['typescript','typescriptreact'] }
   Plug 'htlsne/asyncomplete-look'
   Plug 'liuchengxu/vista.vim'
   " Snippet
