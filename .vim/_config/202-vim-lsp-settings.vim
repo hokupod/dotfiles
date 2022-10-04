@@ -1,4 +1,4 @@
-UsePlugin 'vim-lsp-settings'
+UsePlugin 'vim-lsp'
 
 function! s:on_lsp_buffer_enabled() abort
   setlocal omnifunc=lsp#complete
@@ -29,6 +29,14 @@ let g:lsp_diagnostics_enabled = 1
 let g:asyncomplete_popup_delay = 200
 let g:lsp_text_edit_enabled = 1
 let g:lsp_virtual_text_enabled = 1
+
+let g:lsp_signs_enabled = 1         " enable signs
+let g:lsp_signs_error = {'text': '✗'}
+let g:lsp_signs_warning = {'text': '‼'}
+
+
+UsePlugin 'vim-lsp-settings'
+
 let g:lsp_settings_filetype_ruby = ['solargraph', 'steep']
 let g:lsp_settings_filetype_typescript = ['typescript-language-server']
 let g:lsp_settings_filetype_typescriptreact = ['typescript-language-server']
@@ -37,7 +45,3 @@ let g:lsp_settings = {
 \     'disabled': v:false
 \   },
 \ }
-
-let g:lsp_signs_enabled = 1         " enable signs
-let g:lsp_signs_error = {'text': '✗'}
-let g:lsp_signs_warning = {'text': '‼'}

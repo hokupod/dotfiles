@@ -45,13 +45,13 @@ if has('nvim')
     Plug 'honza/vim-snippets'
 else
   " LSP
-  "Plug 'dense-analysis/ale', { 'for': ['typescript','typescriptreact'] }
+  Plug 'dense-analysis/ale', { 'for': ['typescript','typescriptreact'] }
   Plug 'prabirshrestha/asyncomplete.vim'
   Plug 'prabirshrestha/vim-lsp'
     Plug 'prabirshrestha/asyncomplete-lsp.vim'
-    Plug 'tsuyoshicho/vim-efm-langserver-settings'
+    " Plug 'tsuyoshicho/vim-efm-langserver-settings'
     Plug 'mattn/vim-lsp-settings'
-    "Plug 'rhysd/vim-lsp-ale', { 'for': ['typescript','typescriptreact'] }
+    Plug 'rhysd/vim-lsp-ale', { 'for': ['typescript','typescriptreact'] }
   Plug 'htlsne/asyncomplete-look'
   Plug 'liuchengxu/vista.vim'
   " Snippet
@@ -84,10 +84,11 @@ Plug 'mattn/vim-molder'
 Plug 'mattn/vim-molder-operations'
 " Search
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'sgur/ctrlp-extensions.vim'
-Plug 'ompugao/ctrlp-history'
-Plug 'mattn/ctrlp-matchfuzzy'
-Plug 'mattn/ctrlp-ghq'
+  Plug 'sgur/ctrlp-extensions.vim'
+  Plug 'ompugao/ctrlp-history'
+  Plug 'mattn/ctrlp-matchfuzzy'
+  Plug 'mattn/ctrlp-ghq'
+  Plug 'mattn/ctrlp-mark'
 Plug 'haya14busa/vim-asterisk'
 Plug 'jremmen/vim-ripgrep'
 Plug 'tacahiroy/ctrlp-funky'
