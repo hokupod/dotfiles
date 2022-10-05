@@ -60,6 +60,7 @@ else
   Plug 'rafamadriz/friendly-snippets'
   Plug 'mattn/vim-sonictemplate'
 endif
+Plug 'cocopon/vaffle.vim'
 Plug 'thinca/vim-quickrun'
 Plug 'thinca/vim-qfreplace', { 'for': ['qf'] }
 Plug 'machakann/vim-sandwich'
@@ -241,7 +242,7 @@ set hidden
 " 不可視文字を表示する
 set list
 " タブと行の続きを可視化する
-set listchars=tab:>\ ,extends:<
+set listchars=tab:>\ ,extends:<,eol:$
 " 行番号を表示する
 set number
 " 対応する括弧やブレースを表示する
