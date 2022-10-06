@@ -9,3 +9,5 @@ ln -s $SCRIPT_DIR/.config/dein ~/.config/dein
 mkdir -p ~/.vim
 ln -s $SCRIPT_DIR/.vimrc ~/.vimrc
 ln -s $SCRIPT_DIR/.vim/_config ~/.vim/_config
+ln -s $SCRIPT_DIR/.vim/ftplugin ~/.vim/ftplugin
+ln -s $SCRIPT_DIR/.vim/filetype.vim ~/.vim/filetype.vim
