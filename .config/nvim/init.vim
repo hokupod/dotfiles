@@ -55,6 +55,13 @@ tnoremap <C-W><C-Z>   <cmd>pclose<cr>
 
 " undo
 set undodir=$HOME/.nvim_undo
+" colorscheme
+colorscheme gruvbox-material
+set background=light
+let g:gruvbox_material_enable_bold=1
+let g:gruvbox_material_enable_italic=1
+let g:gruvbox_material_background='soft'
+
 
 lua << EOL
 local set = vim.keymap.set
@@ -90,8 +97,35 @@ local on_attach = function(client, bufnr)
 
 end
 
-require("mason").setup()
+local mason = require('mason')
+local mason_null_ls = require('mason-null-ls')
+local null_ls = require('null-ls')
+
+mason.setup()
+mason_null_ls.setup({
+  ensure_installed = { 'prettier', 'dprint' },
+  automatic_installation = true,
+})
+null_ls.setup({
+  sources = {
+    null_ls.builtins.formatting.dprint.with {
+      condition = function(utils)
+        return utils.has_file { "dprint.json" }
+      end,
+    },
+    null_ls.builtins.formatting.prettier.with {
+      condition = function(utils)
+        return utils.has_file { ".prettierrc", ".prettierrc.js" }
+      end,
+      prefer_local = "node_modules/.bin",
+    }
+  },
+})
+
 require("mason-lspconfig").setup()
+require('dressing').setup()
+require('lspsaga').setup()
+require('lsp_signature').setup({ hint_enable = false })
 
 -- Set up nvim-cmp.
 local cmp = require('cmp')
@@ -180,9 +214,6 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = 'all',
   highlight = {
     enable = true,
-    highlight = {
-      enable = true
-    },
   },
 }
 
@@ -220,5 +251,10 @@ vim.api.nvim_create_autocmd({ 'CursorHold' }, {
   end,
 })
 
-vim.cmd.colorscheme('gruvbox-material')
+
+require('lualine').setup {
+  options = {
+    theme = 'gruvbox-material',
+  },
+}
 EOL

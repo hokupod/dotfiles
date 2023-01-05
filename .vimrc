@@ -43,6 +43,8 @@ if has('nvim')
   Plug 'williamboman/mason.nvim'
   Plug 'williamboman/mason-lspconfig.nvim'
   Plug 'ray-x/lsp_signature.nvim'
+  Plug 'jose-elias-alvarez/null-ls.nvim'
+    Plug 'jayp0521/mason-null-ls.nvim'
   " auto complete
   Plug 'hrsh7th/nvim-cmp'
   Plug 'hrsh7th/cmp-nvim-lsp'
@@ -64,6 +66,7 @@ if has('nvim')
   Plug 'lambdalisue/fern.vim'
 
   " UI
+  Plug 'nvim-lualine/lualine.nvim'
   Plug 'tami5/lspsaga.nvim'
   Plug 'stevearc/dressing.nvim'
 else
@@ -86,6 +89,8 @@ else
     Plug 'mattn/ctrlp-ghq'
     Plug 'mattn/ctrlp-mark'
     Plug 'tacahiroy/ctrlp-funky'
+
+  Plug 'itchyny/lightline.vim'
 endif
 " Filer
 Plug 'cocopon/vaffle.vim'
@@ -105,7 +110,6 @@ Plug 'tpope/vim-repeat'
 Plug 'lambdalisue/gina.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'itchyny/lightline.vim'
 Plug 'cohama/lexima.vim'
 Plug 'markonm/traces.vim'
 " Plug 'github/copilot.vim'
@@ -407,8 +411,11 @@ function! s:remove_dust()
     unlet cursor
 endfunction
 autocmd BufWritePre * call <SID>remove_dust()
-" 2バイトの記号対策
-set ambiwidth=double
+
+if !has('nvim')
+  " 2バイトの記号対策
+  set ambiwidth=double
+endif
 " filetypeの自動検出(最後の方に書いた方がいいらしい)
 filetype on
 filetype plugin indent on
