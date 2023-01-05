@@ -35,14 +35,37 @@ let g:plug_shallow = 0
 call plug#begin('~/.vim/plugged')
 
 if has('nvim')
-  Plug 'monaqa/modesearch.vim'
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
   Plug 'nvim-lua/plenary.nvim'
+  " LSP
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'williamboman/mason.nvim'
+  Plug 'williamboman/mason-lspconfig.nvim'
+  Plug 'ray-x/lsp_signature.nvim'
+  " auto complete
+  Plug 'hrsh7th/nvim-cmp'
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'hrsh7th/cmp-buffer'
+  Plug 'hrsh7th/cmp-path'
+  Plug 'hrsh7th/cmp-cmdline'
+  Plug 'onsails/lspkind-nvim'
+  Plug 'ray-x/cmp-treesitter'
+
+  Plug 'monaqa/modesearch.vim'
   Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
-    Plug 'yioneko/nvim-yati'
-  Plug 'SirVer/ultisnips'
-    Plug 'honza/vim-snippets'
+    Plug 'nvim-telescope/telescope-ghq.nvim'
+    Plug 'nvim-telescope/telescope-z.nvim'
+
+  " Colorscheme
+  Plug 'sainnhe/gruvbox-material'
+
+  " Filer
+  Plug 'lambdalisue/fern.vim'
+
+  " UI
+  Plug 'tami5/lspsaga.nvim'
+  Plug 'stevearc/dressing.nvim'
 else
   " LSP
   Plug 'dense-analysis/ale', { 'for': ['typescript','typescriptreact'] }
@@ -54,13 +77,24 @@ else
     Plug 'rhysd/vim-lsp-ale', { 'for': ['typescript','typescriptreact'] }
   Plug 'htlsne/asyncomplete-look'
   Plug 'liuchengxu/vista.vim'
-  " Snippet
-  Plug 'hrsh7th/vim-vsnip'
-  Plug 'hrsh7th/vim-vsnip-integ'
-  Plug 'rafamadriz/friendly-snippets'
-  Plug 'mattn/vim-sonictemplate'
+
+
+  Plug 'ctrlpvim/ctrlp.vim'
+    Plug 'sgur/ctrlp-extensions.vim'
+    Plug 'ompugao/ctrlp-history'
+    Plug 'mattn/ctrlp-matchfuzzy'
+    Plug 'mattn/ctrlp-ghq'
+    Plug 'mattn/ctrlp-mark'
+    Plug 'tacahiroy/ctrlp-funky'
 endif
+" Filer
 Plug 'cocopon/vaffle.vim'
+" Snippet
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'rafamadriz/friendly-snippets'
+Plug 'mattn/vim-sonictemplate'
+
 Plug 'thinca/vim-quickrun'
 Plug 'thinca/vim-qfreplace', { 'for': ['qf'] }
 Plug 'machakann/vim-sandwich'
@@ -74,7 +108,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'cohama/lexima.vim'
 Plug 'markonm/traces.vim'
-Plug 'github/copilot.vim'
+" Plug 'github/copilot.vim'
 " Memo
 Plug 'Shougo/junkfile.vim'
 " ColorScheme
@@ -84,15 +118,8 @@ Plug 'mattn/vim-findroot'
 Plug 'mattn/vim-molder'
 Plug 'mattn/vim-molder-operations'
 " Search
-Plug 'ctrlpvim/ctrlp.vim'
-  Plug 'sgur/ctrlp-extensions.vim'
-  Plug 'ompugao/ctrlp-history'
-  Plug 'mattn/ctrlp-matchfuzzy'
-  Plug 'mattn/ctrlp-ghq'
-  Plug 'mattn/ctrlp-mark'
 Plug 'haya14busa/vim-asterisk'
 Plug 'jremmen/vim-ripgrep'
-Plug 'tacahiroy/ctrlp-funky'
 " Move
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/vim-edgemotion'
@@ -366,8 +393,8 @@ nnoremap x "_x
 nnoremap X "_x
 vnoremap x "_x
 vnoremap X "_x
-" 検索は常に very magic
-nnoremap /  /\v
+" " 検索は常に very magic
+" nnoremap /  /\v
 " ESC*2 でハイライトやめる
 let hlstate=0
 nnoremap <Esc><Esc> :if (hlstate == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=1-hlstate<cr>

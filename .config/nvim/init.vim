@@ -55,3 +55,170 @@ tnoremap <C-W><C-Z>   <cmd>pclose<cr>
 
 " undo
 set undodir=$HOME/.nvim_undo
+
+lua << EOL
+local set = vim.keymap.set
+local function show_documentation()
+  local ft = vim.opt.filetype._value
+  if ft == 'vim' or ft == 'help' then
+    vim.cmd([[execute 'h ' . expand('<cword>') ]])
+  else
+    require('lspsaga.hover').render_hover_doc()
+  end
+end
+
+local on_attach = function(client, bufnr)
+  -- client.resolved_capabilities.document_formatting = false
+
+  set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
+  set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
+  set("n", "K", show_documentation)
+  set("n", "<space>im", "<cmd>Telescope lsp_implementations<CR>")
+  set("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
+  set("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>")
+  set("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>")
+  set("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>")
+  set("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>")
+  set("n", "<F2>", require('lspsaga.rename').rename)
+  set("n", "<space>ca", require('lspsaga.codeaction').code_action)
+  set("n", "<space>di", "<cmd>Telescope diagnostic<CR>")
+  set("n", "<space>ld", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>")
+  set("n", "[d", require('lspsaga.diagnostic').navigate('next'))
+  set("n", "]d", require('lspsaga.diagnostic').navigate('prev'))
+  set("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>")
+  set("n", "<space>=", "<cmd>lua vim.lsp.buf.format<CR>")
+
+end
+
+require("mason").setup()
+require("mason-lspconfig").setup()
+
+-- Set up nvim-cmp.
+local cmp = require('cmp')
+local lspkind = require('lspkind')
+
+cmp.setup({
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+    end,
+  },
+  window = {
+    -- completion = cmp.config.window.bordered(),
+    -- documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' }, -- For vsnip users.
+  }, {
+    { name = 'buffer' },
+  }),
+
+  formatting = {
+    format = lspkind.cmp_format({
+      mode = 'symbol', -- show only symbol annotations
+      maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+      ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+
+      -- The function below will be called before any actual modifications from lspkind
+      -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+      -- before = function (entry, vim_item)
+      --   ...
+      --   return vim_item
+      -- end
+    })
+  },
+})
+
+-- Set configuration for specific filetype.
+cmp.setup.filetype('gitcommit', {
+  sources = cmp.config.sources({
+    { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
+
+-- Set up lspconfig.
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+require("mason-lspconfig").setup_handlers {
+  function (server_name)
+    require("lspconfig")[server_name].setup {
+      on_attach = on_attach,
+      capabilities = capabilities,
+    }
+  end,
+}
+
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = 'all',
+  highlight = {
+    enable = true,
+    highlight = {
+      enable = true
+    },
+  },
+}
+
+-- Telescope
+local function extensions(name, prop)
+  return function(opt)
+    return function()
+      local telescope = require "telescope"
+      telescope.load_extension(name)
+      return telescope.extensions[name][prop](opt or {})
+    end
+  end
+end
+
+local builtin = require('telescope.builtin')
+set('n', '<space>:',  builtin.command_history, { noremap = true, silent = true })
+set('n', '<space>/',  builtin.search_history, { noremap = true, silent = true })
+set('n', '<space>b',  builtin.buffers, { noremap = true, silent = true })
+set('n', '<space>f',  builtin.find_files, { noremap = true, silent = true })
+set('n', '<space>gf', builtin.git_files, { noremap = true, silent = true })
+set('n', '<space>gg', builtin.live_grep, { noremap = true, silent = true })
+set('n', '<space>cs', builtin.colorscheme, { noremap = true, silent = true })
+set('n', '<space>qf', builtin.quickfix, { noremap = true, silent = true })
+set('n', '<space>hl', builtin.highlights, { noremap = true, silent = true })
+set('n', '<space>km', builtin.keymaps, { noremap = true, silent = true })
+set('n', '<space>ft', builtin.filetypes, { noremap = true, silent = true })
+set('n', '<space>u',  builtin.oldfiles, { noremap = true, silent = true })
+set('n', '<space>gh', extensions('ghq','list'){}, { noremap = true, silent = true })
+set('n', '<space>z',  extensions('z','list'){}, { noremap = true, silent = true })
+
+vim.api.nvim_create_autocmd({ 'CursorHold' }, {
+  pattern = { '*' },
+  callback = function()
+    require('lspsaga.diagnostic').show_cursor_diagnostics()
+  end,
+})
+
+vim.cmd.colorscheme('gruvbox-material')
+EOL
