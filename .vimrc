@@ -42,7 +42,6 @@ if has('nvim')
   Plug 'neovim/nvim-lspconfig'
   Plug 'williamboman/mason.nvim'
   Plug 'williamboman/mason-lspconfig.nvim'
-  Plug 'ray-x/lsp_signature.nvim'
   Plug 'jose-elias-alvarez/null-ls.nvim'
     Plug 'jayp0521/mason-null-ls.nvim'
   " auto complete
@@ -51,6 +50,8 @@ if has('nvim')
   Plug 'hrsh7th/cmp-buffer'
   Plug 'hrsh7th/cmp-path'
   Plug 'hrsh7th/cmp-cmdline'
+  Plug 'hrsh7th/cmp-vsnip'
+  Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
   Plug 'onsails/lspkind-nvim'
   Plug 'ray-x/cmp-treesitter'
 
@@ -69,6 +70,9 @@ if has('nvim')
   Plug 'nvim-lualine/lualine.nvim'
   Plug 'tami5/lspsaga.nvim'
   Plug 'stevearc/dressing.nvim'
+  Plug 'folke/noice.nvim'
+  Plug 'MunifTanjim/nui.nvim'
+  Plug 'rcarriga/nvim-notify'
 else
   " LSP
   Plug 'dense-analysis/ale', { 'for': ['typescript','typescriptreact'] }
@@ -92,6 +96,8 @@ else
 
   Plug 'itchyny/lightline.vim'
 endif
+" 文字幅調整
+Plug 'rbtnn/vim-ambiwidth'
 " Filer
 Plug 'cocopon/vaffle.vim'
 " Snippet
@@ -412,10 +418,11 @@ function! s:remove_dust()
 endfunction
 autocmd BufWritePre * call <SID>remove_dust()
 
-if !has('nvim')
-  " 2バイトの記号対策
-  set ambiwidth=double
-endif
+" if !has('nvim')
+"   " 2バイトの記号対策
+"   set ambiwidth=double
+" endif
+set ambiwidth=single
 " filetypeの自動検出(最後の方に書いた方がいいらしい)
 filetype on
 filetype plugin indent on
