@@ -57,7 +57,7 @@ tnoremap <C-W><C-Z>   <cmd>pclose<cr>
 set undodir=$HOME/.nvim_undo
 " colorscheme
 colorscheme gruvbox-material
-set background=light
+set background=dark
 let g:gruvbox_material_enable_bold=1
 let g:gruvbox_material_enable_italic=1
 let g:gruvbox_material_background='soft'
@@ -77,24 +77,21 @@ end
 local on_attach = function(client, bufnr)
   -- client.resolved_capabilities.document_formatting = false
 
-  set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
-  set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
+  set("n", "gD", vim.lsp.buf.declaration)
+  set("n", "gd", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })
   set("n", "K", show_documentation)
   set("n", "<space>im", "<cmd>Telescope lsp_implementations<CR>")
-  set("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
-  set("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>")
-  set("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>")
+  set("n", "<space>wa", vim.lsp.buf.add_workspace_folder)
+  set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder)
   set("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>")
-  set("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>")
+  set("n", "<space>D", vim.lsp.buf.type_definition)
   set("n", "<F2>", require('lspsaga.rename').rename)
   set("n", "<space>ca", require('lspsaga.codeaction').code_action)
   set("n", "<space>di", "<cmd>Telescope diagnostic<CR>")
-  set("n", "<space>ld", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>")
+  set("n", "<space>ld", "<cmd>Lspsaga show_line_diagnostics<CR>", { silent = true })
   set("n", "[d", require('lspsaga.diagnostic').navigate('next'))
   set("n", "]d", require('lspsaga.diagnostic').navigate('prev'))
-  set("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>")
-  set("n", "<space>=", "<cmd>lua vim.lsp.buf.format<CR>")
-
+  set("n", "<space>=", vim.lsp.buf.format)
 end
 
 local mason = require('mason')
@@ -105,6 +102,7 @@ mason.setup()
 mason_null_ls.setup({
   ensure_installed = { 'prettier', 'dprint' },
   automatic_installation = true,
+  automatic_setup = true,
 })
 null_ls.setup({
   sources = {
