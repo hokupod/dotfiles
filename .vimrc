@@ -416,21 +416,19 @@ vnoremap X "_x
 " nnoremap /  /\v
 " ESC*2 でハイライトやめる
 let hlstate=0
-nnoremap <Esc><Esc> :if (hlstate == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=1-hlstate<cr>
+nnoremap <silent> <Esc><Esc> :if (hlstate == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=1-hlstate<cr>
 " 保存時に行末の空白を除去する
-function! s:remove_dust()
-    let cursor = getpos(".")
+function! s:RemoveSpaceAtEOL()
+  let cursor = getpos(".")
+  if &filetype != "markdown"
     %s/\s\+$//ge
-    %s/^M$//ge
-    call setpos(".", cursor)
-    unlet cursor
+  endif
+  %s/^M$//ge
+  call setpos(".", cursor)
+  unlet cursor
 endfunction
-autocmd BufWritePre * call <SID>remove_dust()
+autocmd BufWritePre * call <SID>RemoveSpaceAtEOL()
 
-" if !has('nvim')
-"   " 2バイトの記号対策
-"   set ambiwidth=double
-" endif
 set ambiwidth=single
 " filetypeの自動検出(最後の方に書いた方がいいらしい)
 filetype on
