@@ -152,6 +152,7 @@ cmp.setup({
     { name = 'nvim_lsp' },
     { name = 'vsnip' }, -- For vsnip users.
     { name = 'nvim_lsp_signature_help' },
+    { name = 'nvim_lua' },
   }, {
     { name = 'buffer' },
   }),
@@ -251,13 +252,27 @@ vim.api.nvim_create_autocmd({ 'CursorHold' }, {
   end,
 })
 
-
+-- lualine
 require('lualine').setup {
   options = {
     theme = 'gruvbox-material',
   },
 }
 
+-- noice
 require("noice").setup()
 require("telescope").load_extension("noice")
+
+-- nvim-dap
+require('dap-go').setup()
+require("dapui").setup()
+require("nvim-dap-virtual-text").setup()
+require("telescope").load_extension("dap")
+set('n', '<F5>',       require'dap'.continue, { noremap = true, silent = true })
+set('n', '<F10>',      require'dap'.step_over, { noremap = true, silent = true })
+set('n', '<F11>',      require'dap'.step_into, { noremap = true, silent = true })
+set('n', '<F12>',      require'dap'.step_out, { noremap = true, silent = true })
+set('n', '<Leader>b',  require'dap'.toggle_breakpoint, { noremap = true, silent = true })
+set('n', '<Leader>dr', require'dap'.repl.open, { noremap = true, silent = true })
+set('n', '<Leader>dl', require'dap'.run_last, { noremap = true, silent = true })
 EOL

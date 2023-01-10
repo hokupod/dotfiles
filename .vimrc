@@ -52,6 +52,7 @@ if has('nvim')
   Plug 'hrsh7th/cmp-cmdline'
   Plug 'hrsh7th/cmp-vsnip'
   Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+  Plug 'hrsh7th/cmp-nvim-lua'
   Plug 'onsails/lspkind-nvim'
   Plug 'ray-x/cmp-treesitter'
 
@@ -73,6 +74,14 @@ if has('nvim')
   Plug 'folke/noice.nvim'
   Plug 'MunifTanjim/nui.nvim'
   Plug 'rcarriga/nvim-notify'
+
+  " Debugger
+  Plug 'mfussenegger/nvim-dap'
+    Plug 'rcarriga/nvim-dap-ui'
+    Plug 'leoluz/nvim-dap-go'
+    Plug 'theHamsta/nvim-dap-virtual-text'
+    Plug 'nvim-telescope/telescope-dap.nvim'
+  Plug 'sentriz/vim-print-debug'
 else
   " LSP
   Plug 'dense-analysis/ale', { 'for': ['typescript','typescriptreact'] }
