@@ -55,6 +55,7 @@ if has('nvim')
   Plug 'hrsh7th/cmp-nvim-lua'
   Plug 'onsails/lspkind-nvim'
   Plug 'ray-x/cmp-treesitter'
+  Plug 'github/copilot.vim'
 
   Plug 'monaqa/modesearch.vim'
   Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
