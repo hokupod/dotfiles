@@ -131,6 +131,7 @@ Plug 'markonm/traces.vim'
 " Plug 'github/copilot.vim'
 " Memo
 Plug 'Shougo/junkfile.vim'
+Plug 'glidenote/memolist.vim'
 " ColorScheme
 Plug 'joshdick/onedark.vim'
 " Filer
