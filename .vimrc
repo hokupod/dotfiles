@@ -80,6 +80,7 @@ if has('nvim')
   Plug 'mfussenegger/nvim-dap'
     Plug 'rcarriga/nvim-dap-ui'
     Plug 'leoluz/nvim-dap-go'
+    Plug 'suketa/nvim-dap-ruby'
     Plug 'theHamsta/nvim-dap-virtual-text'
     Plug 'nvim-telescope/telescope-dap.nvim'
   Plug 'sentriz/vim-print-debug'
@@ -105,6 +106,7 @@ else
     Plug 'tacahiroy/ctrlp-funky'
 
   Plug 'itchyny/lightline.vim'
+  Plug 'github/copilot.vim'
 endif
 " 文字幅調整
 Plug 'rbtnn/vim-ambiwidth'
@@ -128,7 +130,6 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'cohama/lexima.vim'
 Plug 'markonm/traces.vim'
-" Plug 'github/copilot.vim'
 " Memo
 Plug 'Shougo/junkfile.vim'
 Plug 'glidenote/memolist.vim'

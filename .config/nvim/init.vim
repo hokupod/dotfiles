@@ -265,6 +265,7 @@ require("telescope").load_extension("noice")
 
 -- nvim-dap
 require('dap-go').setup()
+require('dap-ruby').setup()
 require("dapui").setup()
 require("nvim-dap-virtual-text").setup()
 require("telescope").load_extension("dap")
@@ -275,4 +276,6 @@ set('n', '<F12>',      require'dap'.step_out, { noremap = true, silent = true })
 set('n', '<Leader>b',  require'dap'.toggle_breakpoint, { noremap = true, silent = true })
 set('n', '<Leader>dr', require'dap'.repl.open, { noremap = true, silent = true })
 set('n', '<Leader>dl', require'dap'.run_last, { noremap = true, silent = true })
+set('n', '<Leader>du', require'dapui'.toggle, { noremap = true, silent = true })
 EOL
+
