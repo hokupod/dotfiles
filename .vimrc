@@ -159,6 +159,8 @@ Plug 'pangloss/vim-javascript', { 'for': ['typescript','typescriptreact'] }
 Plug 'leafgarland/typescript-vim', { 'for': ['typescript','typescriptreact'] }
 Plug 'peitalin/vim-jsx-typescript', { 'for': ['typescript','typescriptreact'] }
 Plug 'styled-components/vim-styled-components', { 'for': ['typescript','typescriptreact'] }
+Plug 'wuelnerdotexe/vim-astro', { 'for': ['astro'] }
+Plug 'evanleck/vim-svelte', { 'for': ['svelte'] }
 call plug#end()
 
 let s:plugs = get(s:, 'plugs', get(g:, 'plugs', {}))

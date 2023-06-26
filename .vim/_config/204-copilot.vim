@@ -7,4 +7,6 @@ let g:copilot_filetypes = {
     \ 'ruby': v:true,
     \ 'typescript': v:true,
     \ 'typescriptreact': v:true,
+    \ 'svelte': v:true,
+    \ 'astro': v:true,
     \ }
