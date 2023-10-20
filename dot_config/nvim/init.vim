@@ -87,7 +87,7 @@ local on_attach = function(client, bufnr)
   set("n", "<space>D", vim.lsp.buf.type_definition)
   set("n", "<F2>", require('lspsaga.rename').rename)
   set("n", "<space>ca", require('lspsaga.codeaction').code_action)
-  set("n", "<space>di", "<cmd>Telescope diagnostic<CR>")
+  set("n", "<space>di", "<cmd>Telescope diagnostics<CR>")
   set("n", "<space>ld", "<cmd>Lspsaga show_line_diagnostics<CR>", { silent = true })
   set("n", "[d", require('lspsaga.diagnostic').navigate('next'))
   set("n", "]d", require('lspsaga.diagnostic').navigate('prev'))
@@ -229,12 +229,24 @@ local function extensions(name, prop)
   end
 end
 
+require('telescope').setup {
+  pickers = {
+    find_files = {
+      hidden = true
+    },
+  },
+}
+
 local builtin = require('telescope.builtin')
 set('n', '<space>:',  builtin.command_history, { noremap = true, silent = true })
 set('n', '<space>/',  builtin.search_history, { noremap = true, silent = true })
 set('n', '<space>b',  builtin.buffers, { noremap = true, silent = true })
 set('n', '<space>f',  builtin.find_files, { noremap = true, silent = true })
 set('n', '<space>gf', builtin.git_files, { noremap = true, silent = true })
+set('n', '<space>gc', builtin.git_commits, { noremap = true, silent = true })
+set('n', '<space>gb', builtin.git_branches, { noremap = true, silent = true })
+set('n', '<space>gs', builtin.git_status, { noremap = true, silent = true })
+set('n', '<space>gS', builtin.git_stash, { noremap = true, silent = true })
 set('n', '<space>gg', builtin.live_grep, { noremap = true, silent = true })
 set('n', '<space>cs', builtin.colorscheme, { noremap = true, silent = true })
 set('n', '<space>qf', builtin.quickfix, { noremap = true, silent = true })
