@@ -428,7 +428,7 @@ function! s:RemoveSpaceAtEOL()
   if &filetype != "markdown"
     %s/\s\+$//ge
   endif
-  %s/^M$//ge
+  %s/$//ge
   call setpos(".", cursor)
   unlet cursor
 endfunction
