@@ -108,15 +108,24 @@ null_ls.setup({
   sources = {
     null_ls.builtins.formatting.dprint.with {
       condition = function(utils)
-        return utils.has_file { "dprint.json" }
+        return utils.has_file { "dprint.json", }
       end,
+      extra_filetypes = { "svelte", },
     },
     null_ls.builtins.formatting.prettier.with {
       condition = function(utils)
-        return utils.has_file { ".prettierrc", ".prettierrc.js" }
+        return utils.has_file { ".prettierrc", ".prettierrc.js", ".prettierrc.yaml" }
       end,
       prefer_local = "node_modules/.bin",
-    }
+      extra_filetypes = { "svelte", },
+    },
+    null_ls.builtins.diagnostics.eslint.with {
+      condition = function(utils)
+        return utils.has_file { ".eslintrc.cjs", }
+      end,
+      prefer_local = "node_modules/.bin",
+      extra_filetypes = { "svelte" },
+    },
   },
 })
 
