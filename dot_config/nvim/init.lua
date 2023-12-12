@@ -23,6 +23,11 @@ require("lazy").setup({
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons', opt = true }
   },
+  {
+    'smoka7/hop.nvim',
+    version = "*",
+    opts = {},
+  },
   -- Terminal
   {'akinsho/toggleterm.nvim', version = "*", config = true},
   -- LSP

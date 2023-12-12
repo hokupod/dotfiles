@@ -20,14 +20,17 @@ opt.tabstop = 2
 opt.shell = 'fish'
 opt.swapfile = false
 
+opt.undodir = vim.fn.expand('$HOME/.vim_undo')
+opt.undofile = true
+
 if vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1 then
   -- バックアップパスを Windows 用に設定
   opt.backupdir = 'G:/マイドライブ/vim_backup'
   opt.directory = 'G:/マイドライブ/vim_backup'
 else
   -- バックアップパスを nix 系 OS 用に設定
-  opt.backupdir = '$HOME/.vim_backup'
-  opt.directory = '$HOME/.vim_backup'
+  opt.backupdir = vim.fn.expand('$HOME/.vim_backup')
+  opt.directory = vim.fn.expand('$HOME/.vim_backup')
 
   -- for WSL
   if vim.fn.system('uname -a | grep -i microsoft') ~= '' then
@@ -48,10 +51,28 @@ else
   vim.notify("colorscheme " .. colorscheme .. " not found!")
 end
 
+-- Keymap
 local set = vim.keymap.set
 set("i", "jj", "<ESC>")
+set("n", "x", '"_x')
+set("n", "X", '"_x')
+set("v", "x", '"_x')
+set("v", "X", '"_x')
 
 local vimscript = [[
+""""""""""""""""""""""""""""""
+" 最後のカーソル位置を復元する
+""""""""""""""""""""""""""""""
+if has("autocmd")
+autocmd BufReadPost *
+\ if line("'\"") > 0 && line ("'\"") <= line("$") |
+\ exe "normal! g'\"" |
+\ endif
+endif
+
+""""""""""""""""""""""""""""""
+" 保存時に行末の空白を除去する
+""""""""""""""""""""""""""""""
 function! s:RemoveSpaceAtEOL()
   let cursor = getpos(".")
   if &filetype != "markdown"
