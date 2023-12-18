@@ -18,6 +18,9 @@ require("lazy").setup({
   "sainnhe/everforest",
   "lewis6991/gitsigns.nvim",
   "machakann/vim-sandwich",
+  "glidenote/memolist.vim",
+  "mattn/vim-findroot",
+  'cohama/lexima.vim',
   { "asiryk/auto-hlsearch.nvim", tag = "1.1.0" },
   {
     'nvim-lualine/lualine.nvim',
@@ -53,23 +56,40 @@ require("lazy").setup({
 
   -- ChatGPT
   {
-    "jackMort/ChatGPT.nvim",
+    "Bryley/neoai.nvim",
     event = "VeryLazy",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+    },
+    cmd = {
+      "NeoAI",
+      "NeoAIOpen",
+      "NeoAIClose",
+      "NeoAIToggle",
+      "NeoAIContext",
+      "NeoAIContextOpen",
+      "NeoAIContextClose",
+      "NeoAIInject",
+      "NeoAIInjectCode",
+      "NeoAIInjectContext",
+      "NeoAIInjectContextCode",
+    },
+    keys = {
+      { "<leader>as", desc = "summarize text" },
+      { "<leader>ag", desc = "generate git message" },
+    },
     config = function()
-      require("chatgpt").setup({
-        api_key_cmd = "op read op://Personal/ChatGPT.nvim/password --no-newline",
-        openai_params = {
-          model = "gpt-4-1106-preview"
+      require("neoai").setup({
+        models = {
+          {
+            name = "openai",
+            model = "gpt-4-1106-preview",
+            params = nil,
+          },
         },
       })
     end,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim"
-    }
   },
-
   {
     "nvim-treesitter/nvim-treesitter",
     build = function()

@@ -1,3 +1,4 @@
+local home_dir = vim.fn.expand('$HOME/')
 local opt = vim.opt
 opt.clipboard = 'unnamedplus'
 opt.mouse = 'a'
@@ -20,7 +21,7 @@ opt.tabstop = 2
 opt.shell = 'fish'
 opt.swapfile = false
 
-opt.undodir = vim.fn.expand('$HOME/.vim_undo')
+opt.undodir = home_dir .. '.vim_undo'
 opt.undofile = true
 
 if vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1 then
@@ -29,8 +30,8 @@ if vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1 then
   opt.directory = 'G:/マイドライブ/vim_backup'
 else
   -- バックアップパスを nix 系 OS 用に設定
-  opt.backupdir = vim.fn.expand('$HOME/.vim_backup')
-  opt.directory = vim.fn.expand('$HOME/.vim_backup')
+  opt.backupdir = home_dir .. '.vim_backup'
+  opt.directory = home_dir .. '.vim_backup'
 
   -- for WSL
   if vim.fn.system('uname -a | grep -i microsoft') ~= '' then
@@ -58,6 +59,20 @@ set("n", "x", '"_x')
 set("n", "X", '"_x')
 set("v", "x", '"_x')
 set("v", "X", '"_x')
+
+-- MemoList
+vim.g.memolist_fzf = 1
+if vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1 then
+  vim.g.memolist_path = "G:\\マイドライブ\\memolist"
+elseif vim.fn.has('wsl') == 1 then
+  vim.g.memolist_path = "/mnt/g/マイドライブ/memolist"
+else
+  vim.g.memolist_path = home_dir .. 'memolist'
+end
+
+set("n", "<space>mm", ":MemoNew<CR>")
+set("n", "<space>ml", ":MemoList<CR>")
+set("n", "<space>mg", ":MemoGrep<CR>")
 
 local vimscript = [[
 """"""""""""""""""""""""""""""
