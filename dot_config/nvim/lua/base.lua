@@ -98,6 +98,10 @@ function! s:RemoveSpaceAtEOL()
   unlet cursor
 endfunction
 autocmd BufWritePre * call <SID>RemoveSpaceAtEOL()
+
+autocmd VimEnter * ++once
+      \ call matchadd('ExtraWhitespace', "[\u00A0\u2000-\u200B\u3000]")
+      \ | highlight default ExtraWhitespace ctermbg=darkmagenta guibg=darkmagenta
 ]]
 vim.cmd(vimscript)
 

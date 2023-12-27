@@ -21,6 +21,24 @@ require("lazy").setup({
   "glidenote/memolist.vim",
   "mattn/vim-findroot",
   'cohama/lexima.vim',
+  'tpope/vim-commentary',
+  {
+    'yamatsum/nvim-cursorline',
+    config = function()
+      require('nvim-cursorline').setup {
+        cursorline = {
+          enable = true,
+          timeout = 1000,
+          number = false,
+        },
+        cursorword = {
+          enable = true,
+          min_length = 3,
+          hl = { underline = true },
+        }
+      }
+    end
+  },
   { "asiryk/auto-hlsearch.nvim", tag = "1.1.0" },
   {
     'nvim-lualine/lualine.nvim',
@@ -97,11 +115,25 @@ require("lazy").setup({
     end,
   },
   {
+    "nvim-treesitter/nvim-treesitter-context",
+    config = function()
+      require("treesitter-context").setup()
+    end
+  },
+  {
     'nvim-telescope/telescope.nvim', tag = '0.1.4',
     dependencies = { 'nvim-lua/plenary.nvim' }
   },
   'nvim-telescope/telescope-ghq.nvim',
   'nvim-telescope/telescope-z.nvim',
+  {
+    "https://github.com/atusy/treemonkey.nvim",
+    init = function()
+      vim.keymap.set({"x", "o"}, "m", function()
+        require("treemonkey").select({ ignore_injections = false })
+      end)
+    end
+  },
 })
 
 require('base')
