@@ -72,6 +72,16 @@ require("lazy").setup({
   'hrsh7th/cmp-vsnip',
   'hrsh7th/vim-vsnip',
 
+  -- Obsidian
+  {
+    "epwalsh/obsidian.nvim",
+    version = "*",
+    lazy = true,
+    ft = "markdown",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+  },
   -- ChatGPT
   {
     "Bryley/neoai.nvim",
