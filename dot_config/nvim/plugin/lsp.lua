@@ -4,27 +4,45 @@ local function show_documentation()
   if ft == 'vim' or ft == 'help' then
     vim.cmd([[execute 'h ' . expand('<cword>') ]])
   else
-    require('lspsaga.hover').render_hover_doc()
+    vim.cmd([[Lspsaga hover_doc]])
   end
 end
 local on_attach = function(client, bufnr)
-  -- client.resolved_capabilities.document_formatting = false
-
-  set("n", "gD", vim.lsp.buf.declaration)
-  set("n", "gd", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })
+  -- Keybind
   set("n", "K", show_documentation)
-  set("n", "<space>im", "<cmd>Telescope lsp_implementations<CR>")
-  set("n", "<space>wa", vim.lsp.buf.add_workspace_folder)
-  set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder)
-  set("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>")
-  set("n", "<space>D", vim.lsp.buf.type_definition)
-  set("n", "<F2>", require('lspsaga.rename').rename)
-  set("n", "<space>ca", require('lspsaga.codeaction').code_action)
-  set("n", "<space>di", "<cmd>Telescope diagnostics<CR>")
-  set("n", "<space>ld", "<cmd>Lspsaga show_line_diagnostics<CR>", { silent = true })
-  set("n", "[d", require('lspsaga.diagnostic').navigate('next'))
-  set("n", "]d", require('lspsaga.diagnostic').navigate('prev'))
-  set("n", "<space>=", vim.lsp.buf.format)
+  set("n", "<F2>", "<cmd>Lspsaga rename<CR>")
+
+  local wk = require("which-key")
+  wk.register({
+    l = {
+      name = "LSP",
+      ["="] = { "<cmd>lua vim.lsp.buf.format()<CR>", "[LSP] Format" },
+      ["<F2>"] = { "<cmd>Lspsaga rename<CR>", "[LSP] Rename" },
+      g = {
+        name = "+go",
+        d = { "<cmd>Lspsaga lsp_finder<CR>", "[LSP] Definition" },
+        i = { "<cmd>Telescope lsp_implementations<CR>", "[LSP] Implementations" },
+        t = { "<cmd>Lspsaga goto_type_definition<CR>", "[LSP] Type definition" },
+        n = { "<cmd>Lspsaga diagnostic_jump_next<CR>", "[LSP] Diagnostics next" },
+        p = { "<cmd>Lspsaga diagnostic_jump_prev<CR>", "[LSP] Diagnostics prev" },
+      },
+      s = {
+        name = "+show",
+        d = { "<cmd>Telescope diagnostics<CR>", "[LSP] Telescope diagnostics" },
+        c = { "<cmd>Lspsaga code_action<CR>", "[LSP] Code action" },
+        l = { "<cmd>Lspsaga show_line_diagnostics<CR>", "[LSP] Line diagnostics" },
+      },
+      w = {
+        name = "+workspace",
+        a = { "<cmd>vim.lsp.buf.add_workspace_folder<CR>", "[LSP] Add workspace dir" },
+        r = { "<cmd>vim.lsp.buf.remove_workspace_folder<CR>", "[LSP] Remove workspace dir" },
+        l = { "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", "[LSP] List workspace dir" },
+      }
+    },
+  }, {
+      mode = "n",
+      prefix = "<leader>",
+  })
 end
 
 local mason = require('mason')
@@ -33,7 +51,7 @@ local null_ls = require('null-ls')
 
 mason.setup()
 mason_null_ls.setup({
-  ensure_installed = { 'prettier', 'dprint' },
+  ensure_installed = { 'prettier', 'dprint', 'goimports' },
   automatic_installation = true,
   automatic_setup = true,
 })
@@ -59,6 +77,7 @@ null_ls.setup({
       prefer_local = "node_modules/.bin",
       extra_filetypes = { "svelte" },
     },
+    null_ls.builtins.formatting.goimports,
   },
 })
 

@@ -2,7 +2,7 @@ local vault_dir
 if vim.fn.system('uname -a | grep -i microsoft') ~= '' then
   vault_dir = vim.fn.expand("$WINHOME/Documents/obsidian_vault/")
 else
-  vault_dir = vim.fn.expand("$HOME/obsidian_vault/")
+  vault_dir = vim.fn.expand("$HOME/Documents/obsidian_vault/")
 end
 local workspaces = {
   {

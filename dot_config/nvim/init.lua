@@ -58,7 +58,13 @@ require("lazy").setup({
   "jayp0521/mason-null-ls.nvim",
   "neovim/nvim-lspconfig",
   "onsails/lspkind.nvim",
-  "nvimdev/lspsaga.nvim",
+  {
+    'nvimdev/lspsaga.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons',
+    },
+  },
   -- Code complete
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-buffer',
