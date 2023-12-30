@@ -13,6 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- vim.g.mapleader = " "
 require("lazy").setup({
+  "rmagatti/auto-session",
   "folke/which-key.nvim",
   "folke/neodev.nvim",
   "sainnhe/everforest",
@@ -22,6 +23,7 @@ require("lazy").setup({
   "mattn/vim-findroot",
   'cohama/lexima.vim',
   'tpope/vim-commentary',
+  'kevinhwang91/nvim-bqf',
   {
     'yamatsum/nvim-cursorline',
     config = function()

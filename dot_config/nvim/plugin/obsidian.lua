@@ -235,14 +235,15 @@ local wk = require("which-key")
 wk.register({
   o = {
     name = "Obsidian",
-    t = { "<cmd>ObsidianToday<CR>", '[Obsidian] Open today note'},
-    y = { "<cmd>ObsidianYesterday<CR>", '[Obsidian] Open yesterday note'},
-    l = { "<cmd>ObsidianQuickSwitch<CR>", '[Obsidian] Open in current workspace file'},
-    s = { "<cmd>ObsidianSearch<CR>", '[Obsidian] Search in current workspace'},
+    t = { "<cmd>ObsidianToday<CR>", '[Obsidian] Open today note' },
+    y = { "<cmd>ObsidianYesterday<CR>", '[Obsidian] Open yesterday note' },
+    l = { "<cmd>ObsidianQuickSwitch<CR>", '[Obsidian] Open in current workspace file' },
+    s = { "<cmd>ObsidianSearch<CR>", '[Obsidian] Search in current workspace' },
     w = {
-      name = "Workspace",
-      p = { "<cmd>ObsidianWorkspace p<CR>", '[Obsidian] Open private workspace'},
-      w = { "<cmd>ObsidianWorkspace w<CR>", '[Obsidian] Open work workspace'},
+      name = "+workspace",
+      p = { "<cmd>ObsidianWorkspace p<CR>", '[Obsidian] Open private workspace', silent=false },
+      w = { "<cmd>ObsidianWorkspace w<CR>", '[Obsidian] Open work workspace', silent=false },
+      c = { "<cmd>ObsidianWorkspace<CR>", '[Obsidian] Show current workspace', silent=false },
     }
   },
 }, {

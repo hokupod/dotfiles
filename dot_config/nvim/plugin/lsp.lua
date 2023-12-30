@@ -29,8 +29,9 @@ local on_attach = function(client, bufnr)
       s = {
         name = "+show",
         d = { "<cmd>Telescope diagnostics<CR>", "[LSP] Telescope diagnostics" },
-        c = { "<cmd>Lspsaga code_action<CR>", "[LSP] Code action" },
         l = { "<cmd>Lspsaga show_line_diagnostics<CR>", "[LSP] Line diagnostics" },
+        c = { "<cmd>Lspsaga code_action<CR>", "[LSP] Code action" },
+        o = { "<cmd>Lspsaga outline<CR>", "[LSP] outline" },
       },
       w = {
         name = "+workspace",
@@ -82,7 +83,11 @@ null_ls.setup({
 })
 
 require("mason-lspconfig").setup()
-require('lspsaga').setup()
+require('lspsaga').setup({
+  outline = {
+    layout = 'float',
+  },
+})
 -- Set up nvim-cmp.
 local cmp = require('cmp')
 local lspkind = require('lspkind')
