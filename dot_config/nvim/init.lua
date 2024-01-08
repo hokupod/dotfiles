@@ -76,6 +76,30 @@ require("lazy").setup({
   'hrsh7th/cmp-nvim-lua',
   'hrsh7th/nvim-cmp',
   'ray-x/cmp-treesitter',
+  {
+    'Exafunction/codeium.nvim',
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
+    },
+    ft = {
+      "lua",
+      "ruby",
+      "php",
+      "go",
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "svelte",
+      "html",
+      "css",
+    },
+    config = function()
+      require("codeium").setup({
+      })
+    end
+  },
   -- Snippet
   'hrsh7th/cmp-vsnip',
   'hrsh7th/vim-vsnip',
