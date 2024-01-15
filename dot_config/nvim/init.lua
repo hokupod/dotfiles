@@ -67,6 +67,7 @@ require("lazy").setup({
       'nvim-tree/nvim-web-devicons',
     },
   },
+  "j-hui/fidget.nvim",
   -- Code complete
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-buffer',

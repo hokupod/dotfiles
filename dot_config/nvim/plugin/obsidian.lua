@@ -6,12 +6,8 @@ else
 end
 local workspaces = {
   {
-    name = "p",
-    path = vault_dir .. "Private",
-  },
-  {
-    name = "w",
-    path = vault_dir .. "Work",
+    name = "primary",
+    path = vault_dir
   },
 }
 
@@ -237,14 +233,8 @@ wk.register({
     name = "Obsidian",
     t = { "<cmd>ObsidianToday<CR>", '[Obsidian] Open today note' },
     y = { "<cmd>ObsidianYesterday<CR>", '[Obsidian] Open yesterday note' },
-    l = { "<cmd>ObsidianQuickSwitch<CR>", '[Obsidian] Open in current workspace file' },
+    o = { "<cmd>ObsidianQuickSwitch<CR>", '[Obsidian] Open in current workspace file' },
     s = { "<cmd>ObsidianSearch<CR>", '[Obsidian] Search in current workspace' },
-    w = {
-      name = "+workspace",
-      p = { "<cmd>ObsidianWorkspace p<CR>", '[Obsidian] Open private workspace', silent=false },
-      w = { "<cmd>ObsidianWorkspace w<CR>", '[Obsidian] Open work workspace', silent=false },
-      c = { "<cmd>ObsidianWorkspace<CR>", '[Obsidian] Show current workspace', silent=false },
-    }
   },
 }, {
   mode = "n",

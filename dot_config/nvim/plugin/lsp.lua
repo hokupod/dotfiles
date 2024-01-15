@@ -1,3 +1,5 @@
+require("fidget").setup()
+
 local set = vim.keymap.set
 local function show_documentation()
   local ft = vim.opt.filetype._value
