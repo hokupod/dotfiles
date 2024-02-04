@@ -52,6 +52,14 @@ else
   vim.notify("colorscheme " .. colorscheme .. " not found!")
 end
 
+-- .inc を PHP として扱う
+vim.api.nvim_create_autocmd("BufNewFile", {
+  pattern = "*.inc",
+  callback = function()
+    vim.opt.filetype = "php"
+  end,
+})
+
 -- Keymap
 local set = vim.keymap.set
 set("i", "jj", "<ESC>")
@@ -118,3 +126,35 @@ require("auto-session").setup {
       end,
     },
 }
+
+-- Fern
+vim.cmd([[
+let g:fern#renderer = 'nerdfont'
+]])
+
+local wk = require("which-key")
+wk.register({
+  f = {
+    name = "Filer",
+    ["."] = { "<cmd>Fern . -reveal=% -drawer -toggle -width=40<CR>", "[Filer] Open current directory" },
+  },
+}, {
+  mode = "n",
+  prefix = "<leader>",
+})
+
+-- Trouble
+wk.register({
+  x = {
+    name = "Trouble",
+    ["x"] = { "<cmd>TroubleToggle<CR>", "[Trouble] Toggle" },
+    ["w"] = { "<cmd>TroubleToggle workspace_diagnostics<CR>", "[Trouble] Workspace Diagnostics" },
+    ["d"] = { "<cmd>TroubleToggle document_diagnostics<CR>", "[Trouble] Document Diagnostics" },
+    ["q"] = { "<cmd>TroubleToggle quickfix<CR>", "[Trouble] Quickfix" },
+    ["l"] = { "<cmd>TroubleToggle loclist<CR>", "[Trouble] Loclist" },
+    ["r"] = { "<cmd>TroubleToggle lsp_references<CR>", "[Trouble] LSP References" },
+  },
+}, {
+  mode = "n",
+  prefix = "<leader>",
+})

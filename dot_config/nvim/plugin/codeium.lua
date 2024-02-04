@@ -9,6 +9,7 @@ local codeium_fts = {
   "typescript",
   "typescriptreact",
   "svelte",
+  "astro",
   "html",
   "css",
 }

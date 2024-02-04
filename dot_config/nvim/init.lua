@@ -20,10 +20,15 @@ require("lazy").setup({
   "lewis6991/gitsigns.nvim",
   "machakann/vim-sandwich",
   "glidenote/memolist.vim",
+  {
+    'renerocksai/telekasten.nvim',
+    dependencies = { 'nvim-telescope/telescope.nvim' }
+  },
   "mattn/vim-findroot",
   'cohama/lexima.vim',
   'tpope/vim-commentary',
   'kevinhwang91/nvim-bqf',
+  'lambdalisue/fern.vim',
   {
     'yamatsum/nvim-cursorline',
     config = function()
@@ -51,8 +56,16 @@ require("lazy").setup({
     version = "*",
     opts = {},
   },
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {},
+  },
+  -- Syntax Highlighting
+  'sheerun/vim-polyglot',
+  'wuelnerdotexe/vim-astro',
   -- Terminal
-  {'akinsho/toggleterm.nvim', version = "*", config = true},
+  { 'akinsho/toggleterm.nvim',   version = "*", config = true },
   -- LSP
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
@@ -92,17 +105,6 @@ require("lazy").setup({
   -- Snippet
   'hrsh7th/cmp-vsnip',
   'hrsh7th/vim-vsnip',
-
-  -- Obsidian
-  {
-    "epwalsh/obsidian.nvim",
-    version = "*",
-    lazy = true,
-    ft = "markdown",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-  },
   -- ChatGPT
   {
     "Bryley/neoai.nvim",
@@ -132,10 +134,18 @@ require("lazy").setup({
         models = {
           {
             name = "openai",
-            model = "gpt-4-1106-preview",
+            model = "gpt-4-0125-preview",
             params = nil,
           },
         },
+      })
+    end,
+  },
+  {
+    "robitx/gp.nvim",
+    config = function()
+      require("gp").setup({
+        chat_topic_gen_model = "gpt-4-0125-preview"
       })
     end,
   },
@@ -152,7 +162,8 @@ require("lazy").setup({
     end
   },
   {
-    'nvim-telescope/telescope.nvim', tag = '0.1.4',
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.4',
     dependencies = { 'nvim-lua/plenary.nvim' }
   },
   'nvim-telescope/telescope-ghq.nvim',
@@ -160,7 +171,7 @@ require("lazy").setup({
   {
     "https://github.com/atusy/treemonkey.nvim",
     init = function()
-      vim.keymap.set({"x", "o"}, "m", function()
+      vim.keymap.set({ "x", "o" }, "m", function()
         require("treemonkey").select({ ignore_injections = false })
       end)
     end

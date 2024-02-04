@@ -54,7 +54,7 @@ local null_ls = require('null-ls')
 
 mason.setup()
 mason_null_ls.setup({
-  ensure_installed = { 'prettier', 'dprint', 'goimports' },
+  ensure_installed = { 'prettier', 'dprint', 'biome', 'eslint_d', 'goimports', },
   automatic_installation = true,
   automatic_setup = true,
 })
@@ -64,21 +64,35 @@ null_ls.setup({
       condition = function(utils)
         return utils.has_file { "dprint.json", }
       end,
-      extra_filetypes = { "svelte", },
+      extra_filetypes = { "svelte", "astro", },
+    },
+    null_ls.builtins.formatting.biome.with {
+      condition = function(utils)
+        return utils.has_file { "biome.json" }
+      end,
+      prefer_local = "node_modules/.bin",
+      extra_filetypes = { "svelte", "astro", },
     },
     null_ls.builtins.formatting.prettier.with {
       condition = function(utils)
         return utils.has_file { ".prettierrc", ".prettierrc.js", ".prettierrc.yaml" }
       end,
       prefer_local = "node_modules/.bin",
-      extra_filetypes = { "svelte", },
+      extra_filetypes = { "svelte", "astro", },
     },
-    null_ls.builtins.diagnostics.eslint.with {
+    null_ls.builtins.code_actions.eslint_d.with {
       condition = function(utils)
-        return utils.has_file { ".eslintrc.cjs", }
+        return utils.has_file { ".eslintrc.*", }
       end,
       prefer_local = "node_modules/.bin",
-      extra_filetypes = { "svelte" },
+      extra_filetypes = { "svelte", "astro", },
+    },
+    null_ls.builtins.diagnostics.eslint_d.with {
+      condition = function(utils)
+        return utils.has_file { ".eslintrc.*", }
+      end,
+      prefer_local = "node_modules/.bin",
+      extra_filetypes = { "svelte", "astro", },
     },
     null_ls.builtins.formatting.goimports,
   },
