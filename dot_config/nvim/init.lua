@@ -141,14 +141,7 @@ require("lazy").setup({
       })
     end,
   },
-  {
-    "robitx/gp.nvim",
-    config = function()
-      require("gp").setup({
-        chat_topic_gen_model = "gpt-4-0125-preview"
-      })
-    end,
-  },
+  "robitx/gp.nvim",
   {
     "nvim-treesitter/nvim-treesitter",
     build = function()
