@@ -43,8 +43,8 @@ local on_attach = function(client, bufnr)
       }
     },
   }, {
-      mode = "n",
-      prefix = "<leader>",
+    mode = "n",
+    prefix = "<leader>",
   })
 end
 
@@ -58,6 +58,7 @@ mason_null_ls.setup({
   automatic_installation = true,
   automatic_setup = true,
 })
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 null_ls.setup({
   sources = {
     null_ls.builtins.formatting.dprint.with {
@@ -96,6 +97,19 @@ null_ls.setup({
     },
     null_ls.builtins.formatting.goimports,
   },
+
+  on_attach = function(client, bufnr)
+    if client.supports_method("textDocument/formatting") then
+      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = augroup,
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.buf.format()
+        end,
+      })
+    end
+  end,
 })
 
 require("mason-lspconfig").setup()
@@ -139,8 +153,8 @@ cmp.setup({
 
   formatting = {
     format = lspkind.cmp_format({
-      mode = 'symbol', -- show only symbol annotations
-      maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+      mode = 'symbol',       -- show only symbol annotations
+      maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
       ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
       symbol_map = { Codeium = "", },
 
@@ -184,11 +198,10 @@ cmp.setup.cmdline(':', {
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require("mason-lspconfig").setup_handlers {
-  function (server_name)
+  function(server_name)
     require("lspconfig")[server_name].setup {
       on_attach = on_attach,
       capabilities = capabilities,
     }
   end,
 }
-
