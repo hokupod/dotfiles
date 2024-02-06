@@ -18,7 +18,7 @@ local on_attach = function(client, bufnr)
   wk.register({
     l = {
       name = "LSP",
-      ["="] = { "<cmd>lua vim.lsp.buf.format()<CR>", "[LSP] Format" },
+      ["f"] = { "<cmd>lua vim.lsp.buf.format()<CR>", "[LSP] Format" },
       ["<F2>"] = { "<cmd>Lspsaga rename<CR>", "[LSP] Rename" },
       g = {
         name = "+go",

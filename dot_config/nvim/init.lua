@@ -13,7 +13,6 @@ vim.opt.rtp:prepend(lazypath)
 
 -- vim.g.mapleader = " "
 require("lazy").setup({
-  "rmagatti/auto-session",
   "folke/which-key.nvim",
   "folke/neodev.nvim",
   "sainnhe/everforest",
@@ -26,9 +25,17 @@ require("lazy").setup({
   },
   "mattn/vim-findroot",
   'cohama/lexima.vim',
+  'monaqa/dial.nvim',
+  'monaqa/modesearch.vim',
   'tpope/vim-commentary',
   'kevinhwang91/nvim-bqf',
   'lambdalisue/fern.vim',
+  {
+    "karb94/neoscroll.nvim",
+    config = function()
+      require('neoscroll').setup {}
+    end
+  },
   {
     'yamatsum/nvim-cursorline',
     config = function()
@@ -46,7 +53,13 @@ require("lazy").setup({
       }
     end
   },
-  { "asiryk/auto-hlsearch.nvim", tag = "1.1.0" },
+  {
+    "asiryk/auto-hlsearch.nvim",
+    tag = "1.1.0",
+    config = function()
+      require("auto-hlsearch").setup()
+    end
+  },
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons', opt = true }
@@ -65,7 +78,7 @@ require("lazy").setup({
   'sheerun/vim-polyglot',
   'wuelnerdotexe/vim-astro',
   -- Terminal
-  { 'akinsho/toggleterm.nvim',   version = "*", config = true },
+  { 'akinsho/toggleterm.nvim', version = "*", config = true },
   -- LSP
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",

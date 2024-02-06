@@ -1,5 +1,12 @@
 require("gp").setup({
+    chat_topic_gen_model = "gpt-4-0125-preview",
     agents = {
+        -- Disable ChatGPT 3.5
+        {
+            name = "ChatGPT3-5",
+            chat = false,    -- just name would suffice
+            command = false, -- just name would suffice
+        },
         {
             name = "ChatGPT4",
             chat = true,
