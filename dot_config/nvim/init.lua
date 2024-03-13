@@ -77,6 +77,8 @@ require("lazy").setup({
   -- Syntax Highlighting
   'sheerun/vim-polyglot',
   'wuelnerdotexe/vim-astro',
+  'evanleck/vim-svelte',
+  'leafOfTree/vim-svelte-plugin',
   -- Terminal
   { 'akinsho/toggleterm.nvim', version = "*", config = true },
   -- LSP
