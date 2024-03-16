@@ -158,6 +158,31 @@ require("lazy").setup({
   },
   "robitx/gp.nvim",
   {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-lua/plenary.nvim",
+      {
+        "stevearc/dressing.nvim",
+        opts = {},
+      },
+    },
+    config = true
+  },
+  {
+    "folke/edgy.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.opt.laststatus = 3
+      vim.opt.splitkeep = "screen"
+    end,
+    opts = {
+      right = {
+        { ft = "codecompanion", title = "Code Companion Chat", size = { width = 0.45 } },
+      }
+    }
+  },
+  {
     "nvim-treesitter/nvim-treesitter",
     build = function()
       require("nvim-treesitter.install").update({ with_sync = true })()
