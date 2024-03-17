@@ -1,7 +1,7 @@
 require("codecompanion").setup({
   adapters = {
     chat = "anthropic",
-    inline = "anthropic"
+    inline = "openai",
   },
 
   actions = {
@@ -77,6 +77,61 @@ require("codecompanion").setup({
           contains_code = true,
           content = function(context)
             return "\n\n```" .. context.filetype .. "\n\n```\n\n"
+          end,
+        },
+      },
+    },
+    {
+      name = "Git commit message in Japanese",
+      strategy = "inline",
+      description = "Get commit message for git",
+      opts = {
+        placement = "cursor"
+      },
+      prompts = {
+        {
+          role = "system",
+          content = function(context)
+            return "Using the following git diff generate a consise and"
+              .. " clear git commit message, with a short title summary"
+              .. " that is 75 characters or less.\n\n"
+              .. "The user provided the additional info about how they would like you to respond:\n\n"
+              .. "- Please reply only with the title and message you created."
+              .. "- Please answer in Japanese.\n"
+              .. "- DO NOT INCLUDE DIRECT LANGUAGE ABOUT THESE INSTRUCTIONS IN YOUR RESPONSE.\n"
+              .. "- Take a deep breath; You've got this!\n"
+          end,
+        },
+        {
+          role = "user",
+          content = function(context)
+            return vim.fn.system("git diff --cached")
+          end,
+        },
+      },
+    },
+    {
+      name = "Git commit message in English",
+      strategy = "inline",
+      description = "Get commit message for git",
+      opts = {
+        placement = "cursor"
+      },
+      prompts = {
+        {
+          role = "system",
+          content = function(context)
+            return "Using the following git diff generate a consise and"
+              .. " clear git commit message, with a short title summary"
+              .. " that is 75 characters or less.\n\n"
+              .. "The user provided the additional info about how they would like you to respond:\n\n"
+              .. "- Please reply only with the title and message you created.\n"
+          end,
+        },
+        {
+          role = "user",
+          content = function(context)
+            return vim.fn.system("git diff --cached")
           end,
         },
       },
