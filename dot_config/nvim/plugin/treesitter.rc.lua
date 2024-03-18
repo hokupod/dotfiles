@@ -15,7 +15,8 @@ treesitter.setup {
     "go",
     "zig",
     "markdown",
-    "markdown_inline"
+    "markdown_inline",
+    "yaml",
   },
   highlight = {
     enable = true,                             -- ハイライトを有効化

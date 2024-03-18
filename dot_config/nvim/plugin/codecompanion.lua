@@ -39,7 +39,9 @@ require("codecompanion").setup({
           content = function(context)
             local text = require("codecompanion.helpers.code").get_code(context.start_line, context.end_line)
 
-            return "I have the following code:\n\n```" .. context.filetype .. "\n" .. text .. "\n```\n\n"
+            return "<code:" .. context.filetype .. ">\n"
+              .. text
+              .. "\n</code:" .. context.filetype .. ">\n\n"
           end,
         },
       },
@@ -76,7 +78,8 @@ require("codecompanion").setup({
           role = "user",
           contains_code = true,
           content = function(context)
-            return "\n\n```" .. context.filetype .. "\n\n```\n\n"
+            return "<code:" .. context.filetype .. ">\n"
+              .. "</code:" .. context.filetype .. ">\n\n"
           end,
         },
       },
