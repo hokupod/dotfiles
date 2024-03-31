@@ -46,6 +46,18 @@ local on_attach = function(client, bufnr)
     mode = "n",
     prefix = "<leader>",
   })
+
+  local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+  if client.supports_method("textDocument/formatting") then
+    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = augroup,
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format()
+      end,
+    })
+  end
 end
 
 local mason = require('mason')
@@ -54,28 +66,14 @@ local null_ls = require('null-ls')
 
 mason.setup()
 mason_null_ls.setup({
-  ensure_installed = { 'prettier', 'dprint', 'biome', 'goimports', },
+  ensure_installed = { 'goimports', },
   automatic_installation = true,
   automatic_setup = true,
 })
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 null_ls.setup({
   sources = {
     null_ls.builtins.formatting.goimports,
   },
-
-  on_attach = function(client, bufnr)
-    if client.supports_method("textDocument/formatting") then
-      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        group = augroup,
-        buffer = bufnr,
-        callback = function()
-          vim.lsp.buf.format()
-        end,
-      })
-    end
-  end,
 })
 
 require("mason-lspconfig").setup()
@@ -200,3 +198,42 @@ require("mason-lspconfig").setup_handlers {
     }
   end,
 }
+
+local lspconfig = require('lspconfig')
+local util = require('lspconfig.util')
+local mason_lspconfig = require('mason-lspconfig')
+
+local function setup_conditional_lsp(server_name, config_files, option)
+  lspconfig[server_name].setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    -- root_dir = function(filename)
+    --   return util.root_pattern(unpack(config_files))(filename) or util.find_git_ancestor(filename)
+    -- end,
+    autostart = false,
+    on_init = function(client, _)
+      if client.config.root_dir then
+        for _, config_file in ipairs(config_files) do
+          local config_file_path = util.path.join(client.config.root_dir, config_file)
+          if util.path.exists(config_file_path) then
+            local cmd = mason_lspconfig.get_server_command(server_name)
+            if option then
+              cmd = cmd .. ' ' .. option .. ' ' .. config_file_path
+            end
+            client.config.cmd = cmd
+            client.start()
+            return
+          end
+        end
+      end
+    end,
+  }
+end
+
+lspconfig['tsserver'].setup {
+  on_attach = function(client, _)
+    client.server_capabilities.document_formatting = false
+  end,
+}
+setup_conditional_lsp('biome', { 'biome.json', 'biome.jsonc', }, '--config-path')
+setup_conditional_lsp('eslint', { '.eslintrc', '.eslintrc.js', '.eslintrc.json', '.eslintrc.yaml', '.eslintrc.yml', })
