@@ -15,6 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   "folke/which-key.nvim",
   "folke/neodev.nvim",
+  "shortcuts/no-neck-pain.nvim",
   "sainnhe/everforest",
   "lewis6991/gitsigns.nvim",
   "machakann/vim-sandwich",
@@ -30,6 +31,11 @@ require("lazy").setup({
   'tpope/vim-commentary',
   'kevinhwang91/nvim-bqf',
   'lambdalisue/fern.vim',
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
   {
     "karb94/neoscroll.nvim",
     config = function()
