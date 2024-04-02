@@ -207,21 +207,13 @@ local function setup_conditional_lsp(server_name, config_files, option)
   lspconfig[server_name].setup {
     on_attach = on_attach,
     capabilities = capabilities,
-    -- root_dir = function(filename)
-    --   return util.root_pattern(unpack(config_files))(filename) or util.find_git_ancestor(filename)
-    -- end,
     autostart = false,
     on_init = function(client, _)
       if client.config.root_dir then
         for _, config_file in ipairs(config_files) do
           local config_file_path = util.path.join(client.config.root_dir, config_file)
           if util.path.exists(config_file_path) then
-            local cmd = mason_lspconfig.get_server_command(server_name)
-            if option then
-              cmd = cmd .. ' ' .. option .. ' ' .. config_file_path
-            end
-            client.config.cmd = cmd
-            client.start()
+            client.config.autostart = true
             return
           end
         end
@@ -235,5 +227,5 @@ lspconfig['tsserver'].setup {
     client.server_capabilities.document_formatting = false
   end,
 }
-setup_conditional_lsp('biome', { 'biome.json', 'biome.jsonc', }, '--config-path')
+setup_conditional_lsp('biome', { 'biome.json', 'biome.jsonc', })
 setup_conditional_lsp('eslint', { '.eslintrc', '.eslintrc.js', '.eslintrc.json', '.eslintrc.yaml', '.eslintrc.yml', })
