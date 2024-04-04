@@ -60,6 +60,14 @@ vim.api.nvim_create_autocmd("BufNewFile", {
   end,
 })
 
+-- .astro を Astro として扱う
+vim.api.nvim_create_autocmd("BufNewFile", {
+  pattern = "*.astro",
+  callback = function()
+    vim.opt.filetype = "astro"
+  end,
+})
+
 -- Keymap
 local set = vim.keymap.set
 set("i", "jj", "<ESC>")

@@ -1,4 +1,4 @@
-require("fidget").setup()
+require("fidget").setup({})
 
 local set = vim.keymap.set
 local function show_documentation()
@@ -201,9 +201,8 @@ require("mason-lspconfig").setup_handlers {
 
 local lspconfig = require('lspconfig')
 local util = require('lspconfig.util')
-local mason_lspconfig = require('mason-lspconfig')
 
-local function setup_conditional_lsp(server_name, config_files, option)
+local function setup_conditional_lsp(server_name, config_files)
   lspconfig[server_name].setup {
     on_attach = on_attach,
     capabilities = capabilities,
@@ -229,3 +228,23 @@ lspconfig['tsserver'].setup {
 }
 setup_conditional_lsp('biome', { 'biome.json', 'biome.jsonc', })
 setup_conditional_lsp('eslint', { '.eslintrc', '.eslintrc.js', '.eslintrc.json', '.eslintrc.yaml', '.eslintrc.yml', })
+
+lspconfig.lua_ls.setup({
+  settings = {
+    Lua = {
+      runtime = {
+        version = "LuaJIT",
+        pathStrict = true,
+        path = { "?.lua", "?/init.lua" },
+      },
+      workspace = {
+        library = vim.list_extend(vim.api.nvim_get_runtime_file("lua", true), {
+          "${3rd}/luv/library",
+          -- "${3rd}/busted/library",
+          -- "${3rd}/luassert/library",
+        }),
+        checkThirdParty = "Disable",
+      },
+    },
+  },
+})
