@@ -80,6 +80,7 @@ require("lazy").setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {},
   },
+  { "mistricky/codesnap.nvim", build = "make" },
   -- Syntax Highlighting
   'sheerun/vim-polyglot',
   'wuelnerdotexe/vim-astro',
