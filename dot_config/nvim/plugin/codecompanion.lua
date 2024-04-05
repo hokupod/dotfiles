@@ -1,5 +1,15 @@
 require("codecompanion").setup({
   adapters = {
+    anthropic = require("codecompanion.adapters").use("anthropic", {
+      schema = {
+        model = {
+          default = "claude-3-opus-20240229",
+        },
+      }
+    }),
+    openai = require("codecompanion.adapters").use("openai"),
+  },
+  strategies = {
     chat = "anthropic",
     inline = "openai",
   },
