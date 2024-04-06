@@ -103,6 +103,19 @@ require("lazy").setup({
     },
   },
   "j-hui/fidget.nvim",
+
+  -- DAP
+  {
+    "mfussenegger/nvim-dap",
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "rcarriga/nvim-dap-ui",
+      "theHamsta/nvim-dap-virtual-text",
+      -- golang
+      "leoluz/nvim-dap-go",
+    },
+    lazy = true,
+  },
   -- Code complete
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-buffer',
