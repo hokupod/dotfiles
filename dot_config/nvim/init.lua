@@ -111,7 +111,13 @@ require("lazy").setup({
       "nvim-neotest/nvim-nio",
       "rcarriga/nvim-dap-ui",
       "theHamsta/nvim-dap-virtual-text",
-      -- golang
+      -- JS/TS
+      "mxsdev/nvim-dap-vscode-js",
+      {
+        "microsoft/vscode-js-debug",
+        build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+      },
+      -- Go
       "leoluz/nvim-dap-go",
     },
     lazy = true,

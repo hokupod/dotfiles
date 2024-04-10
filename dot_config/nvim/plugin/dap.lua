@@ -17,7 +17,22 @@ dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close({})
 end
 
-local function set_conditional_breakpoint()
+require("dap-vscode-js").setup({
+  debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
+  adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }, -- which adapters to register in nvim-dap
+})
+
+local languages = { "typescript", "javascript", "typescriptreact", "svelte" }
+local debugger_table = { ['pwa-node'] = languages }
+
+local continue = function()
+  if vim.fn.filereadable('.vscode/launch.json') then
+    require('dap.ext.vscode').load_launchjs(nil, debugger_table)
+  end
+  require('dap').continue()
+end
+
+local set_conditional_breakpoint = function()
   local condition = vim.fn.input("Breakpoint condition(ex.'x > 5'): ")
   local hit_condition = vim.fn.input("Hit condition(ex.'5','>=3'): ")
   local log_message = vim.fn.input("Log point message(ex.'x is: {x}'): ")
@@ -32,13 +47,13 @@ wk.register({
     b = { '<cmd>DapToggleBreakpoint<CR>', '[Debug] Toggle Breakpoint' },
     B = { set_conditional_breakpoint, '[Debug] Set Breakpoint with condition' },
     r = { '<cmd>lua require("dap").repl_open()<CR>', '[Debug] Open REPL' },
-    p = { '<cmd>lua require("dap.ui.widgets").preview()<CR>', '[Debug] Preview' },
+    p = { '<cmd>lua require("dap.ui.widgets").repl_open()<CR>', '[Debug] Open REPL' },
     R = { '<cmd>lua require("dap").run_last()<CR>', '[Debug] Run last' },
-    ['<F5>'] = { '<cmd>DapContinue<CR>', '[Debug] Continue' },
-    ['<F10>'] = { '<cmd>DapStepOver<CR>', '[Debug] Step Over' },
-    ['<F11>'] = { '<cmd>DapStepInto<CR>', '[Debug] Step Into' },
-    ['<F12>'] = { '<cmd>DapStepOut<CR>', '[Debug] Step Out' },
-  }
+  },
+  ['<F5>'] = { continue, '[Debug] Continue' },
+  ['<F10>'] = { '<cmd>DapStepOver<CR>', '[Debug] Step Over' },
+  ['<F11>'] = { '<cmd>DapStepInto<CR>', '[Debug] Step Into' },
+  ['<F12>'] = { '<cmd>DapStepOut<CR>', '[Debug] Step Out' },
 }, {
   mode = "n",
   prefix = "<leader>",
