@@ -50,14 +50,14 @@ wk.register({
     p = { '<cmd>lua require("dap.ui.widgets").repl_open()<CR>', '[Debug] Open REPL' },
     R = { '<cmd>lua require("dap").run_last()<CR>', '[Debug] Run last' },
   },
-  ['<F5>'] = { continue, '[Debug] Continue' },
-  ['<F10>'] = { '<cmd>DapStepOver<CR>', '[Debug] Step Over' },
-  ['<F11>'] = { '<cmd>DapStepInto<CR>', '[Debug] Step Into' },
-  ['<F12>'] = { '<cmd>DapStepOut<CR>', '[Debug] Step Out' },
 }, {
   mode = "n",
   prefix = "<leader>",
 })
+vim.keymap.set('n', '<F5>', continue, { noremap = true, silent = true, desc = '[Debug] Continue' })
+vim.keymap.set('n', '<F10>', '<cmd>DapStepOver<CR>', { noremap = true, silent = true, desc = '[Debug] Step Over' })
+vim.keymap.set('n', '<F11>', '<cmd>DapStepInto<CR>', { noremap = true, silent = true, desc = '[Debug] Step Into' })
+vim.keymap.set('n', '<F12>', '<cmd>DapStepOut<CR>', { noremap = true, silent = true, desc = '[Debug] Step Out' })
 
 wk.register({
   d = {
