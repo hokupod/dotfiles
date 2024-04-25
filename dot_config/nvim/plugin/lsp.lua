@@ -224,6 +224,7 @@ end
 lspconfig['tsserver'].setup {
   on_attach = function(client, _)
     client.server_capabilities.document_formatting = false
+    client.server_capabilities.documentRangeFormattingProvider = false
   end,
 }
 setup_conditional_lsp('biome', { 'biome.json', 'biome.jsonc', })

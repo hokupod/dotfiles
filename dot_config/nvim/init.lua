@@ -149,6 +149,20 @@ require("lazy").setup({
   -- Snippet
   'hrsh7th/cmp-vsnip',
   'hrsh7th/vim-vsnip',
+  -- Git
+  {
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",         -- required
+      "sindrets/diffview.nvim",        -- optional - Diff integration
+      "nvim-telescope/telescope.nvim", -- optional
+    },
+    config = true
+  },
+  {
+    "tanvirtin/vgit.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
   -- ChatGPT
   {
     "Bryley/neoai.nvim",
