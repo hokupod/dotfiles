@@ -96,6 +96,7 @@ require("lazy").setup({
     'stevearc/conform.nvim',
     opts = {},
   },
+  "mfussenegger/nvim-lint",
   "neovim/nvim-lspconfig",
   "onsails/lspkind.nvim",
   {
@@ -105,6 +106,7 @@ require("lazy").setup({
       'nvim-tree/nvim-web-devicons',
     },
   },
+  "aznhe21/actions-preview.nvim",
   "j-hui/fidget.nvim",
   {
     'stevearc/aerial.nvim',
