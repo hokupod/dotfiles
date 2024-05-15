@@ -1,4 +1,13 @@
 require("fidget").setup({})
+require("aerial").setup({
+  -- optionally use on_attach to set keymaps when aerial has attached to a buffer
+  on_attach = function(bufnr)
+    -- Jump forwards/backwards with '{' and '}'
+    vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+    vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+    vim.keymap.set("n", "+", "<cmd>AerialToggle!<CR>", { buffer = bufnr })
+  end,
+})
 
 local set = vim.keymap.set
 local function show_documentation()
@@ -61,20 +70,7 @@ local on_attach = function(client, bufnr)
 end
 
 local mason = require('mason')
-local mason_null_ls = require('mason-null-ls')
-local null_ls = require('null-ls')
-
 mason.setup()
-mason_null_ls.setup({
-  ensure_installed = { 'goimports', },
-  automatic_installation = true,
-  automatic_setup = true,
-})
-null_ls.setup({
-  sources = {
-    null_ls.builtins.formatting.goimports,
-  },
-})
 
 require("mason-lspconfig").setup()
 require('lspsaga').setup({
@@ -200,26 +196,6 @@ require("mason-lspconfig").setup_handlers {
 }
 
 local lspconfig = require('lspconfig')
-local util = require('lspconfig.util')
-
-local function setup_conditional_lsp(server_name, config_files)
-  lspconfig[server_name].setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-    autostart = false,
-    on_init = function(client, _)
-      if client.config.root_dir then
-        for _, config_file in ipairs(config_files) do
-          local config_file_path = util.path.join(client.config.root_dir, config_file)
-          if util.path.exists(config_file_path) then
-            client.config.autostart = true
-            return
-          end
-        end
-      end
-    end,
-  }
-end
 
 lspconfig['tsserver'].setup {
   on_attach = function(client, _)
@@ -227,8 +203,30 @@ lspconfig['tsserver'].setup {
     client.server_capabilities.documentRangeFormattingProvider = false
   end,
 }
-setup_conditional_lsp('biome', { 'biome.json', 'biome.jsonc', })
-setup_conditional_lsp('eslint', { '.eslintrc', '.eslintrc.js', '.eslintrc.json', '.eslintrc.yaml', '.eslintrc.yml', })
+
+local js_formatters = { { "biome", "prettierd", "prettier" } }
+require("conform").setup({
+  formatters_by_ft = {
+    lua = { "stylua" },
+    html = js_formatters,
+    css = js_formatters,
+    json = js_formatters,
+    yaml = js_formatters,
+    javascript = js_formatters,
+    typescript = js_formatters,
+    javascriptreact = js_formatters,
+    typescriptreact = js_formatters,
+    astro = js_formatters,
+    svelte = js_formatters,
+    go = { "goimports" },
+  },
+  format_on_save = {
+    -- These options will be passed to conform.format()
+    timeout_ms = 500,
+    lsp_fallback = true,
+    async = false,
+  },
+})
 
 lspconfig.lua_ls.setup({
   settings = {

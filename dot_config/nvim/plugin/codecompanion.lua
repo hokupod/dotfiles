@@ -7,7 +7,13 @@ require("codecompanion").setup({
         },
       }
     }),
-    openai = require("codecompanion.adapters").use("openai"),
+    openai = require("codecompanion.adapters").use("openai", {
+      schema = {
+        model = {
+          default = "gpt-4o",
+        },
+      }
+    }),
   },
   strategies = {
     chat = "anthropic",

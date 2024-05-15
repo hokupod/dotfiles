@@ -91,8 +91,11 @@ require("lazy").setup({
   -- LSP
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
-  "nvimtools/none-ls.nvim",
-  "jayp0521/mason-null-ls.nvim",
+  {
+    -- formatter
+    'stevearc/conform.nvim',
+    opts = {},
+  },
   "neovim/nvim-lspconfig",
   "onsails/lspkind.nvim",
   {
@@ -103,7 +106,15 @@ require("lazy").setup({
     },
   },
   "j-hui/fidget.nvim",
-
+  {
+    'stevearc/aerial.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons"
+    },
+  },
   -- DAP
   {
     "mfussenegger/nvim-dap",
@@ -162,6 +173,11 @@ require("lazy").setup({
   {
     "tanvirtin/vgit.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
+  },
+  {
+    "linrongbin16/gitlinker.nvim",
+    cmd = "GitLink",
+    opts = {},
   },
   -- ChatGPT
   {
@@ -244,6 +260,16 @@ require("lazy").setup({
   },
   'nvim-telescope/telescope-ghq.nvim',
   'nvim-telescope/telescope-z.nvim',
+  {
+    'prochri/telescope-all-recent.nvim',
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "kkharji/sqlite.lua",
+      -- optional, if using telescope for vim.ui.select
+      "stevearc/dressing.nvim"
+    },
+    opts = {}
+  },
   {
     "https://github.com/atusy/treemonkey.nvim",
     init = function()
