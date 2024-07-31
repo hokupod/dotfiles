@@ -31,10 +31,11 @@ require("lazy").setup({
   'tpope/vim-commentary',
   'kevinhwang91/nvim-bqf',
   'lambdalisue/fern.vim',
+  'echasnovski/mini.icons',
+  'nvim-tree/nvim-web-devicons',
   {
     'stevearc/oil.nvim',
     opts = {},
-    dependencies = { "nvim-tree/nvim-web-devicons" },
   },
   {
     "karb94/neoscroll.nvim",
@@ -68,7 +69,6 @@ require("lazy").setup({
   },
   {
     'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons', opt = true }
   },
   {
     'smoka7/hop.nvim',
@@ -77,7 +77,6 @@ require("lazy").setup({
   },
   {
     "folke/trouble.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {},
   },
   { "mistricky/codesnap.nvim", build = "make" },
@@ -86,6 +85,16 @@ require("lazy").setup({
   'wuelnerdotexe/vim-astro',
   'evanleck/vim-svelte',
   'leafOfTree/vim-svelte-plugin',
+  {
+    "toppair/peek.nvim",
+    event = { "VeryLazy" },
+    build = "deno task --quiet build:fast",
+    config = function()
+        require("peek").setup()
+        vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+        vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+    end,
+  },
   -- Terminal
   { 'akinsho/toggleterm.nvim', version = "*", config = true },
   -- LSP
@@ -103,7 +112,6 @@ require("lazy").setup({
     'nvimdev/lspsaga.nvim',
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
-      'nvim-tree/nvim-web-devicons',
     },
   },
   "aznhe21/actions-preview.nvim",
@@ -114,7 +122,6 @@ require("lazy").setup({
     -- Optional dependencies
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons"
     },
   },
   -- DAP
@@ -145,20 +152,20 @@ require("lazy").setup({
   'hrsh7th/nvim-cmp',
   'ray-x/cmp-treesitter',
   'petertriho/cmp-git',
-  {
-    'Exafunction/codeium.nvim',
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp",
-    },
-    config = function()
-      require("codeium").setup({
-        enable_chat = true,
-        enable_local_search = true,
-        enable_index_service = true,
-      })
-    end,
-  },
+  -- {
+  --   'Exafunction/codeium.nvim',
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "hrsh7th/nvim-cmp",
+  --   },
+  --   config = function()
+  --     require("codeium").setup({
+  --       enable_chat = true,
+  --       enable_local_search = true,
+  --       enable_index_service = true,
+  --     })
+  --   end,
+  -- },
   -- Snippet
   'hrsh7th/cmp-vsnip',
   'hrsh7th/vim-vsnip',

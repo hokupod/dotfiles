@@ -13,12 +13,7 @@ end
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
 local wk = require("which-key")
-wk.register({
-  t = {
-    name = "ToggleTerm",
-    t = { "<cmd>ToggleTerm dir=. direction=float<CR>", "[ToggleTerm] Open current directory" },
-  },
-}, {
-  mode = "n",
-  prefix = "<leader>",
+wk.add({
+  { "<leader>t", group = "ToggleTerm" },
+  { "<leader>tt", "<cmd>ToggleTerm dir=. direction=float<CR>", desc = "[ToggleTerm] Open current directory" },
 })

@@ -40,32 +40,22 @@ local set_conditional_breakpoint = function()
 end
 
 local wk = require("which-key")
-wk.register({
-  d = {
-    name = "Debug",
-    d = { "<cmd>lua require('dapui').toggle()<CR>", "[Debug] Toggle Open/Close" },
-    b = { '<cmd>DapToggleBreakpoint<CR>', '[Debug] Toggle Breakpoint' },
-    B = { set_conditional_breakpoint, '[Debug] Set Breakpoint with condition' },
-    r = { '<cmd>lua require("dap").repl_open()<CR>', '[Debug] Open REPL' },
-    p = { '<cmd>lua require("dap.ui.widgets").repl_open()<CR>', '[Debug] Open REPL' },
-    R = { '<cmd>lua require("dap").run_last()<CR>', '[Debug] Run last' },
-  },
-}, {
-  mode = "n",
-  prefix = "<leader>",
+wk.add({
+  { "<leader>d", group = "Debug" },
+  { "<leader>dd", "<cmd>lua require('dapui').toggle()<CR>", desc = "[Debug] Toggle Open/Close" },
+  { "<leader>db", '<cmd>DapToggleBreakpoint<CR>', desc = '[Debug] Toggle Breakpoint' },
+  { "<leader>dB", set_conditional_breakpoint, desc = '[Debug] Set Breakpoint with condition' },
+  { "<leader>dr" ,'<cmd>lua require("dap").repl_open()<CR>', desc = '[Debug] Open REPL' },
+  { "<leader>dp" ,'<cmd>lua require("dap.ui.widgets").repl_open()<CR>', desc = '[Debug] Open REPL' },
+  { "<leader>dR" ,'<cmd>lua require("dap").run_last()<CR>', desc = '[Debug] Run last' },
 })
 vim.keymap.set('n', '<F5>', continue, { noremap = true, silent = true, desc = '[Debug] Continue' })
 vim.keymap.set('n', '<F10>', '<cmd>DapStepOver<CR>', { noremap = true, silent = true, desc = '[Debug] Step Over' })
 vim.keymap.set('n', '<F11>', '<cmd>DapStepInto<CR>', { noremap = true, silent = true, desc = '[Debug] Step Into' })
 vim.keymap.set('n', '<F12>', '<cmd>DapStepOut<CR>', { noremap = true, silent = true, desc = '[Debug] Step Out' })
 
-wk.register({
-  d = {
-    name = "Debug",
-    e = { '<cmd>lua require("dapui").eval()<CR>', '[Debug] Eval' },
-  }
-}, {
-  mode = "v",
-  prefix = "<leader>",
+wk.add({
+  { "<leader>d", group = "Debug", mode = "v" },
+  { "<leader>de", '<cmd>lua require("dapui").eval()<CR>', desc = "[Debug] Eval", mode = "v" },
 })
 

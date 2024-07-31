@@ -3,7 +3,7 @@ require("codecompanion").setup({
     anthropic = require("codecompanion.adapters").use("anthropic", {
       schema = {
         model = {
-          default = "claude-3-opus-20240229",
+          default = "claude-3-5-sonnet-20240620",
         },
       }
     }),
@@ -16,8 +16,12 @@ require("codecompanion").setup({
     }),
   },
   strategies = {
-    chat = "anthropic",
-    inline = "openai",
+    chat = {
+      adapter = "anthropic",
+    },
+    inline = {
+      adapter = "openai",
+    },
   },
 
   actions = {
@@ -159,24 +163,17 @@ require("codecompanion").setup({
 })
 
 local wk = require("which-key")
-wk.register({
-  a = {
-    name = "AI",
-    ["a"] = { "<cmd>CodeCompanionActions<cr>", "[AI] Code Companion Actions" },
-    ["c"] = { "<cmd>CodeCompanionToggle<cr>", "[AI] Code Companion Toggle Chat" },
-  },
-}, {
-  mode = "n",
-  prefix = "<leader>",
+wk.add({
+  { "<leader>a", group = "AI" },
+  { "<leader>aa", "<cmd>CodeCompanionActions<cr>", desc = "[AI] Code Companion Actions" },
+  { "<leader>ac", "<cmd>CodeCompanionToggle<cr>", desc = "[AI] Code Companion Toggle Chat" },
 })
 
-wk.register({
-  a = {
-    name = "AI",
-    ["a"] = { "<cmd>CodeCompanionActions<cr>", "[AI] Code Companion Actions" },
-    ["c"] = { "<cmd>CodeCompanionToggle<cr>", "[AI] Code Companion Toggle Chat" },
+wk.add({
+  {
+    mode = { "v" },
+    { "<leader>a", group = "AI" },
+    { "<leader>aa", "<cmd>CodeCompanionActions<cr>", desc = "[AI] Code Companion Actions" },
+    { "<leader>ac", "<cmd>CodeCompanionToggle<cr>", desc = "[AI] Code Companion Toggle Chat" },
   },
-}, {
-  mode = "v",
-  prefix = "<leader>",
 })

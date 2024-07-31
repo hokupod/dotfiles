@@ -207,34 +207,46 @@ lspconfig["tsserver"].setup({
 	end,
 })
 
--- formatter
-local js_formatters = { { "biome", "prettierd", "prettier" } }
-require("conform").setup({
-	formatters_by_ft = {
-		lua = { "stylua" },
-		html = js_formatters,
-		css = js_formatters,
-		json = js_formatters,
-		yaml = js_formatters,
-		javascript = js_formatters,
-		typescript = js_formatters,
-		javascriptreact = js_formatters,
-		typescriptreact = js_formatters,
-		astro = js_formatters,
-		svelte = js_formatters,
-		go = { "goimports" },
-	},
-	format_on_save = {
-		-- These options will be passed to conform.format()
-		timeout_ms = 500,
-		lsp_fallback = true,
-		async = false,
-	},
-})
+-- -- formatter
+-- local js_formatters = {
+-- 	{
+-- 		"biome",
+-- 		-- "prettierd",
+-- 		-- "prettier",
+-- 	},
+-- }
+-- require("conform").setup({
+-- 	formatters_by_ft = {
+-- 		lua = { "stylua" },
+-- 		html = js_formatters,
+-- 		css = js_formatters,
+-- 		json = js_formatters,
+-- 		yaml = js_formatters,
+-- 		javascript = js_formatters,
+-- 		typescript = js_formatters,
+-- 		javascriptreact = js_formatters,
+-- 		typescriptreact = js_formatters,
+-- 		astro = js_formatters,
+-- 		svelte = js_formatters,
+-- 		go = { "goimports" },
+-- 	},
+-- 	format_on_save = {
+-- 		-- These options will be passed to conform.format()
+-- 		timeout_ms = 500,
+-- 		lsp_fallback = true,
+-- 		async = false,
+-- 	},
+-- })
 
 -- linter
-local js_linters = { "biomejs", "eslint", "eslint_d" }
+local js_linters = {
+	-- "eslint",
+	"biomejs",
+	-- "eslint_d",
+}
 local lint = require("lint")
+local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+
 lint.linters_by_ft = {
 	javascript = js_linters,
 	typescript = js_linters,
@@ -243,9 +255,13 @@ lint.linters_by_ft = {
 	astro = js_linters,
 	svelte = js_linters,
 }
+
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+	group = lint_augroup,
 	callback = function()
-		lint.try_lint()
+		lint.try_lint(nil, {
+			ignore_errors = true,
+		})
 	end,
 })
 

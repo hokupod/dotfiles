@@ -33,24 +33,14 @@ end
 vim.api.nvim_create_user_command('CodeSnapSaveAndOpenDir', save_and_open_codesnap_dir, {range = true})
 
 local wk = require("which-key")
-wk.register({
-  c = {
-    name = "CodeSnap",
-    d = { ":<C-u>CodeSnapOpenDir<CR>", "Open CodeSnap Directory" },
-  },
-}, {
-  prefix = "<leader>",
-  mode = "n"
+wk.add({
+  { "<leader>c", group = "CodeSnap" },
+  { "<leader>cd", ":<C-u>CodeSnapOpenDir<CR>", desc = "Open CodeSnap Directory" },
 })
 
-wk.register({
-  c = {
-    name = "CodeSnap",
-    c = { ":<C-u>CodeSnapSaveAndOpenDir<CR>", "Save and Open CodeSnap Directory" },
-  },
-}, {
-  prefix = "<leader>",
-  mode = "v"
+wk.add({
+  { "<leader>c", group = "CodeSnap", mode = "v" },
+  { "<leader>cc", ":<C-u>CodeSnapSaveAndOpenDir<CR>", desc = "Save and Open CodeSnap Directory", mode = "v" },
 })
 
 codesnap.setup({

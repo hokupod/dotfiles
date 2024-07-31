@@ -127,30 +127,20 @@ let g:fern#renderer = 'nerdfont'
 ]])
 
 local wk = require("which-key")
-wk.register({
-  f = {
-    name = "Filer",
-    ["."] = { "<cmd>Fern . -reveal=% -drawer -toggle -width=40<CR>", "[Filer] Open current directory" },
-  },
-}, {
-  mode = "n",
-  prefix = "<leader>",
+wk.add({
+  { "<leader>f", group = "Filer" },
+  { "<leader>f.", "<cmd>Fern . -reveal=% -drawer -toggle -width=40<CR>", desc = "[Filer] Open current directory" },
 })
 
 -- Trouble
-wk.register({
-  x = {
-    name = "Trouble",
-    ["x"] = { "<cmd>TroubleToggle<CR>", "[Trouble] Toggle" },
-    ["w"] = { "<cmd>TroubleToggle workspace_diagnostics<CR>", "[Trouble] Workspace Diagnostics" },
-    ["d"] = { "<cmd>TroubleToggle document_diagnostics<CR>", "[Trouble] Document Diagnostics" },
-    ["q"] = { "<cmd>TroubleToggle quickfix<CR>", "[Trouble] Quickfix" },
-    ["l"] = { "<cmd>TroubleToggle loclist<CR>", "[Trouble] Loclist" },
-    ["r"] = { "<cmd>TroubleToggle lsp_references<CR>", "[Trouble] LSP References" },
-  },
-}, {
-  mode = "n",
-  prefix = "<leader>",
+wk.add({
+  { "<leader>x", group = "Trouble" },
+  { "<leader>xd", "<cmd>TroubleToggle document_diagnostics<CR>", desc = "[Trouble] Document Diagnostics" },
+  { "<leader>xl", "<cmd>TroubleToggle loclist<CR>", desc = "[Trouble] Loclist" },
+  { "<leader>xq", "<cmd>TroubleToggle quickfix<CR>", desc = "[Trouble] Quickfix" },
+  { "<leader>xr", "<cmd>TroubleToggle lsp_references<CR>", desc = "[Trouble] LSP References" },
+  { "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<CR>", desc = "[Trouble] Workspace Diagnostics" },
+  { "<leader>xx", "<cmd>TroubleToggle<CR>", desc = "[Trouble] Toggle" },
 })
 
 -- dial.nvim
