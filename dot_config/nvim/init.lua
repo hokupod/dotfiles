@@ -217,7 +217,7 @@ require("lazy").setup({
         models = {
           {
             name = "openai",
-            model = "gpt-4-0125-preview",
+            model = "gpt-4o",
             params = nil,
           },
         },
@@ -230,10 +230,12 @@ require("lazy").setup({
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
       {
         "stevearc/dressing.nvim",
         opts = {},
       },
+      "nvim-telescope/telescope.nvim",
     },
     config = true
   },

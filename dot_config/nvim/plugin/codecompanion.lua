@@ -1,19 +1,23 @@
 require("codecompanion").setup({
   adapters = {
-    anthropic = require("codecompanion.adapters").use("anthropic", {
-      schema = {
-        model = {
-          default = "claude-3-5-sonnet-20240620",
+    anthropic = function()
+      return require("codecompanion.adapters").extend("anthropic", {
+        schema = {
+          model = {
+            default = "claude-3-5-sonnet-20240620",
+          },
+        }
+      })
+    end,
+    openai = function()
+      return require("codecompanion.adapters").extend("openai", {
+        schema = {
+          model = {
+            default = "gpt-4o",
+          },
         },
-      }
-    }),
-    openai = require("codecompanion.adapters").use("openai", {
-      schema = {
-        model = {
-          default = "gpt-4o",
-        },
-      }
-    }),
+      })
+    end,
   },
   strategies = {
     chat = {
