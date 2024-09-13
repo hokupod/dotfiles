@@ -28,21 +28,32 @@ require('telescope').setup {
 
 local builtin = require('telescope.builtin')
 local set = vim.keymap.set
-set('n', '<space>:', builtin.command_history, { noremap = true, silent = true, desc = "[Telescope] command_history" })
-set('n', '<space>/', builtin.search_history, { noremap = true, silent = true, desc = "[Telescope] search_history" })
-set('n', '<space>b', builtin.buffers, { noremap = true, silent = true, desc = "[Telescope] buffers" })
-set('n', '<space>f', builtin.find_files, { noremap = true, silent = true, desc = "[Telescope] find_files" })
-set('n', '<space>gf', builtin.git_files, { noremap = true, silent = true, desc = "[Telescope] git_files" })
-set('n', '<space>gc', builtin.git_commits, { noremap = true, silent = true, desc = "[Telescope] git_commits" })
-set('n', '<space>gb', builtin.git_branches, { noremap = true, silent = true, desc = "[Telescope] git_branches" })
-set('n', '<space>gs', builtin.git_status, { noremap = true, silent = true, desc = "[Telescope] git_status" })
-set('n', '<space>gS', builtin.git_stash, { noremap = true, silent = true, desc = "[Telescope] git_status" })
-set('n', '<space>gg', builtin.live_grep, { noremap = true, silent = true, desc = "[Telescope] live_grep" })
-set('n', '<space>cs', builtin.colorscheme, { noremap = true, silent = true, desc = "[Telescope] colorscheme" })
-set('n', '<space>qf', builtin.quickfix, { noremap = true, silent = true, desc = "[Telescope] quickfix" })
-set('n', '<space>hl', builtin.highlights, { noremap = true, silent = true, desc = "[Telescope] highlights" })
-set('n', '<space>km', builtin.keymaps, { noremap = true, silent = true, desc = "[Telescope] keymaps" })
-set('n', '<space>ft', builtin.filetypes, { noremap = true, silent = true, desc = "[Telescope] filetypes" })
-set('n', '<space>u', builtin.oldfiles, { noremap = true, silent = true, desc = "[Telescope] oldfiles" })
-set('n', '<space>gh', extensions('ghq', 'list') {}, { noremap = true, silent = true, desc = "[Telescope] ghq" })
-set('n', '<space>z', extensions('z', 'list') {}, { noremap = true, silent = true, desc = "[Telescope] z" })
+local wk = require('which-key')
+wk.add({
+  mode = { "n", },
+  noremap = true,
+  silent = true,
+  { "<space>", group = "Telescope" },
+  { '<space>:', builtin.command_history, desc = "[Telescope] command_history" },
+  { '<space>/', builtin.search_history, desc = "[Telescope] search_history" },
+  { '<space>b', builtin.buffers, desc = "[Telescope] buffers" },
+  { '<space>c', builtin.colorscheme, desc = "[Telescope] colorscheme" },
+  { '<space>h', builtin.highlights, desc = "[Telescope] highlights" },
+  { '<space>k', builtin.keymaps, desc = "[Telescope] keymaps" },
+  { '<space>u', builtin.oldfiles, desc = "[Telescope] oldfiles" },
+  { '<space>q', builtin.quickfix, desc = "[Telescope] quickfix" },
+  { '<space>z', extensions('z', 'list') {}, desc = "[Telescope] z" },
+
+  { "<space>g", group = "+git" },
+  { '<space>gf', builtin.git_files, desc = "[Telescope] git_files" },
+  { '<space>gc', builtin.git_commits, desc = "[Telescope] git_commits" },
+  { '<space>gb', builtin.git_branches, desc = "[Telescope] git_branches" },
+  { '<space>gs', builtin.git_status, desc = "[Telescope] git_status" },
+  { '<space>gS', builtin.git_stash, desc = "[Telescope] git_status" },
+  { '<space>gg', builtin.live_grep, desc = "[Telescope] live_grep" },
+  { '<space>gh', extensions('ghq', 'list') {}, desc = "[Telescope] ghq" },
+
+  { "<space>f", group = "+file" },
+  { '<space>ff', builtin.find_files, desc = "[Telescope] find_files" },
+  { '<space>ft', builtin.filetypes, desc = "[Telescope] filetypes" },
+})

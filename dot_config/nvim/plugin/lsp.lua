@@ -24,39 +24,33 @@ local on_attach = function(client, bufnr)
 	set("n", "<F2>", "<cmd>Lspsaga rename<CR>")
 
 	local wk = require("which-key")
-	wk.register({
-		l = {
-			name = "LSP",
-			["f"] = { "<cmd>lua vim.lsp.buf.format()<CR>", "[LSP] Format" },
-			["<F2>"] = { "<cmd>Lspsaga rename<CR>", "[LSP] Rename" },
-			g = {
-				name = "+go",
-				d = { "<cmd>Lspsaga goto_definition<CR>", "[LSP] Definition" },
-				i = { "<cmd>Telescope lsp_implementations<CR>", "[LSP] Implementations" },
-				t = { "<cmd>Lspsaga goto_type_definition<CR>", "[LSP] Type definition" },
-				n = { "<cmd>Lspsaga diagnostic_jump_next<CR>", "[LSP] Diagnostics next" },
-				p = { "<cmd>Lspsaga diagnostic_jump_prev<CR>", "[LSP] Diagnostics prev" },
-			},
-			s = {
-				name = "+show",
-				d = { "<cmd>Telescope diagnostics<CR>", "[LSP] Telescope diagnostics" },
-				l = { "<cmd>Lspsaga show_line_diagnostics<CR>", "[LSP] Line diagnostics" },
-				c = { require("actions-preview").code_actions, "[LSP] Code action" },
-				o = { "<cmd>Lspsaga outline<CR>", "[LSP] outline" },
-			},
-			w = {
-				name = "+workspace",
-				a = { "<cmd>vim.lsp.buf.add_workspace_folder<CR>", "[LSP] Add workspace dir" },
-				r = { "<cmd>vim.lsp.buf.remove_workspace_folder<CR>", "[LSP] Remove workspace dir" },
-				l = {
-					"<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
-					"[LSP] List workspace dir",
-				},
-			},
+	wk.add({
+		mode = { "n" },
+		{ "<leader>l", group = "LSP" },
+		{ "<leader>lf", "<cmd>lua vim.lsp.buf.format()<CR>", desc = "Format" },
+		{ "<leader>l<F2>", "<cmd>Lspsaga rename<CR>", desc = "Rename" },
+
+		{ "<leader>lg", group = "+go" },
+		{ "<leader>lgd", "<cmd>Lspsaga goto_definition<CR>", desc = "Definition" },
+		{ "<leader>lgi", "<cmd>Telescope lsp_implementations<CR>", desc = "Implementations" },
+		{ "<leader>lgt", "<cmd>Lspsaga goto_type_definition<CR>", desc = "Type definition" },
+		{ "<leader>lgn", "<cmd>Lspsaga diagnostic_jump_next<CR>", desc = "Diagnostics next" },
+		{ "<leader>lgp", "<cmd>Lspsaga diagnostic_jump_prev<CR>", desc = "Diagnostics prev" },
+
+		{ "<leader>ls", group = "+show" },
+		{ "<leader>lsd", "<cmd>Telescope diagnostics<CR>", desc = "Telescope diagnostics" },
+		{ "<leader>lsl", "<cmd>Lspsaga show_line_diagnostics<CR>", desc = "Line diagnostics" },
+		{ "<leader>lsc", require("actions-preview").code_actions, desc = "Code action" },
+		{ "<leader>lso", "<cmd>Lspsaga outline<CR>", desc = "outline" },
+
+		{ "<leader>lw", group = "+workspace" },
+		{ "<leader>lwa", "<cmd>vim.lsp.buf.add_workspace_folder<CR>", desc = "Add workspace dir" },
+		{ "<leader>lwr", "<cmd>vim.lsp.buf.remove_workspace_folder<CR>", desc = "Remove workspace dir" },
+		{
+			"<leader>lwl",
+			"<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
+			desc = "List workspace dir",
 		},
-	}, {
-		mode = "n",
-		prefix = "<leader>",
 	})
 
 	local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -95,6 +89,34 @@ local feedkey = function(key, mode)
 	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
 end
 
+local kind_icons = {
+  Text = "",
+  Method = "󰆧",
+  Function = "󰊕",
+  Constructor = "",
+  Field = "󰇽",
+  Variable = "󰂡",
+  Class = "󰠱",
+  Interface = "",
+  Module = "",
+  Property = "󰜢",
+  Unit = "",
+  Value = "󰎠",
+  Enum = "",
+  Keyword = "󰌋",
+  Snippet = "",
+  Color = "󰏘",
+  File = "󰈙",
+  Reference = "",
+  Folder = "󰉋",
+  EnumMember = "",
+  Constant = "󰏿",
+  Struct = "",
+  Event = "",
+  Operator = "󰆕",
+  TypeParameter = "󰅲",
+}
+
 cmp.setup({
 	snippet = {
 		-- REQUIRED - you must specify a snippet engine
@@ -103,8 +125,8 @@ cmp.setup({
 		end,
 	},
 	window = {
-		-- completion = cmp.config.window.bordered(),
-		-- documentation = cmp.config.window.bordered(),
+		completion = cmp.config.window.bordered(),
+		documentation = cmp.config.window.bordered(),
 	},
 	mapping = cmp.mapping.preset.insert({
 		["<C-b>"] = cmp.mapping.scroll_docs(-4),
@@ -116,7 +138,7 @@ cmp.setup({
 		}),
 		["<Tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
-				cmp.select_next_item()
+				cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
 			elseif vim.fn["vsnip#available"](1) == 1 then
 				feedkey("<Plug>(vsnip-expand-or-jump)", "")
 			elseif has_words_before() then
@@ -135,27 +157,32 @@ cmp.setup({
 		end, { "i", "s" }),
 	}),
 	sources = cmp.config.sources({
-		{ name = "nvim_lsp" },
-		{ name = "vsnip" }, -- For vsnip users.
-		{ name = "nvim_lsp_signature_help" },
-		{ name = "nvim_lua" },
+		{ name = "copilot", group_index = 2 },
+		{ name = "nvim_lsp", group_index = 2 },
+		{ name = "vsnip", group_index = 2 }, -- For vsnip users.
+		{ name = "nvim_lsp_signature_help", group_index = 2 },
+		{ name = "nvim_lua", group_index = 2 },
 	}, {
 		{ name = "buffer" },
 	}),
-
 	formatting = {
+    fields = { "kind", "abbr", "menu" },
+    expandable_indicator = true,
 		format = lspkind.cmp_format({
-			mode = "symbol",    -- show only symbol annotations
-			maxwidth = 50,      -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-			ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-			symbol_map = { Codeium = "" },
+			mode = "symbol",
+			maxwidth = 50,
+			ellipsis_char = "...",
+			symbol_map = {
+				Codeium = "",
+				Copilot = "",
+			},
+			show_labelDetails = true,
 
 			-- The function below will be called before any actual modifications from lspkind
 			-- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-			-- before = function (entry, vim_item)
-			--   ...
-			--   return vim_item
-			-- end
+			before = function (entry, vim_item)
+			  return vim_item
+			end
 		}),
 	},
 })

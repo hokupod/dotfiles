@@ -13,7 +13,7 @@ require("codecompanion").setup({
       return require("codecompanion.adapters").extend("openai", {
         schema = {
           model = {
-            default = "gpt-4o",
+            default = "chatgpt-4o-latest",
           },
         },
       })
