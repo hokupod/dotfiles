@@ -13,6 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- vim.g.mapleader = " "
 require("lazy").setup({
+  'vim-denops/denops.vim',
   "folke/which-key.nvim",
   "folke/neodev.nvim",
   "shortcuts/no-neck-pain.nvim",
@@ -170,6 +171,7 @@ require("lazy").setup({
   'hrsh7th/cmp-vsnip',
   'hrsh7th/vim-vsnip',
   -- Git
+  'lambdalisue/vim-gin',
   {
     "NeogitOrg/neogit",
     dependencies = {
