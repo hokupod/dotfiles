@@ -227,10 +227,42 @@ require("mason-lspconfig").setup_handlers({
 
 local lspconfig = require("lspconfig")
 
+local is_node_dir = function()
+  return lspconfig.util.root_pattern('package.json')(vim.fn.getcwd())
+end
+
 lspconfig["ts_ls"].setup({
+	root_dir = lspconfig.util.root_pattern("package.json"),
 	on_attach = function(client, _)
+
 		client.server_capabilities.document_formatting = false
 		client.server_capabilities.documentRangeFormattingProvider = false
+
+		if not is_node_dir() then
+   	 client.stop(true)
+  	end
+	end,
+})
+
+lspconfig["denols"].setup({
+  root_dir = lspconfig.util.root_pattern("deno.json"),
+  init_options = {
+    lint = true,
+    unstable = true,
+    suggest = {
+      imports = {
+        hosts = {
+          ["https://deno.land"] = true,
+          ["https://cdn.nest.land"] = true,
+          ["https://crux.land"] = true,
+        },
+      },
+    },
+  },
+	on_attach = function(client, _)
+		if is_node_dir() then
+   	 client.stop(true)
+  	end
 	end,
 })
 
