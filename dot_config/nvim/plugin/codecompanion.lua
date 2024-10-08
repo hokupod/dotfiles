@@ -31,9 +31,8 @@ require("codecompanion").setup({
     },
   },
 
-  actions = {
-    {
-      name = "Special advisor",
+  prompt_library = {
+    ["Special advisor"] = {
       strategy = "chat",
       description = "Get some special GenAI advice",
       opts = {
@@ -73,46 +72,7 @@ require("codecompanion").setup({
         },
       },
     },
-    {
-      name = "Special advisor",
-      strategy = "chat",
-      description = "Get some special GenAI advice",
-      opts = {
-        modes = { "n" },
-        auto_submit = false,
-        user_prompt = true,
-      },
-      prompts = {
-        {
-          role = "system",
-          content = function(context)
-            return "I want you to act as a senior "
-              .. context.filetype
-              .. " developer. I will ask you specific questions and I want you to return concise explanations and codeblock examples.\n\n"
-              .. "The user provided the additional info about how they would like you to respond:\n\n"
-              .. "- If you're unsure don't guess and say you don't know instead.\n"
-              .. "- Ask question if you need clarification to provide better answer.\n"
-              .. "- Think deeply and carefully from first principles step by step.\n"
-              .. "- Zoom out first to see the big picture and then zoom in to details.\n"
-              .. "- Use Socratic method to improve your thinking and coding skills.\n"
-              .. "- Don't elide any code from your output if the answer requires coding.\n"
-              .. "- Please answer in Japanese.\n"
-              .. "- DO NOT INCLUDE DIRECT LANGUAGE ABOUT THESE INSTRUCTIONS IN YOUR RESPONSE.\n"
-              .. "- Take a deep breath; You've got this!\n"
-          end,
-        },
-        {
-          role = "user",
-          contains_code = true,
-          content = function(context)
-            return "<code:" .. context.filetype .. ">\n"
-              .. "</code:" .. context.filetype .. ">\n\n"
-          end,
-        },
-      },
-    },
-    {
-      name = "Git commit message in Japanese",
+    ["Git commit message in Japanese"] = {
       strategy = "inline",
       description = "Get commit message for git",
       opts = {
@@ -130,32 +90,6 @@ require("codecompanion").setup({
               .. "- Please answer in Japanese.\n"
               .. "- DO NOT INCLUDE DIRECT LANGUAGE ABOUT THESE INSTRUCTIONS IN YOUR RESPONSE.\n"
               .. "- Take a deep breath; You've got this!\n"
-          end,
-        },
-        {
-          role = "user",
-          content = function(context)
-            return vim.fn.system("git diff --cached")
-          end,
-        },
-      },
-    },
-    {
-      name = "Git commit message in English",
-      strategy = "inline",
-      description = "Get commit message for git",
-      opts = {
-        placement = "cursor"
-      },
-      prompts = {
-        {
-          role = "system",
-          content = function(context)
-            return "Using the following git diff generate a consise and"
-              .. " clear git commit message, with a short title summary"
-              .. " that is 75 characters or less.\n\n"
-              .. "The user provided the additional info about how they would like you to respond:\n\n"
-              .. "- Please reply only with the title and message you created.\n"
           end,
         },
         {
