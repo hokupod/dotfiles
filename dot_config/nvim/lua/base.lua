@@ -206,3 +206,15 @@ nmap g/ <Plug>(modesearch-slash)
 nmap g? <Plug>(modesearch-question)
 cmap <C-x> <Plug>(modesearch-toggle-mode)
 ]])
+
+-- CAPS LOCK
+vim.keymap.set("i", "<C-l>",
+  function()
+    local line = vim.fn.getline(".")
+    local col = vim.fn.getpos(".")[3]
+    local substring = line:sub(1, col - 1)
+    local result = vim.fn.matchstr(substring, [[\v<(\k(<)@!)*$]])
+    return "<C-w>" .. result:upper()
+  end,
+  {expr = true}
+)

@@ -20,6 +20,23 @@ require("lazy").setup({
   "sainnhe/everforest",
   "lewis6991/gitsigns.nvim",
   "machakann/vim-sandwich",
+  {
+    "johmsalas/text-case.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("textcase").setup({})
+      require("telescope").load_extension("textcase")
+    end,
+    cmd = {
+      -- NOTE: The Subs command name can be customized via the option "substitude_command_name"
+      "Subs",
+      "TextCaseOpenTelescope",
+      "TextCaseOpenTelescopeQuickChange",
+      "TextCaseOpenTelescopeLSPChange",
+      "TextCaseStartReplacingCommand",
+    },
+    lazy = false,
+  },
   "glidenote/memolist.vim",
   {
     'renerocksai/telekasten.nvim',
