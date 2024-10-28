@@ -344,6 +344,17 @@ require("lazy").setup({
     opts = {}
   },
   {
+    "junegunn/fzf",
+    cmd = { "Fzf" },
+    setup = function()
+      vim.fn["fzf#install"]()
+    end,
+  },
+  {
+    "junegunn/fzf.vim",
+    dependencies = { "junegunn/fzf" },
+  },
+  {
     "https://github.com/atusy/treemonkey.nvim",
     init = function()
       vim.keymap.set({ "x", "o" }, "m", function()
