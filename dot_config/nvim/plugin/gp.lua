@@ -1,5 +1,5 @@
 require("gp").setup({
-    default_chat_agent = "Claude-3-5-Sonnet",
+    default_chat_agent = "Claude35Sonnet",
     chat_topic_gen_model = "claude-3-5-sonnet-20241022",
     providers = {
         anthropic = {
