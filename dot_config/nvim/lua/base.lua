@@ -41,7 +41,7 @@ else
 end
 
 
-local colorscheme = "everforest"
+local colorscheme = "zenbones"
 local ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 vim.o.background = "dark" -- or "light" for light mode
 if ok then
