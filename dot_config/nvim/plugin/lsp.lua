@@ -233,7 +233,8 @@ end
 
 lspconfig["ts_ls"].setup({
 	root_dir = lspconfig.util.root_pattern("package.json"),
-	on_attach = function(client, _)
+	on_attach = function(client, bufnr)
+		on_attach(client, bufnr)
 
 		client.server_capabilities.document_formatting = false
 		client.server_capabilities.documentRangeFormattingProvider = false
@@ -245,7 +246,7 @@ lspconfig["ts_ls"].setup({
 })
 
 lspconfig["denols"].setup({
-  root_dir = lspconfig.util.root_pattern("deno.json"),
+  root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
   init_options = {
     lint = true,
     unstable = true,
@@ -259,7 +260,8 @@ lspconfig["denols"].setup({
       },
     },
   },
-	on_attach = function(client, _)
+	on_attach = function(client, bufnr)
+		on_attach(client, bufnr)
 		if is_node_dir() then
    	 client.stop(true)
   	end

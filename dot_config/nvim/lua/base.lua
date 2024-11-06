@@ -135,12 +135,12 @@ wk.add({
 -- Trouble
 wk.add({
   { "<leader>x", group = "Trouble" },
-  { "<leader>xd", "<cmd>TroubleToggle document_diagnostics<CR>", desc = "[Trouble] Document Diagnostics" },
-  { "<leader>xl", "<cmd>TroubleToggle loclist<CR>", desc = "[Trouble] Loclist" },
-  { "<leader>xq", "<cmd>TroubleToggle quickfix<CR>", desc = "[Trouble] Quickfix" },
-  { "<leader>xr", "<cmd>TroubleToggle lsp_references<CR>", desc = "[Trouble] LSP References" },
-  { "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<CR>", desc = "[Trouble] Workspace Diagnostics" },
-  { "<leader>xx", "<cmd>TroubleToggle<CR>", desc = "[Trouble] Toggle" },
+  { "<leader>xd", "<cmd>Trouble document_diagnostics<CR>", desc = "[Trouble] Document Diagnostics" },
+  { "<leader>xl", "<cmd>Trouble loclist<CR>", desc = "[Trouble] Loclist" },
+  { "<leader>xq", "<cmd>Trouble quickfix<CR>", desc = "[Trouble] Quickfix" },
+  { "<leader>xr", "<cmd>Trouble lsp_references<CR>", desc = "[Trouble] LSP References" },
+  { "<leader>xw", "<cmd>Trouble workspace_diagnostics<CR>", desc = "[Trouble] Workspace Diagnostics" },
+  { "<leader>xx", "<cmd>Trouble<CR>", desc = "[Trouble] Toggle" },
 })
 
 -- dial.nvim
