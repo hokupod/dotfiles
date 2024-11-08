@@ -1,4 +1,12 @@
 require("codecompanion").setup({
+  opts = {
+    language = "Japanese",
+  },
+  display = {
+    chat = {
+      render_headers = false,
+    }
+  },
   strategies = {
     chat = {
       adapter = "copilot",
