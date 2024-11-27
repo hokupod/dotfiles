@@ -10,6 +10,18 @@ require("codecompanion").setup({
   strategies = {
     chat = {
       adapter = "copilot",
+      slash_commands = {
+        -- ["buffer"] = {
+        --   opts = {
+        --     provider = "mini_pick",
+        --   },
+        -- },
+        -- ["file"] = {
+        --   opts = {
+        --     provider = "mini_pick",
+        --   },
+        -- },
+      },
     },
     inline = {
       adapter = "copilot",
@@ -79,3 +91,5 @@ wk.add({
 })
 -- Expand 'cc' into 'CodeCompanion' in the command line
 vim.cmd([[cab cc CodeCompanion]])
+vim.cmd([[cab ccc CodeCompanionChat]])
+vim.cmd([[cab cmd CodeCompanionCmd]])

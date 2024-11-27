@@ -1,3 +1,8 @@
+function is_git_repo()
+  local _ = vim.fn.system("git rev-parse --is-inside-work-tree 2>/dev/null")
+  return vim.v.shell_error == 0
+end
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -14,6 +19,11 @@ vim.opt.rtp:prepend(lazypath)
 -- vim.g.mapleader = " "
 require("lazy").setup({
   'vim-denops/denops.vim',
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+  },
   "folke/which-key.nvim",
   "folke/neodev.nvim",
   "shortcuts/no-neck-pain.nvim",
@@ -314,6 +324,16 @@ require("lazy").setup({
     config = true
   },
   {
+    "MeanderingProgrammer/render-markdown.nvim", -- Make Markdown buffers look beautiful
+    ft = { "markdown", "codecompanion" },
+    opts = {
+      render_modes = true, -- Render in ALL modes
+      sign = {
+        enabled = false, -- Turn off in the status column
+      },
+    },
+  },
+  {
     "folke/edgy.nvim",
     event = "VeryLazy",
     init = function()
@@ -374,6 +394,8 @@ require("lazy").setup({
       end)
     end
   },
+  -- REST Client
+  { 'mistweaverco/kulala.nvim', opts = {} },
 })
 
 require('base')
