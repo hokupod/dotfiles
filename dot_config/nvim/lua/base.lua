@@ -18,7 +18,7 @@ opt.smarttab = true
 opt.shiftwidth = 2
 opt.tabstop = 2
 
-opt.shell = 'fish'
+opt.shell = os.getenv('SHELL')
 opt.swapfile = false
 
 opt.undodir = home_dir .. '.vim_undo'
