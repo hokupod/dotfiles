@@ -1,3 +1,6 @@
+-- https://github.com/epwalsh/obsidian.nvim/issues/286
+vim.opt.conceallevel = 1
+
 local home_dir = vim.fn.expand('$HOME/')
 local vault_path = home_dir .. 'Documents/obsidian_vault'
 if vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1 then
@@ -42,7 +45,7 @@ require("obsidian").setup {
         return os.date("%Y-%m-%d", os.time() + 86400)
       end,
       daily_title = function()
-        return os.date("%Y年%m月%d日 %a曜日")
+        return os.date("%Y年%m月%d日 %a")
       end,
       now = function()
         return os.date('%Y-%m-%d %H:%M')
@@ -83,6 +86,14 @@ require("obsidian").setup {
     -- Trigger completion at 2 chars.
     min_chars = 2,
   },
+  callbacks = {
+    -- @param client obsidian.Client
+    -- @param note obsidian.Note
+    pre_write_note = function(client, note)
+      -- Update the modified field of the note
+      note:add_field("modified", os.date('%Y-%m-%d %H:%M'))
+    end,
+  },
 }
 
 local function is_markdown()
@@ -93,9 +104,9 @@ wk.add({
   { "<leader>o", group = "Obsidian", mode = { "n", }, },
   { "<leader>on", "<cmd>ObsidianNew<cr>", desc = "[Obsidian] New" },
   { "<leader>ot", "<cmd>ObsidianToday<cr>", desc = "[Obsidian] Today's Daily Note" },
-  { "<leader>op", "<cmd>edit " .. latest_daily_note_full .. "<cr>", desc = "[Obsidian] Latest Daily Note" },
-  { "<leader>oc", "<cmd>ObsidianToggleCheckbox<cr>", desc = "[Obsidian] Toggle Checkbox", cond = is_markdown },
-  { "<leader>of", "<cmd>ObsidianFollowLink<cr>", desc = "[Obsidian] Follow Link", cond = is_markdown },
+  { "<leader>ol", "<cmd>edit " .. latest_daily_note_full .. "<cr>", desc = "[Obsidian] Latest Daily Note" },
+  { "<leader>oc", "<cmd>ObsidianToggleCheckbox<cr>", desc = "[Obsidian] Toggle Checkbox", },
+  { "<leader>of", "<cmd>ObsidianFollowLink<cr>", desc = "[Obsidian] Follow Link", },
 })
 vim.keymap.set("n", "gf", function()
   if require("obsidian").util.cursor_on_markdown_link() then
@@ -107,3 +118,11 @@ end, { noremap = false, expr = true })
 
 vim.cmd([[cab on ObsidianNew]])
 vim.cmd([[cab ot ObsidianToday]])
+
+-- vim.api.nvim_create_autocmd({ "FileType" }, {
+--   pattern = "*",
+--   callback = function()
+--     print("FileType: " .. vim.bo.filetype)
+--     print("is_markdown(): " .. tostring(is_markdown()))
+--   end,
+-- })
