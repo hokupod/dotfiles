@@ -23,10 +23,32 @@ local function get_latest_file(directory)
     return a > b
   end)
 
-  return files[2]
+  local latest_file = files[1]
+  local todays_file = os.date("%Y-%m-%d") .. ".md"
+
+  if latest_file == todays_file then
+    return files[2]
+  end
+  return files[1]
 end
 local latest_daily_note = get_latest_file(vault_path .. "/" .. daily_notes_dir )
 local latest_daily_note_full = vault_path .. "/" .. daily_notes_dir .. "/" .. latest_daily_note
+
+-- Number of seconds in a day
+local DAY_SECONDS = 86400
+
+-- Returns the date for the next working day
+local function next_daily_note()
+  local weekday = tonumber(os.date("%w"))
+
+  if weekday == 5 then  -- Friday
+    return os.date("%Y-%m-%d", os.time() + (DAY_SECONDS * 3))
+  elseif weekday == 6 then  -- Saturday
+    return os.date("%Y-%m-%d", os.time() + (DAY_SECONDS * 2))
+  end
+
+  return os.date("%Y-%m-%d", os.time() + DAY_SECONDS)
+end
 
 require("obsidian").setup {
   workspaces = {
@@ -38,6 +60,7 @@ require("obsidian").setup {
   templates = {
     folder = "99_Templates",
     substitutions = {
+      next_daily_note = next_daily_note,
       yesterday = function()
         return os.date("%Y-%m-%d", os.time() - 86400)
       end,
@@ -79,6 +102,11 @@ require("obsidian").setup {
   },
   attachments = {
     img_folder = "90_Extra",
+    ---@return string
+    img_name_func = function()
+      -- Prefix image names with timestamp.
+      return string.format("%s-", os.time())
+    end,
   },
   completion = {
     -- Set to false to disable completion.
@@ -87,8 +115,7 @@ require("obsidian").setup {
     min_chars = 2,
   },
   callbacks = {
-    -- @param client obsidian.Client
-    -- @param note obsidian.Note
+    -- Runs right before writing the buffer for a note.
     pre_write_note = function(client, note)
       -- Update the modified field of the note
       note:add_field("modified", os.date('%Y-%m-%d %H:%M'))
@@ -100,12 +127,13 @@ local function is_markdown()
   return vim.bo.filetype == 'markdown'
 end
 local wk = require("which-key")
+local ob = require("obsidian")
 wk.add({
   { "<leader>o", group = "Obsidian", mode = { "n", }, },
   { "<leader>on", "<cmd>ObsidianNew<cr>", desc = "[Obsidian] New" },
   { "<leader>ot", "<cmd>ObsidianToday<cr>", desc = "[Obsidian] Today's Daily Note" },
   { "<leader>ol", "<cmd>edit " .. latest_daily_note_full .. "<cr>", desc = "[Obsidian] Latest Daily Note" },
-  { "<leader>oc", "<cmd>ObsidianToggleCheckbox<cr>", desc = "[Obsidian] Toggle Checkbox", },
+  { "<leader>oc", ob.util.toggle_checkbox, desc = "[Obsidian] Toggle Checkbox", },
   { "<leader>of", "<cmd>ObsidianFollowLink<cr>", desc = "[Obsidian] Follow Link", },
 })
 vim.keymap.set("n", "gf", function()

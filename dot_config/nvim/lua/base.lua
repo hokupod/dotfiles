@@ -135,11 +135,12 @@ wk.add({
 -- Trouble
 wk.add({
   { "<leader>x", group = "Trouble" },
-  { "<leader>xd", "<cmd>Trouble document_diagnostics<CR>", desc = "[Trouble] Document Diagnostics" },
-  { "<leader>xl", "<cmd>Trouble loclist<CR>", desc = "[Trouble] Loclist" },
-  { "<leader>xq", "<cmd>Trouble quickfix<CR>", desc = "[Trouble] Quickfix" },
-  { "<leader>xr", "<cmd>Trouble lsp_references<CR>", desc = "[Trouble] LSP References" },
-  { "<leader>xw", "<cmd>Trouble workspace_diagnostics<CR>", desc = "[Trouble] Workspace Diagnostics" },
+  { "<leader>xd", "<cmd>Trouble diagnostics toggle<CR>", desc = "[Trouble] Document Diagnostics in Workspace" },
+  { "<leader>xD", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "[Trouble] Document Diagnostics in Current Buffer" },
+  { "<leader>xl", "<cmd>Trouble lsp toggle focus=false win.position=right<CR>", desc = "[Trouble] LSP Definitions / references / ... " },
+  { "<leader>xL", "<cmd>Trouble loclist toggle<CR>", desc = "[Trouble] Loclist" },
+  { "<leader>xs", "<cmd>Trouble symbols toggle focus=false<CR>", desc = "[Trouble] Symbols" },
+  { "<leader>xq", "<cmd>Trouble qflist toggle<CR>", desc = "[Trouble] Quickfix List" },
   { "<leader>xx", "<cmd>Trouble<CR>", desc = "[Trouble] Toggle" },
 })
 
@@ -218,3 +219,15 @@ vim.keymap.set("i", "<C-l>",
   end,
   {expr = true}
 )
+
+-- nvzone/menu
+vim.keymap.set("n", "<C-t>", function()
+  require("menu").open("default")
+end, {})
+
+vim.keymap.set("n", "<RightMouse>", function()
+  vim.cmd.exec '"normal! \\<RightMouse>"'
+
+  local options = vim.bo.ft == "NvimTree" and "nvimtree" or "default"
+  require("menu").open(options, { mouse = true })
+end, {})

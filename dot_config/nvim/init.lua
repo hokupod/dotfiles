@@ -26,6 +26,8 @@ require("lazy").setup({
   },
   "folke/which-key.nvim",
   "folke/neodev.nvim",
+  { "nvzone/volt", lazy = true, },
+  { "nvzone/menu", lazy = true, },
   "shortcuts/no-neck-pain.nvim",
   "sainnhe/everforest",
   {
@@ -96,9 +98,7 @@ require("lazy").setup({
   },
   {
     "karb94/neoscroll.nvim",
-    config = function()
-      require('neoscroll').setup {}
-    end
+    opts = {},
   },
   {
     'yamatsum/nvim-cursorline',
@@ -120,9 +120,7 @@ require("lazy").setup({
   {
     "asiryk/auto-hlsearch.nvim",
     tag = "1.1.0",
-    config = function()
-      require("auto-hlsearch").setup()
-    end
+    opts = {},
   },
   {
     'nvim-lualine/lualine.nvim',
@@ -269,10 +267,6 @@ require("lazy").setup({
     config = true
   },
   {
-    "tanvirtin/vgit.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-  },
-  {
     "linrongbin16/gitlinker.nvim",
     cmd = "GitLink",
     opts = {},
@@ -280,15 +274,11 @@ require("lazy").setup({
   -- AI
   {
     "zbirenbaum/copilot.lua",
-    config = function ()
-      require("copilot").setup()
-    end
+    opts = {},
   },
   {
     "zbirenbaum/copilot-cmp",
-    config = function ()
-      require("copilot_cmp").setup()
-    end
+    opts = {},
   },
   {
     "Bryley/neoai.nvim",
@@ -341,6 +331,9 @@ require("lazy").setup({
   {
     "MeanderingProgrammer/render-markdown.nvim", -- Make Markdown buffers look beautiful
     ft = { "markdown", "codecompanion" },
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
     opts = {
       render_modes = true, -- Render in ALL modes
       sign = {
@@ -369,9 +362,7 @@ require("lazy").setup({
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
-    config = function()
-      require("treesitter-context").setup()
-    end
+    opts = {}
   },
   {
     'nvim-telescope/telescope.nvim',
