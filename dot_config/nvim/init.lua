@@ -271,6 +271,11 @@ require("lazy").setup({
     cmd = "GitLink",
     opts = {},
   },
+  -- Translate
+  {
+    "uga-rosa/translate.nvim",
+    opts = {},
+  },
   -- AI
   {
     "zbirenbaum/copilot.lua",

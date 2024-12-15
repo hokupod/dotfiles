@@ -34,20 +34,21 @@ end
 local latest_daily_note = get_latest_file(vault_path .. "/" .. daily_notes_dir )
 local latest_daily_note_full = vault_path .. "/" .. daily_notes_dir .. "/" .. latest_daily_note
 
--- Number of seconds in a day
-local DAY_SECONDS = 86400
-
 -- Returns the date for the next working day
 local function next_daily_note()
-  local weekday = tonumber(os.date("%w"))
+  local date = os.date("*t")
+  local wday = date.wday
 
-  if weekday == 5 then  -- Friday
-    return os.date("%Y-%m-%d", os.time() + (DAY_SECONDS * 3))
-  elseif weekday == 6 then  -- Saturday
-    return os.date("%Y-%m-%d", os.time() + (DAY_SECONDS * 2))
+  if wday == 6 then  -- Friday
+    date.day = date.day + 3
+  elseif wday == 7 then  -- Saturday
+    date.day = date.day + 2
+  else
+    date.day = date.day + 1
   end
 
-  return os.date("%Y-%m-%d", os.time() + DAY_SECONDS)
+  local next_time = os.time(date)
+  return os.date("%Y-%m-%d", next_time)
 end
 
 require("obsidian").setup {
