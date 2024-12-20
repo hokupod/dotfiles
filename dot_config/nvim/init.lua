@@ -44,6 +44,7 @@ require("lazy").setup({
     --     vim.cmd.colorscheme('zenbones')
     -- end
   },
+  "yorickpeterse/nvim-grey",
   "lewis6991/gitsigns.nvim",
   "machakann/vim-sandwich",
   {
@@ -284,41 +285,6 @@ require("lazy").setup({
   {
     "zbirenbaum/copilot-cmp",
     opts = {},
-  },
-  {
-    "Bryley/neoai.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-    },
-    cmd = {
-      "NeoAI",
-      "NeoAIOpen",
-      "NeoAIClose",
-      "NeoAIToggle",
-      "NeoAIContext",
-      "NeoAIContextOpen",
-      "NeoAIContextClose",
-      "NeoAIInject",
-      "NeoAIInjectCode",
-      "NeoAIInjectContext",
-      "NeoAIInjectContextCode",
-    },
-    keys = {
-      { "<leader>as", desc = "summarize text" },
-      { "<leader>ag", desc = "generate git message" },
-    },
-    config = function()
-      require("neoai").setup({
-        models = {
-          {
-            name = "openai",
-            model = "gpt-4o",
-            params = nil,
-          },
-        },
-      })
-    end,
   },
   "robitx/gp.nvim",
   {

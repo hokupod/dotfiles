@@ -1,19 +1,31 @@
 -- Telescope
+local telescope = require "telescope"
 local function extensions(name, prop)
   return function(opt)
     return function()
-      local telescope = require "telescope"
       telescope.load_extension(name)
       return telescope.extensions[name][prop](opt or {})
     end
   end
 end
 
-require('telescope').setup {
-  defaults = {
-    mappings = {
-    },
+local defaults = {
+  -- These three settings are optional, but recommended.
+  prompt_prefix = '',
+  entry_prefix = ' ',
+  selection_caret = ' ',
+
+  -- This is the important part: without this, Telescope windows will look a
+  -- bit odd due to how borders are highlighted.
+  layout_strategy = 'grey',
+  layout_config = {
+    -- The extension supports both "top" and "bottom" for the prompt.
+    prompt_position = 'bottom',
   },
+}
+
+require('telescope').setup {
+  defaults = defaults,
   pickers = {
     find_files = {
       hidden = true
@@ -25,6 +37,8 @@ require('telescope').setup {
     }
   },
 }
+
+telescope.load_extension('grey')
 
 local builtin = require('telescope.builtin')
 local set = vim.keymap.set

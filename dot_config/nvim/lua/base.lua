@@ -41,12 +41,12 @@ else
 end
 
 
-local colorscheme = "zenbones"
+local colorscheme = "grey"
 local ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
-vim.o.background = "dark" -- or "light" for light mode
+vim.o.background = "light"
 if ok then
   require('lualine').setup {
-    options = { theme = colorscheme },
+    options = { theme = 'auto' },
   }
 else
   vim.notify("colorscheme " .. colorscheme .. " not found!")
