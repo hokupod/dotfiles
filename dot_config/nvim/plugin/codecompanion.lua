@@ -178,20 +178,20 @@ end
 
 local wk = require("which-key")
 wk.add({
-  { "<leader>a", group = "AI" },
-  { "<leader>aa", "<cmd>CodeCompanionActions<cr>", desc = "[AI] Code Companion Actions" },
-  { "<leader>ac", "<cmd>CodeCompanionToggle<cr>", desc = "[AI] Code Companion Toggle Chat" },
-})
-
-wk.add({
+  {
+    mode = { "n", "x" },
+    { "<leader>a", group = "AI" },
+    { "<leader>aa", "<cmd>CodeCompanionActions<cr>", desc = "[AI] Code Companion Actions" },
+  },
   {
     mode = { "v" },
     { "<leader>a", group = "AI" },
     { "<leader>aa", "<cmd>CodeCompanionActions<cr>", desc = "[AI] Code Companion Actions" },
-    { "<leader>ac", "<cmd>CodeCompanionToggle<cr>", desc = "[AI] Code Companion Toggle Chat" },
+    { "<leader>ac", "<cmd>CodeCompanion /cm<cr>", desc = "[AI] Create Communicatable Message" },
   },
 })
 -- Expand 'cc' into 'CodeCompanion' in the command line
 vim.cmd([[cab cc CodeCompanion]])
 vim.cmd([[cab ccc CodeCompanionChat]])
 vim.cmd([[cab cmd CodeCompanionCmd]])
+vim.cmd([[cab ccm CodeCompanion /cm]])
