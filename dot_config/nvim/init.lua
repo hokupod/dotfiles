@@ -218,6 +218,13 @@ require("lazy").setup({
       "nvim-treesitter/nvim-treesitter",
     },
   },
+  {
+    "andersevenrud/nvim_context_vt",
+    opts = {},
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
+  },
   -- DAP
   {
     "mfussenegger/nvim-dap",
