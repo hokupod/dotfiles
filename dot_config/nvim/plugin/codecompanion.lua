@@ -37,6 +37,22 @@ require("codecompanion").setup({
         },
       })
     end,
+    open_router = function()
+      return require("codecompanion.adapters").extend("openai_compatible", {
+        name = "open_router",
+        env = {
+          url = "https://openrouter.ai/api",
+          api_key = function()
+            return os.getenv("OPENROUTER_API_KEY")
+          end,
+        },
+        schema = {
+          model = {
+            -- default = "",
+          }
+        },
+      })
+    end
   },
   prompt_library = {
     ["Communicatable Message"] = {
