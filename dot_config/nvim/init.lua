@@ -45,6 +45,10 @@ require("lazy").setup({
     -- end
   },
   "yorickpeterse/nvim-grey",
+  {
+    "nacro90/numb.nvim",
+    opts = {},
+  },
   "lewis6991/gitsigns.nvim",
   "machakann/vim-sandwich",
   {
@@ -127,10 +131,12 @@ require("lazy").setup({
     'nvim-lualine/lualine.nvim',
   },
   {
-    'smoka7/hop.nvim',
-    version = "*",
-    opts = {},
+    "skanehira/jumpcursor.vim",
+    config = function()
+      vim.keymap.set('n', 'z', '<Plug>(jumpcursor-jump)')
+    end
   },
+  "rhysd/clever-f.vim",
   {
     "folke/trouble.nvim",
     opts = {},
@@ -192,6 +198,7 @@ require("lazy").setup({
     'stevearc/conform.nvim',
     opts = {},
   },
+  { "lukas-reineke/lsp-format.nvim" }, -- TODO: setup
   "mfussenegger/nvim-lint",
   "neovim/nvim-lspconfig",
   "onsails/lspkind.nvim",
