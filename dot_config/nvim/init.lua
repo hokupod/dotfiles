@@ -18,7 +18,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- vim.g.mapleader = " "
 require("lazy").setup({
-  'vim-denops/denops.vim',
+  "vim-denops/denops.vim",
   {
     "folke/snacks.nvim",
     priority = 1000,
@@ -26,8 +26,8 @@ require("lazy").setup({
   },
   "folke/which-key.nvim",
   "folke/neodev.nvim",
-  { "nvzone/volt", lazy = true, },
-  { "nvzone/menu", lazy = true, },
+  { "nvzone/volt", lazy = true },
+  { "nvzone/menu", lazy = true },
   "shortcuts/no-neck-pain.nvim",
   "sainnhe/everforest",
   {
@@ -71,7 +71,7 @@ require("lazy").setup({
   "glidenote/memolist.vim",
   {
     "epwalsh/obsidian.nvim",
-    version = "*",  -- recommended, use latest release instead of latest commit
+    version = "*", -- recommended, use latest release instead of latest commit
     lazy = true,
     ft = "markdown",
     -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
@@ -89,16 +89,20 @@ require("lazy").setup({
     },
   },
   "mattn/vim-findroot",
-  'cohama/lexima.vim',
-  'monaqa/dial.nvim',
-  'monaqa/modesearch.vim',
-  'tpope/vim-commentary',
-  'kevinhwang91/nvim-bqf',
-  'lambdalisue/fern.vim',
-  'echasnovski/mini.icons',
-  'nvim-tree/nvim-web-devicons',
+  "cohama/lexima.vim",
   {
-    'stevearc/oil.nvim',
+    "windwp/nvim-ts-autotag",
+    opts = {},
+  },
+  "monaqa/dial.nvim",
+  "monaqa/modesearch.vim",
+  "tpope/vim-commentary",
+  "kevinhwang91/nvim-bqf",
+  "lambdalisue/fern.vim",
+  "echasnovski/mini.icons",
+  "nvim-tree/nvim-web-devicons",
+  {
+    "stevearc/oil.nvim",
     opts = {},
   },
   {
@@ -106,9 +110,9 @@ require("lazy").setup({
     opts = {},
   },
   {
-    'yamatsum/nvim-cursorline',
+    "yamatsum/nvim-cursorline",
     config = function()
-      require('nvim-cursorline').setup {
+      require("nvim-cursorline").setup({
         cursorline = {
           enable = true,
           timeout = 1000,
@@ -118,9 +122,9 @@ require("lazy").setup({
           enable = true,
           min_length = 3,
           hl = { underline = true },
-        }
-      }
-    end
+        },
+      })
+    end,
   },
   {
     "asiryk/auto-hlsearch.nvim",
@@ -128,13 +132,13 @@ require("lazy").setup({
     opts = {},
   },
   {
-    'nvim-lualine/lualine.nvim',
+    "nvim-lualine/lualine.nvim",
   },
   {
     "skanehira/jumpcursor.vim",
     config = function()
-      vim.keymap.set('n', 'z', '<Plug>(jumpcursor-jump)')
-    end
+      vim.keymap.set("n", "z", "<Plug>(jumpcursor-jump)")
+    end,
   },
   "rhysd/clever-f.vim",
   {
@@ -143,10 +147,10 @@ require("lazy").setup({
   },
   { "mistricky/codesnap.nvim", build = "make" },
   -- Syntax Highlighting
-  'sheerun/vim-polyglot',
-  'wuelnerdotexe/vim-astro',
-  'evanleck/vim-svelte',
-  'leafOfTree/vim-svelte-plugin',
+  "sheerun/vim-polyglot",
+  "wuelnerdotexe/vim-astro",
+  "evanleck/vim-svelte",
+  "leafOfTree/vim-svelte-plugin",
   {
     "elixir-tools/elixir-tools.nvim",
     version = "*",
@@ -155,14 +159,14 @@ require("lazy").setup({
       local elixir = require("elixir")
       local elixirls = require("elixir.elixirls")
 
-      elixir.setup {
-        nextls = {enable = true},
+      elixir.setup({
+        nextls = { enable = true },
         elixirls = {
           enable = true,
-          settings = elixirls.settings {
+          settings = elixirls.settings({
             dialyzerEnabled = false,
             enableTestLenses = false,
-          },
+          }),
           on_attach = function(client, bufnr)
             vim.keymap.set("n", "<space>fp", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
             vim.keymap.set("n", "<space>tp", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
@@ -170,9 +174,9 @@ require("lazy").setup({
           end,
         },
         projectionist = {
-          enable = true
-        }
-      }
+          enable = true,
+        },
+      })
     end,
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -183,19 +187,19 @@ require("lazy").setup({
     event = { "VeryLazy" },
     build = "deno task --quiet build:fast",
     config = function()
-        require("peek").setup()
-        vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
-        vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+      require("peek").setup()
+      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
     end,
   },
   -- Terminal
-  { 'akinsho/toggleterm.nvim', version = "*", config = true },
+  { "akinsho/toggleterm.nvim", version = "*", config = true },
   -- LSP
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
   {
     -- formatter
-    'stevearc/conform.nvim',
+    "stevearc/conform.nvim",
     opts = {},
   },
   { "lukas-reineke/lsp-format.nvim" }, -- TODO: setup
@@ -203,15 +207,15 @@ require("lazy").setup({
   "neovim/nvim-lspconfig",
   "onsails/lspkind.nvim",
   {
-    'nvimdev/lspsaga.nvim',
+    "nvimdev/lspsaga.nvim",
     dependencies = {
-      'nvim-treesitter/nvim-treesitter',
+      "nvim-treesitter/nvim-treesitter",
     },
   },
   "aznhe21/actions-preview.nvim",
   "j-hui/fidget.nvim",
   {
-    'stevearc/aerial.nvim',
+    "stevearc/aerial.nvim",
     opts = {},
     -- Optional dependencies
     dependencies = {
@@ -244,15 +248,15 @@ require("lazy").setup({
     lazy = true,
   },
   -- Code complete
-  'hrsh7th/cmp-nvim-lsp',
-  'hrsh7th/cmp-buffer',
-  'hrsh7th/cmp-path',
-  'hrsh7th/cmp-cmdline',
-  'hrsh7th/cmp-nvim-lsp-signature-help',
-  'hrsh7th/cmp-nvim-lua',
-  'hrsh7th/nvim-cmp',
-  'ray-x/cmp-treesitter',
-  'petertriho/cmp-git',
+  "hrsh7th/cmp-nvim-lsp",
+  "hrsh7th/cmp-buffer",
+  "hrsh7th/cmp-path",
+  "hrsh7th/cmp-cmdline",
+  "hrsh7th/cmp-nvim-lsp-signature-help",
+  "hrsh7th/cmp-nvim-lua",
+  "hrsh7th/nvim-cmp",
+  "ray-x/cmp-treesitter",
+  "petertriho/cmp-git",
   -- {
   --   'Exafunction/codeium.nvim',
   --   dependencies = {
@@ -268,18 +272,18 @@ require("lazy").setup({
   --   end,
   -- },
   -- Snippet
-  'hrsh7th/cmp-vsnip',
-  'hrsh7th/vim-vsnip',
+  "hrsh7th/cmp-vsnip",
+  "hrsh7th/vim-vsnip",
   -- Git
-  'lambdalisue/vim-gin',
+  "lambdalisue/vim-gin",
   {
     "NeogitOrg/neogit",
     dependencies = {
-      "nvim-lua/plenary.nvim",         -- required
-      "sindrets/diffview.nvim",        -- optional - Diff integration
+      "nvim-lua/plenary.nvim", -- required
+      "sindrets/diffview.nvim", -- optional - Diff integration
       "nvim-telescope/telescope.nvim", -- optional
     },
-    config = true
+    config = true,
   },
   {
     "linrongbin16/gitlinker.nvim",
@@ -311,12 +315,12 @@ require("lazy").setup({
       { "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } }, -- Optional: For prettier markdown rendering
       { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves `vim.ui.select`
     },
-    config = true
+    config = true,
   },
   {
     "MeanderingProgrammer/render-markdown.nvim", -- Make Markdown buffers look beautiful
     ft = { "markdown", "codecompanion" },
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {
@@ -336,8 +340,8 @@ require("lazy").setup({
     opts = {
       right = {
         { ft = "codecompanion", title = "Code Companion Chat", size = { width = 0.45 } },
-      }
-    }
+      },
+    },
   },
   {
     "nvim-treesitter/nvim-treesitter",
@@ -347,24 +351,24 @@ require("lazy").setup({
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
-    opts = {}
+    opts = {},
   },
   {
-    'nvim-telescope/telescope.nvim',
-    tag = '0.1.4',
-    dependencies = { 'nvim-lua/plenary.nvim' }
+    "nvim-telescope/telescope.nvim",
+    tag = "0.1.4",
+    dependencies = { "nvim-lua/plenary.nvim" },
   },
-  'nvim-telescope/telescope-ghq.nvim',
-  'nvim-telescope/telescope-z.nvim',
+  "nvim-telescope/telescope-ghq.nvim",
+  "nvim-telescope/telescope-z.nvim",
   {
-    'prochri/telescope-all-recent.nvim',
+    "prochri/telescope-all-recent.nvim",
     dependencies = {
       "nvim-telescope/telescope.nvim",
       "kkharji/sqlite.lua",
       -- optional, if using telescope for vim.ui.select
-      "stevearc/dressing.nvim"
+      "stevearc/dressing.nvim",
     },
-    opts = {}
+    opts = {},
   },
   {
     "junegunn/fzf",
@@ -383,10 +387,10 @@ require("lazy").setup({
       vim.keymap.set({ "x", "o" }, "m", function()
         require("treemonkey").select({ ignore_injections = false })
       end)
-    end
+    end,
   },
   -- REST Client
-  { 'mistweaverco/kulala.nvim', opts = {} },
+  { "mistweaverco/kulala.nvim", opts = {} },
 })
 
-require('base')
+require("base")
