@@ -1,3 +1,4 @@
+local config = require("codecompanion.config")
 require("codecompanion").setup({
   opts = {
     language = "Japanese",
@@ -55,6 +56,61 @@ require("codecompanion").setup({
     end
   },
   prompt_library = {
+    ["Multi Translate"] = {
+      strategy = "chat",
+      description = "Create Translated Text",
+      opts = {
+        short_name = "tr",
+        auto_submit = true,
+        is_slash_cmd = true,
+        is_default = true,
+        adapter = {
+          name = "anthropic",
+          model = "claude-3-5-haiku-latest",
+        }
+      },
+      prompts = {
+        {
+          role = "system",
+          content = function(context)
+            return "You are a bilingual translation expert specialized in " .. config.opts.language .. "-English translation.\n"
+              .. "Your primary tasks are:\n"
+              .. "- Automatically detect the input language\n"
+              .. "- Translate " .. config.opts.language .. " to English or other languages to " .. config.opts.language .. "\n"
+              .. "- Maintain high accuracy and natural expression in both languages\n"
+              .. "- Preserve the original tone and context\n"
+              .. "- Add cultural explanations when necessary\n"
+              .. "\n"
+              .. "You must:\n"
+              .. "- Provide complete translations without omissions\n"
+              .. "- Use appropriate line breaks for readability\n"
+              .. "- Follow the specified output format\n"
+              .. "- Include explanations for technical terms if needed\n"
+              .. "- Keep your responses focused on translation\n"
+              .. "\n"
+          end,
+        },
+        {
+          role = "user",
+          content = function(context)
+            local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
+            return "Please translate the following text.\n"
+              .. "\n"
+              .. "Requirements:\n"
+              .. "- If " .. config.opts.language .. " input: Translate to natural, professional English\n"
+              .. "- If non-" .. config.opts.language .. " input: Translate to natural, professional " .. config.opts.language .. "\n"
+              .. "- Preserve all details and context\n"
+              .. "- Add line breaks for readability\n"
+              .. "- Explain any cultural references or technical terms\n"
+              .. "\n"
+              .. "Text to translate:\n"
+              .. "```\n"
+              .. text
+              .. "```\n"
+          end,
+        },
+      },
+    },
     ["Communicatable Message"] = {
       strategy = "inline",
       description = "Create Communicatable Message",
