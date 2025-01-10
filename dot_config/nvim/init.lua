@@ -110,6 +110,10 @@ require("lazy").setup({
     opts = {},
   },
   {
+    "sphamba/smear-cursor.nvim",
+    opts = {},
+  },
+  {
     "yamatsum/nvim-cursorline",
     config = function()
       require("nvim-cursorline").setup({

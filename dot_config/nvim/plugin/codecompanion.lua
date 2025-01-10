@@ -50,10 +50,10 @@ require("codecompanion").setup({
         schema = {
           model = {
             -- default = "",
-          }
+          },
         },
       })
-    end
+    end,
   },
   prompt_library = {
     ["Multi Translate"] = {
@@ -67,16 +67,23 @@ require("codecompanion").setup({
         adapter = {
           name = "anthropic",
           model = "claude-3-5-haiku-latest",
-        }
+        },
       },
       prompts = {
         {
           role = "system",
           content = function(context)
-            return "You are a bilingual translation expert specialized in " .. config.opts.language .. "-English translation.\n"
+            local lang = config.opts.language or "Japanese"
+            return "You are a bilingual translation expert specialized in "
+              .. lang
+              .. "-English translation.\n"
               .. "Your primary tasks are:\n"
               .. "- Automatically detect the input language\n"
-              .. "- Translate " .. config.opts.language .. " to English or other languages to " .. config.opts.language .. "\n"
+              .. "- Translate "
+              .. lang
+              .. " to English or other languages to "
+              .. lang
+              .. "\n"
               .. "- Maintain high accuracy and natural expression in both languages\n"
               .. "- Preserve the original tone and context\n"
               .. "- Add cultural explanations when necessary\n"
@@ -93,12 +100,19 @@ require("codecompanion").setup({
         {
           role = "user",
           content = function(context)
+            local lang = config.opts.language or "Japanese"
             local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
             return "Please translate the following text.\n"
               .. "\n"
               .. "Requirements:\n"
-              .. "- If " .. config.opts.language .. " input: Translate to natural, professional English\n"
-              .. "- If non-" .. config.opts.language .. " input: Translate to natural, professional " .. config.opts.language .. "\n"
+              .. "- If "
+              .. lang
+              .. " input: Translate to natural, professional English\n"
+              .. "- If non-"
+              .. lang
+              .. " input: Translate to natural, professional "
+              .. lang
+              .. "\n"
               .. "- Preserve all details and context\n"
               .. "- Add line breaks for readability\n"
               .. "- Explain any cultural references or technical terms\n"
@@ -122,7 +136,8 @@ require("codecompanion").setup({
         is_default = true,
         adapter = {
           name = "anthropic",
-        }
+          model = "claude-3-5-sonnet-latest",
+        },
       },
       prompts = {
         {
@@ -163,7 +178,9 @@ require("codecompanion").setup({
           content = function(context)
             local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
             return "Based on the above guidelines, please organize the following text so that it can be used as is.\n"
-              .. "```\n" .. text .. "```\n"
+              .. "```\n"
+              .. text
+              .. "```\n"
           end,
         },
       },
@@ -172,7 +189,7 @@ require("codecompanion").setup({
       strategy = "inline",
       description = "Get commit message for git",
       opts = {
-        placement = "add"
+        placement = "add",
       },
       prompts = {
         {
@@ -247,7 +264,6 @@ function M:update_status()
   end
 end
 
-
 local wk = require("which-key")
 wk.add({
   {
@@ -267,3 +283,4 @@ vim.cmd([[cab cc CodeCompanion]])
 vim.cmd([[cab ccc CodeCompanionChat]])
 vim.cmd([[cab cmd CodeCompanionCmd]])
 vim.cmd([[cab ccm CodeCompanion /cm]])
+vim.cmd([[cab cct CodeCompanion /tr]])
