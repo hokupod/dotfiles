@@ -1,53 +1,53 @@
-local home_dir = vim.fn.expand('$HOME/')
+local home_dir = vim.fn.expand("$HOME/")
 local opt = vim.opt
-opt.clipboard = 'unnamedplus'
-opt.mouse = 'a'
+opt.clipboard = "unnamedplus"
+opt.mouse = "a"
 opt.title = true
 opt.autoindent = true
 opt.smartindent = true
 opt.breakindent = true
 opt.hlsearch = true
 opt.showcmd = true
-opt.helplang = 'ja'
+opt.helplang = "ja"
 opt.termguicolors = true
 
 opt.showtabline = 2
-opt.signcolumn = 'yes'
+opt.signcolumn = "yes:3"
 opt.expandtab = true
 opt.smarttab = true
 opt.shiftwidth = 2
 opt.tabstop = 2
 
-opt.shell = os.getenv('SHELL')
+opt.shell = os.getenv("SHELL")
 opt.swapfile = false
 
-opt.undodir = home_dir .. '.vim_undo'
+opt.undodir = home_dir .. ".vim_undo"
 opt.undofile = true
 
-if vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1 then
+if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
   -- バックアップパスを Windows 用に設定
-  opt.backupdir = 'G:/マイドライブ/vim_backup'
-  opt.directory = 'G:/マイドライブ/vim_backup'
+  opt.backupdir = "G:/マイドライブ/vim_backup"
+  opt.directory = "G:/マイドライブ/vim_backup"
 else
   -- バックアップパスを nix 系 OS 用に設定
-  opt.backupdir = home_dir .. '.vim_backup'
-  opt.directory = home_dir .. '.vim_backup'
+  opt.backupdir = home_dir .. ".vim_backup"
+  opt.directory = home_dir .. ".vim_backup"
 
   -- for WSL
-  if vim.fn.system('uname -a | grep -i microsoft') ~= '' then
-    opt.backupdir = '/mnt/g/マイドライブ/vim_backup'
-    opt.directory = '/mnt/g/マイドライブ/vim_backup'
+  if vim.fn.system("uname -a | grep -i microsoft") ~= "" then
+    opt.backupdir = "/mnt/g/マイドライブ/vim_backup"
+    opt.directory = "/mnt/g/マイドライブ/vim_backup"
   end
 end
-
 
 local colorscheme = "grey"
 local ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 vim.o.background = "light"
+vim.g.background = "light"
 if ok then
-  require('lualine').setup {
-    options = { theme = 'auto' },
-  }
+  require("lualine").setup({
+    options = { theme = "auto" },
+  })
 else
   vim.notify("colorscheme " .. colorscheme .. " not found!")
 end
@@ -75,15 +75,21 @@ set("n", "x", '"_x')
 set("n", "X", '"_x')
 set("v", "x", '"_x')
 set("v", "X", '"_x')
+set("n", "<C-j>", function()
+  vim.diagnostic.jump({ count = 1, float = true })
+end)
+set("n", "<C-k>", function()
+  vim.diagnostic.jump({ count = -1, float = true })
+end)
 
 -- MemoList
 vim.g.memolist_fzf = 1
-if vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1 then
+if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
   vim.g.memolist_path = "G:\\マイドライブ\\memolist"
-elseif vim.fn.has('wsl') == 1 then
+elseif vim.fn.has("wsl") == 1 then
   vim.g.memolist_path = "/mnt/g/マイドライブ/memolist"
 else
-  vim.g.memolist_path = home_dir .. 'memolist'
+  vim.g.memolist_path = home_dir .. "memolist"
 end
 
 set("n", "<space>mm", ":MemoNew<CR>")
@@ -136,19 +142,27 @@ wk.add({
 wk.add({
   { "<leader>x", group = "Trouble" },
   { "<leader>xd", "<cmd>Trouble diagnostics toggle<CR>", desc = "[Trouble] Document Diagnostics in Workspace" },
-  { "<leader>xD", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "[Trouble] Document Diagnostics in Current Buffer" },
-  { "<leader>xl", "<cmd>Trouble lsp toggle focus=false win.position=right<CR>", desc = "[Trouble] LSP Definitions / references / ... " },
+  {
+    "<leader>xD",
+    "<cmd>Trouble diagnostics toggle filter.buf=0<CR>",
+    desc = "[Trouble] Document Diagnostics in Current Buffer",
+  },
+  {
+    "<leader>xl",
+    "<cmd>Trouble lsp toggle focus=false win.position=right<CR>",
+    desc = "[Trouble] LSP Definitions / references / ... ",
+  },
   { "<leader>xL", "<cmd>Trouble loclist toggle<CR>", desc = "[Trouble] Loclist" },
   { "<leader>xs", "<cmd>Trouble symbols toggle focus=false<CR>", desc = "[Trouble] Symbols" },
   { "<leader>xq", "<cmd>Trouble qflist toggle<CR>", desc = "[Trouble] Quickfix List" },
-  { "<leader>xx", "<cmd>Trouble<CR>", desc = "[Trouble] Toggle" },
+  { "<leader>xx", "<cmd>Trouble<CR>", desc = "[Trouble] Menu" },
 })
 
 -- dial.nvim
 local augend = require("dial.augend")
 local baseAugends = {
   augend.integer.alias.decimal, -- nonnegative decimal number (0, 1, 2, 3, ...)
-  augend.integer.alias.hex,     -- nonnegative hex number  (0x01, 0x1a1f, etc.)
+  augend.integer.alias.hex, -- nonnegative hex number  (0x01, 0x1a1f, etc.)
   augend.date.alias["%Y/%m/%d"],
   augend.date.alias["%Y-%m-%d"],
   augend.date.alias["%m/%d"],
@@ -159,16 +173,20 @@ local baseAugends = {
 }
 local mergeAugents = function(tbl)
   local merged = {}
-  for k, v in pairs(baseAugends) do merged[k] = v end
-  for k, v in pairs(tbl) do merged[k] = v end
+  for k, v in pairs(baseAugends) do
+    merged[k] = v
+  end
+  for k, v in pairs(tbl) do
+    merged[k] = v
+  end
   return merged
 end
-require("dial.config").augends:register_group {
+require("dial.config").augends:register_group({
   default = baseAugends,
   javascript = mergeAugents({
-    augend.constant.new { elements = { "let", "const" } },
+    augend.constant.new({ elements = { "let", "const" } }),
   }),
-}
+})
 
 vim.cmd([[
 " 複数のファイルタイプで同じ設定を有効にする
@@ -209,16 +227,13 @@ cmap <C-x> <Plug>(modesearch-toggle-mode)
 ]])
 
 -- CAPS LOCK
-vim.keymap.set("i", "<C-l>",
-  function()
-    local line = vim.fn.getline(".")
-    local col = vim.fn.getpos(".")[3]
-    local substring = line:sub(1, col - 1)
-    local result = vim.fn.matchstr(substring, [[\v<(\k(<)@!)*$]])
-    return "<C-w>" .. result:upper()
-  end,
-  {expr = true}
-)
+vim.keymap.set("i", "<C-l>", function()
+  local line = vim.fn.getline(".")
+  local col = vim.fn.getpos(".")[3]
+  local substring = line:sub(1, col - 1)
+  local result = vim.fn.matchstr(substring, [[\v<(\k(<)@!)*$]])
+  return "<C-w>" .. result:upper()
+end, { expr = true })
 
 -- nvzone/menu
 vim.keymap.set("n", "<C-t>", function()
@@ -226,7 +241,7 @@ vim.keymap.set("n", "<C-t>", function()
 end, {})
 
 vim.keymap.set("n", "<RightMouse>", function()
-  vim.cmd.exec '"normal! \\<RightMouse>"'
+  vim.cmd.exec('"normal! \\<RightMouse>"')
 
   local options = vim.bo.ft == "NvimTree" and "nvimtree" or "default"
   require("menu").open(options, { mouse = true })

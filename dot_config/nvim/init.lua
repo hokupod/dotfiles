@@ -149,6 +149,15 @@ require("lazy").setup({
     "folke/trouble.nvim",
     opts = {},
   },
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy", -- Or `LspAttach`
+    priority = 1000, -- needs to be loaded in first
+    config = function()
+      vim.diagnostic.config({ virtual_text = false })
+      require("tiny-inline-diagnostic").setup()
+    end,
+  },
   { "mistricky/codesnap.nvim", build = "make" },
   -- Syntax Highlighting
   "sheerun/vim-polyglot",
