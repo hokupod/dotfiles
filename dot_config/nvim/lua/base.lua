@@ -76,11 +76,13 @@ set("n", "X", '"_x')
 set("v", "x", '"_x')
 set("v", "X", '"_x')
 set("n", "<C-j>", function()
-  vim.diagnostic.jump({ count = 1, float = true })
+  vim.diagnostic.jump({ count = 1, float = false })
 end)
 set("n", "<C-k>", function()
-  vim.diagnostic.jump({ count = -1, float = true })
+  vim.diagnostic.jump({ count = -1, float = false })
 end)
+set("n", "<M-l>", ":tabnext<CR>")
+set("n", "<M-h>", ":tabprevious<CR>")
 
 -- MemoList
 vim.g.memolist_fzf = 1

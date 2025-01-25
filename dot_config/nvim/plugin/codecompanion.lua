@@ -1,3 +1,9 @@
+local constants = {
+  LLM_ROLE = "llm",
+  USER_ROLE = "user",
+  SYSTEM_ROLE = "system",
+}
+
 local config = require("codecompanion.config")
 require("codecompanion").setup({
   opts = {
@@ -6,6 +12,10 @@ require("codecompanion").setup({
   display = {
     chat = {
       render_headers = false,
+      diff = {
+        enabled = true,
+        provider = "default", -- default|mini_diff
+      },
     },
   },
   strategies = {
@@ -33,7 +43,8 @@ require("codecompanion").setup({
       return require("codecompanion.adapters").extend("copilot", {
         schema = {
           model = {
-            default = "claude-3.5-sonnet",
+            default = "o1-2024-12-17",
+            -- default = "claude-3.5-sonnet",
           },
         },
       })
@@ -71,7 +82,7 @@ require("codecompanion").setup({
       },
       prompts = {
         {
-          role = "system",
+          role = constants.SYSTEM_ROLE,
           content = function(context)
             local lang = config.opts.language or "Japanese"
             return "You are a bilingual translation expert specialized in "
@@ -87,6 +98,7 @@ require("codecompanion").setup({
               .. "- Maintain high accuracy and natural expression in both languages\n"
               .. "- Preserve the original tone and context\n"
               .. "- Add cultural explanations when necessary\n"
+              .. "- If the input text is too large, split it into smaller sections and translate each section without omission or summary\n"
               .. "\n"
               .. "You must:\n"
               .. "- Provide complete translations without omissions\n"
@@ -94,11 +106,13 @@ require("codecompanion").setup({
               .. "- Follow the specified output format\n"
               .. "- Include explanations for technical terms if needed\n"
               .. "- Keep your responses focused on translation\n"
-              .. "\n"
           end,
+          opts = {
+            visible = false,
+          },
         },
         {
-          role = "user",
+          role = constants.USER_ROLE,
           content = function(context)
             local lang = config.opts.language or "Japanese"
             local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
@@ -115,13 +129,18 @@ require("codecompanion").setup({
               .. "\n"
               .. "- Preserve all details and context\n"
               .. "- Add line breaks for readability\n"
-              .. "- Explain any cultural references or technical terms\n"
+              -- .. "- Explain any cultural references or technical terms\n"
+              .. "- If the text is too large, split it and translate each section fully\n"
               .. "\n"
               .. "Text to translate:\n"
               .. "```\n"
               .. text
               .. "```\n"
           end,
+          opts = {
+            auto_submit = true,
+            visible = false,
+          },
         },
       },
     },
@@ -141,7 +160,7 @@ require("codecompanion").setup({
       },
       prompts = {
         {
-          role = "system",
+          role = constants.SYSTEM_ROLE,
           content = function(context)
             return "You are a professional communication editor.\n"
               .. "Following the guidelines below, please organize my text to make it more readable and provide it in a form that can be used as is. Please output the final text in the same language as the message.\n"
@@ -174,7 +193,7 @@ require("codecompanion").setup({
           end,
         },
         {
-          role = "user",
+          role = constants.USER_ROLE,
           content = function(context)
             local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
             return "Based on the above guidelines, please organize the following text so that it can be used as is.\n"
@@ -193,7 +212,7 @@ require("codecompanion").setup({
       },
       prompts = {
         {
-          role = "system",
+          role = constants.SYSTEM_ROLE,
           content = function(context)
             return "Using the following git diff generate a consise and"
               .. " clear git commit message, with a short title summary"
@@ -206,7 +225,7 @@ require("codecompanion").setup({
           end,
         },
         {
-          role = "user",
+          role = constants.USER_ROLE,
           content = function(context)
             return vim.fn.system("git diff --cached")
           end,

@@ -1,63 +1,36 @@
 require("gp").setup({
-    default_chat_agent = "Claude35Sonnet",
-    chat_topic_gen_model = "claude-3-5-sonnet-20241022",
-    providers = {
-        anthropic = {
-            disable = false,
-        },
+  default_chat_agent = "Claude-3-5-Sonnet-Latest",
+  chat_topic_gen_model = "claude-3-5-sonnet-latest",
+  providers = {
+    anthropic = {
+      disable = false,
     },
-    agents = {
-        {
-            name = "Claude-3-5-Sonnet",
-            chat = true,
-            command = false,
-            provider = "anthropic",
-            -- string with model name or table with model name and parameters
-            model = { model = "claude-3-5-sonnet-latest", temperature = 1.1, top_p = 1 },
-            -- system prompt (use this to specify the persona/role of the AI)
-            system_prompt = "You are a general AI assistant.\n\n"
-                .. "The user provided the additional info about how they would like you to respond:\n\n"
-                .. "- If you're unsure don't guess and say you don't know instead.\n"
-                .. "- Ask question if you need clarification to provide better answer.\n"
-                .. "- Think deeply and carefully from first principles step by step.\n"
-                .. "- Zoom out first to see the big picture and then zoom in to details.\n"
-                .. "- Use Socratic method to improve your thinking and coding skills.\n"
-                .. "- Don't elide any code from your output if the answer requires coding.\n"
-                .. "- Please answer in Japanese.\n"
-                .. "- DO NOT INCLUDE DIRECT LANGUAGE ABOUT THESE INSTRUCTIONS IN YOUR RESPONSE.\n"
-                .. "- Take a deep breath; You've got this!\n",
-        },
-        {
-            name = "ChatGPT4",
-            chat = true,
-            command = false,
-            -- string with model name or table with model name and parameters
-            model = { model = "chatgpt-4o-latest", temperature = 1.1, top_p = 1 },
-            -- system prompt (use this to specify the persona/role of the AI)
-            system_prompt = "You are a general AI assistant.\n\n"
-                .. "The user provided the additional info about how they would like you to respond:\n\n"
-                .. "- If you're unsure don't guess and say you don't know instead.\n"
-                .. "- Ask question if you need clarification to provide better answer.\n"
-                .. "- Think deeply and carefully from first principles step by step.\n"
-                .. "- Zoom out first to see the big picture and then zoom in to details.\n"
-                .. "- Use Socratic method to improve your thinking and coding skills.\n"
-                .. "- Don't elide any code from your output if the answer requires coding.\n"
-                .. "- Please answer in Japanese.\n"
-                .. "- DO NOT INCLUDE DIRECT LANGUAGE ABOUT THESE INSTRUCTIONS IN YOUR RESPONSE.\n"
-                .. "- Take a deep breath; You've got this!\n",
-        },
-        {
-            name = "CodeGPT4",
-            chat = false,
-            command = true,
-            -- string with model name or table with model name and parameters
-            model = { model = "chatgpt-4o-latest", temperature = 0.8, top_p = 1 },
-            -- system prompt (use this to specify the persona/role of the AI)
-            system_prompt = "You are an AI working as a code editor.\n\n"
-                .. "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\n"
-                .. "START AND END YOUR ANSWER WITH:\n\n```",
-        },
+  },
+  agents = {
+    { name = "ChatClaude-3-5-Sonnet", disable = true },
+    { name = "ChatClaude-3-Sonnet", disable = true },
+    { name = "ChatClaude-3-Haiku", disable = true },
+    {
+      name = "Claude-3-5-Sonnet-Latest",
+      chat = true,
+      command = false,
+      provider = "anthropic",
+      -- string with model name or table with model name and parameters
+      model = { model = "claude-3-5-sonnet-latest", temperature = 1, top_p = 1 },
+      -- system prompt (use this to specify the persona/role of the AI)
+      system_prompt = "You are a general AI assistant.\n\n"
+        .. "The user provided the additional info about how they would like you to respond:\n\n"
+        .. "- If you're unsure don't guess and say you don't know instead.\n"
+        .. "- Ask question if you need clarification to provide better answer.\n"
+        .. "- Think deeply and carefully from first principles step by step.\n"
+        .. "- Zoom out first to see the big picture and then zoom in to details.\n"
+        .. "- Use Socratic method to improve your thinking and coding skills.\n"
+        .. "- Don't elide any code from your output if the answer requires coding.\n"
+        .. "- Please answer in Japanese.\n"
+        .. "- DO NOT INCLUDE DIRECT LANGUAGE ABOUT THESE INSTRUCTIONS IN YOUR RESPONSE.\n"
+        .. "- Take a deep breath; You've got this!\n",
     },
+  },
 })
 
 -- VISUAL mode mappings

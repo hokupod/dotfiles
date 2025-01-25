@@ -29,6 +29,7 @@ local on_attach = function(client, bufnr)
     mode = { "n" },
     { "<leader>l", group = "LSP" },
     { "<leader>l<F2>", "<cmd>Lspsaga rename<CR>", desc = "Rename" },
+    { "<leader>lf", "<cmd>Lspsaga finder<CR>", desc = "Finder" },
 
     { "<leader>lg", group = "+go" },
     { "<leader>lgd", "<cmd>Lspsaga goto_definition<CR>", desc = "Definition" },
@@ -41,16 +42,6 @@ local on_attach = function(client, bufnr)
       "<leader>lgt",
       "<cmd>Lspsaga goto_type_definition<CR>",
       desc = "Type definition",
-    },
-    {
-      "<leader>lgn",
-      "<cmd>Lspsaga diagnostic_jump_next<CR>",
-      desc = "Diagnostics next",
-    },
-    {
-      "<leader>lgp",
-      "<cmd>Lspsaga diagnostic_jump_prev<CR>",
-      desc = "Diagnostics prev",
     },
 
     { "<leader>ls", group = "+show" },
@@ -110,7 +101,14 @@ require("lspsaga").setup({
   outline = {
     layout = "float",
   },
+  finder = {
+    default = "tyd+ref+imp+def",
+    methods = {
+      tyd = "textDocument/typeDefinition",
+    },
+  },
 })
+
 -- Set up nvim-cmp.
 local cmp = require("cmp")
 local lspkind = require("lspkind")

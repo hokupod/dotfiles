@@ -55,6 +55,7 @@ require("which-key").add({
   mode = "n",
   { "<leader>s", group = "Snacks.nvim", },
   { "<leader>ss", function() Snacks.dashboard.open() end, desc = "Open Dashboard", },
+  { "<leader>sn", function() Snacks.notifier.show_history() end, desc = "Show Notification History", },
   { "<leader>sgg", function() Snacks.lazygit() end, desc = "Lazygit", cond = is_git_repo, },
   { "<leader>sgb", function() Snacks.git.blame_line() end, desc = "Git Blame Line", cond = is_git_repo, mode = { "v", "n" }, },
   { "<leader>sgB", function() Snacks.gitbrowse() end, desc = "Git Browse", cond = is_git_repo, mode = { "v", "n" }, },
