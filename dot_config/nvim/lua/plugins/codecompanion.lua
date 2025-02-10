@@ -5,9 +5,10 @@ return {
     "nvim-treesitter/nvim-treesitter",
     "hrsh7th/nvim-cmp", -- Optional: For using slash commands and variables in the chat buffer
     "nvim-telescope/telescope.nvim", -- Optional: For using slash commands
-    { "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } },
     { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves vim.ui.select
+    { "echasnovski/mini.diff", version = "*" },
     "nvim-lualine/lualine.nvim",
+    "j-hui/fidget.nvim",
   },
   config = function()
     local constants = {
@@ -18,16 +19,23 @@ return {
 
     local config = require("codecompanion.config")
     require("codecompanion").setup({
+      init = function()
+        require("plugins.codecompanion.fidget-spinner"):init()
+        require("plugins.codecompanion.lualine-spinner"):init()
+      end,
       opts = {
         language = "Japanese",
       },
       display = {
         chat = {
           render_headers = false,
-          diff = {
-            enabled = true,
-            provider = "default", -- default|mini_diff
-          },
+        },
+        diff = {
+          enabled = true,
+          close_chat_at = 240, -- Close an open chat buffer if the total columns of your display are less than...
+          layout = "vertical", -- vertical|horizontal split for default provider
+          opts = { "internal", "filler", "closeoff", "algorithm:patience", "followwrap", "linematch:120" },
+          provider = "mini_diff", -- default|mini_diff
         },
       },
       strategies = {
@@ -50,6 +58,18 @@ return {
       },
 
       adapters = {
+        openai = function()
+          return require("codecompanion.adapters").extend("openai", {
+            schema = {
+              model = {
+                default = "o3-mini",
+              },
+              reasoning_effort = {
+                default = "high",
+              },
+            },
+          })
+        end,
         copilot = function()
           return require("codecompanion.adapters").extend("copilot", {
             schema = {
@@ -58,7 +78,7 @@ return {
               },
               reasoning_effort = {
                 default = "high",
-              }
+              },
             },
           })
         end,
@@ -72,8 +92,7 @@ return {
               end,
             },
             schema = {
-              model = {
-              },
+              model = {},
             },
           })
         end,
@@ -88,8 +107,9 @@ return {
             is_slash_cmd = true,
             is_default = true,
             adapter = {
-              name = "anthropic",
-              model = "claude-3-5-haiku-latest",
+              name = "openai",
+              model = "o3-mini",
+              reasoning_effort = "low",
             },
           },
           prompts = {
@@ -110,14 +130,41 @@ return {
                   .. "- Maintain high accuracy and natural expression in both languages\n"
                   .. "- Preserve the original tone and context\n"
                   .. "- Add cultural explanations when necessary\n"
-                  .. "- If the input text is too large, split it into smaller sections and translate each section without omission or summary\n"
+                  .. "- If the input text is too large, do multiple exchanges and translate the full text.\n"
+                  .. "- If the input text is too large, split it into smaller sections and translate each section entirely.\n"
                   .. "\n"
-                  .. "You must:\n"
-                  .. "- Provide complete translations without omissions\n"
-                  .. "- Use appropriate line breaks for readability\n"
-                  .. "- Follow the specified output format\n"
-                  .. "- Include explanations for technical terms if needed\n"
-                  .. "- Keep your responses focused on translation\n"
+                  .. "Translation Format Guidelines:\n"
+                  .. "\n"
+                  .. "1. Language Detection and Translation Header\n"
+                  .. "[ {Source Language} → {Target Language} Translation ]\n"
+                  .. "\n"
+                  .. "2. Translation Sections\n"
+                  .. "[ Section Title or Thematic Segment ]\n"
+                  .. "{Complete translated text for this section}\n"
+                  .. "\n"
+                  .. "3. Continuation for Large Texts\n"
+                  .. "- Split text into logical sections\n"
+                  .. "- Translate each section fully\n"
+                  .. "- Maintain overall context and tone\n"
+                  .. "- Use clear, professional language\n"
+                  .. "- Preserve original formatting and structure\n"
+                  .. "\n"
+                  .. "4. Additional Notes\n"
+                  .. "- Include cultural explanations if necessary\n"
+                  .. "- Maintain the original text's professional tone\n"
+                  .. "- Ensure high accuracy and natural expression\n"
+                  .. "\n"
+                  .. "Example Implementation:\n"
+                  .. "```\n"
+                  .. "[ English → Japanese Translation ]\n"
+                  .. "[ Company Overview ]\n"
+                  .. "{Japanese translation of the company overview section}\n"
+                  .. "\n"
+                  .. "[ Product Description ]\n"
+                  .. "{Japanese translation of the product description section}\n"
+                  .. "{... (repeat for each segment as necessary)}\n"
+                  .. "```\n"
+                  .. "You must adhere to these instructions exactly.\n"
               end,
               opts = {
                 visible = false,
@@ -165,8 +212,9 @@ return {
             is_slash_cmd = true,
             is_default = true,
             adapter = {
-              name = "anthropic",
-              model = "claude-3-5-sonnet-latest",
+              name = "openai",
+              model = "o3-mini",
+              reasoning_effort = "low",
             },
           },
           prompts = {
@@ -201,7 +249,7 @@ return {
                   .. "5. Conclusion\n"
                   .. "- Clarify claims and key points\n"
                   .. "- Provide action proposals or inquiries as necessary\n"
-                end,
+              end,
             },
             {
               role = constants.USER_ROLE,
@@ -266,52 +314,5 @@ return {
     vim.cmd([[cab cmd CodeCompanionCmd]])
     vim.cmd([[cab ccm CodeCompanion /cm]])
     vim.cmd([[cab cct CodeCompanion /tr]])
-
-    local M = require("lualine.component"):extend()
-    M.processing = false
-    M.spinner_index = 1
-
-    local spinner_symbols = {
-      "⠋",
-      "⠙",
-      "⠹",
-      "⠸",
-      "⠼",
-      "⠴",
-      "⠦",
-      "⠧",
-      "⠇",
-      "⠏",
-    }
-    local spinner_symbols_len = 10
-
-    function M:init(options)
-      M.super.init(self, options)
-      local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
-
-      vim.api.nvim_create_autocmd({ "User" }, {
-        pattern = "CodeCompanionRequest*",
-        group = group,
-        callback = function(request)
-          if request.match == "CodeCompanionRequestStarted" then
-            self.processing = true
-          elseif request.match == "CodeCompanionRequestFinished" then
-            self.processing = false
-          end
-        end,
-      })
-    end
-
-    function M:update_status()
-      if self.processing then
-        self.spinner_index = (self.spinner_index % spinner_symbols_len) + 1
-        return spinner_symbols[self.spinner_index]
-      else
-        return nil
-      end
-    end
-
-    return M
   end,
 }
-
