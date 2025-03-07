@@ -13,7 +13,12 @@ return {
   "cohama/lexima.vim",
   {
     "windwp/nvim-ts-autotag",
-    opts = {},
+    event = "InsertEnter",
+    opts = {
+      aliases = {
+        ["codecompanion"] = "markdown",
+      },
+    },
   },
   "tpope/vim-commentary",
   "kevinhwang91/nvim-bqf",
@@ -30,6 +35,11 @@ return {
   },
   {
     "sphamba/smear-cursor.nvim",
+    opts = {},
+  },
+  {
+    "rachartier/tiny-glimmer.nvim",
+    event = "VeryLazy",
     opts = {},
   },
   {
@@ -142,6 +152,7 @@ return {
   -- Translate
   {
     "uga-rosa/translate.nvim",
+    cmd = "Translate",
     opts = {},
   },
   -- AI

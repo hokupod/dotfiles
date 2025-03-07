@@ -17,10 +17,6 @@ return {
     end
 
     local defaults = {
-      prompt_prefix = "",
-      entry_prefix = " ",
-      selection_caret = " ",
-      layout_strategy = "grey",
       layout_config = {
         prompt_position = "bottom",
       },
@@ -55,7 +51,6 @@ return {
       },
     })
 
-    telescope.load_extension("grey")
     telescope.load_extension("messages")
     require("telescope").extensions.messages.setup({
       register = "+",

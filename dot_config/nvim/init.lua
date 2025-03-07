@@ -31,6 +31,12 @@ opt.swapfile = false
 opt.undodir = home_dir .. ".vim_undo"
 opt.undofile = true
 
+-- grep を ripgrep に変更
+if vim.fn.executable("rg") == 1 then
+  opt.grepprg = "rg --vimgrep --no-heading --smart-case"
+  opt.grepformat:append("%f:%l:%c:%m")
+end
+
 if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
   -- バックアップパスを Windows 用に設定
   opt.backupdir = "G:/マイドライブ/vim_backup"
@@ -51,7 +57,7 @@ end
 vim.api.nvim_create_autocmd("BufNewFile", {
   pattern = "*.inc",
   callback = function()
-    vim.opt.filetype = "php"
+    vim.bo.filetype = "php"
   end,
 })
 
@@ -59,7 +65,7 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 vim.api.nvim_create_autocmd("BufNewFile", {
   pattern = "*.astro",
   callback = function()
-    vim.opt.filetype = "astro"
+    vim.bo.filetype = "astro"
   end,
 })
 

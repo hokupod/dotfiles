@@ -9,6 +9,13 @@ return {
     { "echasnovski/mini.diff", version = "*" },
     "nvim-lualine/lualine.nvim",
     "j-hui/fidget.nvim",
+    "folke/snacks.nvim",
+  },
+  cmd = {
+    "CodeCompanion",
+    "CodeCompanionChat",
+    "CodeCompanionCmd",
+    "CodeCompanionActions",
   },
   config = function()
     local constants = {
@@ -19,12 +26,9 @@ return {
 
     local config = require("codecompanion.config")
     require("codecompanion").setup({
-      init = function()
-        require("plugins.codecompanion.fidget-spinner"):init()
-        require("plugins.codecompanion.lualine-spinner"):init()
-      end,
       opts = {
         language = "Japanese",
+        log_level = "DEBUG",
       },
       display = {
         chat = {
@@ -74,10 +78,7 @@ return {
           return require("codecompanion.adapters").extend("copilot", {
             schema = {
               model = {
-                default = "o3-mini",
-              },
-              reasoning_effort = {
-                default = "high",
+                default = "claude-3.7-sonnet-thought",
               },
             },
           })
@@ -203,18 +204,17 @@ return {
           },
         },
         ["Communicatable Message"] = {
-          strategy = "inline",
+          -- strategy = "inline",
+          strategy = "chat",
           description = "Create Communicatable Message",
           opts = {
-            placement = "replace",
+            -- placement = "replace",
             short_name = "cm",
             auto_submit = true,
             is_slash_cmd = true,
             is_default = true,
             adapter = {
-              name = "openai",
-              model = "o3-mini",
-              reasoning_effort = "low",
+              name = "anthropic",
             },
           },
           prompts = {
@@ -293,7 +293,11 @@ return {
         },
       },
     })
-
+  end,
+  init = function()
+    -- require("plugins.codecompanion.fidget-spinner"):init()
+    require("plugins.codecompanion.lualine-spinner"):init()
+    require("plugins.codecompanion.snacks-spinner"):setup()
     local wk = require("which-key")
     wk.add({
       {

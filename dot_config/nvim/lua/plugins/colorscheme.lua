@@ -1,10 +1,12 @@
 return {
-  "yorickpeterse/nvim-grey",
+  "zenbones-theme/zenbones.nvim",
   dependencies = {
-    "nvim-lualine/lualine.nvim",
+    "rktjmp/lush.nvim",
   },
+  lazy = false,
+  priority = 1000,
   config = function()
-    local colorscheme = "grey"
+    local colorscheme = "zenbones"
     local ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
     vim.o.background = "light"
     vim.g.background = "light"

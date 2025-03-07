@@ -3,7 +3,9 @@ return {
   dependencies = {
     "folke/which-key.nvim",
   },
-  config = function()
+  cmd = "Trouble",
+  opts = {},
+  init = function()
     local wk = require("which-key")
     -- Trouble
     wk.add({
@@ -25,5 +27,4 @@ return {
       { "<leader>xx", "<cmd>Trouble<CR>", desc = "[Trouble] Menu" },
     })
   end,
-  opts = {},
 }
