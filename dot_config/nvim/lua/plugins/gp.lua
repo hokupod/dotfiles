@@ -5,8 +5,8 @@ return {
   },
   config = function()
     require("gp").setup({
-      default_chat_agent = "Claude-3-5-Sonnet-Latest",
-      chat_topic_gen_model = "claude-3-5-sonnet-latest",
+      default_chat_agent = "Claude-3-7-Sonnet-Latest",
+      chat_topic_gen_model = "claude-3-7-sonnet-latest",
       providers = {
         anthropic = {
           disable = false,
@@ -17,12 +17,12 @@ return {
         { name = "ChatClaude-3-Sonnet", disable = true },
         { name = "ChatClaude-3-Haiku", disable = true },
         {
-          name = "Claude-3-5-Sonnet-Latest",
+          name = "Claude-3-7-Sonnet-Latest",
           chat = true,
           command = false,
           provider = "anthropic",
           -- string with model name or table with model name and parameters
-          model = { model = "claude-3-5-sonnet-latest", temperature = 1, top_p = 1 },
+          model = { model = "claude-3-7-sonnet-latest", temperature = 1, top_p = 1 },
           -- system prompt (use this to specify the persona/role of the AI)
           system_prompt = "You are a general AI assistant.\n\n"
             .. "The user provided the additional info about how they would like you to respond:\n\n"
