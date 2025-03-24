@@ -104,6 +104,13 @@ local is_node_dir = function()
   return lspconfig.util.root_pattern("package.json")(vim.fn.getcwd())
 end
 
+lspconfig["ruby_lsp"].setup({
+  cmd = { "ruby-lsp" },
+  filetypes = { "ruby" },
+  root_dir = lspconfig.util.root_pattern("Gemfile", ".git"),
+  on_attach = on_attach,
+})
+
 lspconfig["ts_ls"].setup({
     root_dir = lspconfig.util.root_pattern("package.json"),
     on_attach = function(client, bufnr)
