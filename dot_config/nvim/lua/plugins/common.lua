@@ -228,8 +228,6 @@ return {
       end)
     end,
   },
-  -- REST Client
-  { "mistweaverco/kulala.nvim", opts = {} },
   -- LSP
   {
     "williamboman/mason.nvim",

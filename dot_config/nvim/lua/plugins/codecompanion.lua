@@ -56,6 +56,16 @@ return {
         },
         inline = {
           adapter = "copilot",
+          keymaps = {
+            accept_change = {
+              modes = { n = "ga" },
+              description = "Accept the suggested change",
+            },
+            reject_change = {
+              modes = { n = "gr" },
+              description = "Reject the suggested change",
+            },
+          },
         },
         agent = {
           adapter = "copilot",
@@ -205,11 +215,12 @@ return {
           },
         },
         ["Communicatable Message"] = {
-          -- strategy = "inline",
-          strategy = "chat",
+          strategy = "inline",
+          -- strategy = "chat",
           description = "Create Communicatable Message",
           opts = {
-            -- placement = "replace",
+            placement = "replace",
+            -- placement = "new",
             short_name = "cm",
             auto_submit = true,
             is_slash_cmd = true,

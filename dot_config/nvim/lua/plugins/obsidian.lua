@@ -71,6 +71,7 @@ return {
     end
 
     require("obsidian").setup({
+      ui = { enable = false },
       workspaces = {
         {
           name = "default",
