@@ -175,6 +175,13 @@ N███]           ,h    .%      j|     (\       ([J████████�
       desc = "Git Branches",
     },
     {
+      "<leader>gB",
+      function()
+        Snacks.picker.git_branches()
+      end,
+      desc = "Git Branches",
+    },
+    {
       "<leader>gl",
       function()
         Snacks.picker.git_log()
@@ -496,7 +503,7 @@ N███]           ,h    .%      j|     (\       ([J████████�
       desc = "Rename File",
     },
     {
-      "<leader>gB",
+      "<leader>gw",
       function()
         Snacks.gitbrowse()
       end,
