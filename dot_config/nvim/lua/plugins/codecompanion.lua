@@ -44,6 +44,23 @@ return {
           provider = "mini_diff", -- default|mini_diff
         },
       },
+      extensions = {
+        vectorcode = {
+          opts = {
+            add_tools = true,
+            add_slash_command = true,
+            tool_opts = {},
+          },
+        },
+        mcphub = {
+          callback = "mcphub.extensions.codecompanion",
+          opts = {
+            show_result_in_chat = true, -- Show the mcp tool result in the chat buffer
+            make_vars = true, -- make chat #variables from MCP server resources
+            make_slash_commands = true, -- make /slash_commands from MCP server prompts
+          },
+        },
+      },
       strategies = {
         chat = {
           adapter = "copilot",
@@ -52,13 +69,6 @@ return {
               opts = {
                 provider = "snacks",
               },
-            },
-          },
-          tools = {
-            ["mcp"] = {
-              -- calling it in a function would prevent mcphub from being loaded before it's needed
-              callback = function() return require("mcphub.extensions.codecompanion") end,
-              description = "Call tools and resources from the MCP Servers",
             },
           },
         },
@@ -93,11 +103,20 @@ return {
             },
           })
         end,
+        gemini = function()
+          return require("codecompanion.adapters").extend("gemini", {
+            schema = {
+              model = {
+                default = "gemini-2.5-flash-preview-04-17",
+              },
+            },
+          })
+        end,
         copilot = function()
           return require("codecompanion.adapters").extend("copilot", {
             schema = {
               model = {
-                default = "claude-3.7-sonnet-thought",
+                default = "gemini-2.5-pro",
               },
             },
           })
