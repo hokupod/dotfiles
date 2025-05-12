@@ -3,6 +3,7 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
+    "windwp/nvim-ts-autotag",
     "hrsh7th/nvim-cmp", -- Optional: For using slash commands and variables in the chat buffer
     { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves vim.ui.select
     { "echasnovski/mini.diff", version = "*" },
@@ -332,6 +333,8 @@ return {
         },
       },
     })
+    local TagConfigs = require("nvim-ts-autotag.config.init")
+    TagConfigs:add_alias("codecompanion", "markdown")
   end,
   init = function()
     -- require("plugins.codecompanion.fidget-spinner"):init()

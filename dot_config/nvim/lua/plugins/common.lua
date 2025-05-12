@@ -14,11 +14,7 @@ return {
   {
     "windwp/nvim-ts-autotag",
     event = "InsertEnter",
-    opts = {
-      aliases = {
-        ["codecompanion"] = "markdown",
-      },
-    },
+    opts = {},
   },
   "tpope/vim-commentary",
   "kevinhwang91/nvim-bqf",
@@ -239,11 +235,14 @@ return {
     },
   },
   {
-    -- formatter
-    "stevearc/conform.nvim",
+    "creativenull/efmls-configs-nvim",
+    version = "v1.9.0", -- version is optional, but recommended
+    dependencies = { "neovim/nvim-lspconfig" },
+  },
+  {
+    "lukas-reineke/lsp-format.nvim",
     opts = {},
   },
-  { "lukas-reineke/lsp-format.nvim" }, -- TODO: setup
   "mfussenegger/nvim-lint",
   {
     "nvimdev/lspsaga.nvim",
