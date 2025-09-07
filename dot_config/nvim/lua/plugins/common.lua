@@ -17,6 +17,7 @@ return {
     opts = {},
   },
   "tpope/vim-commentary",
+  { "tpope/vim-rails", ft = {"ruby", "eruby"} },
   "kevinhwang91/nvim-bqf",
   "lambdalisue/fern.vim",
   "echasnovski/mini.icons",

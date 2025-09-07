@@ -1,0 +1,16 @@
+{
+  "preferredEditor": "neovim",
+  "vimMode": false,
+  "theme": "Default Light",
+  "showMemoryUsage": false,
+  "showLineNumbers": true,
+  "contextFileName": [
+    "CLAUDE.md",
+    "AGENTS.md",
+    "GEMINI.md"
+  ],
+  "selectedAuthType": "oauth-personal",
+  "tools": {
+    "useRipgrep": true
+  }
+}

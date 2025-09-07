@@ -12,6 +12,7 @@ return {
     "j-hui/fidget.nvim",
     "folke/snacks.nvim",
     "ravitemer/mcphub.nvim",
+    "ravitemer/codecompanion-history.nvim",
   },
   cmd = {
     "CodeCompanion",
@@ -47,10 +48,22 @@ return {
       },
       extensions = {
         vectorcode = {
+          ---@type VectorCode.CodeCompanion.ExtensionOpts
           opts = {
-            add_tools = true,
-            add_slash_command = true,
-            tool_opts = {},
+            tool_group = {
+              enabled = true,
+              collapse = true,
+              -- tools in this array will be included to the `vectorcode_toolbox` tool group
+              extras = {},
+            },
+            tool_opts = {
+              ---@type VectorCode.CodeCompanion.LsToolOpts
+              ls = {},
+              ---@type VectorCode.CodeCompanion.QueryToolOpts
+              query = {},
+              ---@type VectorCode.CodeCompanion.VectoriseToolOpts
+              vectorise = {},
+            },
           },
         },
         mcphub = {
@@ -61,10 +74,41 @@ return {
             make_slash_commands = true, -- make /slash_commands from MCP server prompts
           },
         },
+        history = {
+          enabled = true,
+          opts = {
+            -- Keymap to open history from chat buffer (default: gh)
+            keymap = "gh",
+            -- Keymap to save the current chat manually (when auto_save is disabled)
+            save_chat_keymap = "sc",
+            -- Save all chats by default (disable to save only manually using 'sc')
+            auto_save = true,
+            -- Number of days after which chats are automatically deleted (0 to disable)
+            expiration_days = 0,
+            -- Picker interface ("telescope" or "snacks" or "fzf-lua" or "default")
+            picker = "telescope",
+            ---Automatically generate titles for new chats
+            auto_generate_title = true,
+            title_generation_opts = {
+              ---Adapter for generating titles (defaults to active chat's adapter)
+              adapter = nil, -- e.g "copilot"
+              ---Model for generating titles (defaults to active chat's model)
+              model = nil, -- e.g "gpt-4o"
+            },
+            ---On exiting and entering neovim, loads the last chat on opening chat
+            continue_last_chat = false,
+            ---When chat is cleared with `gx` delete the chat from history
+            delete_on_clearing_chat = false,
+            ---Directory path to save the chats
+            dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
+            ---Enable detailed logging for history extension
+            enable_logging = false,
+          },
+        },
       },
       strategies = {
         chat = {
-          adapter = "copilot",
+          adapter = "gemini_cli",
           slash_commands = {
             ["file"] = {
               opts = {
@@ -74,7 +118,7 @@ return {
           },
         },
         inline = {
-          adapter = "copilot",
+          adapter = "gemini_cli",
           keymaps = {
             accept_change = {
               modes = { n = "ga" },
@@ -87,55 +131,82 @@ return {
           },
         },
         agent = {
-          adapter = "copilot",
+          adapter = "gemini_cli",
         },
       },
 
       adapters = {
-        openai = function()
-          return require("codecompanion.adapters").extend("openai", {
-            schema = {
-              model = {
-                default = "o3-mini",
+        http = {
+          openai = function()
+            return require("codecompanion.adapters").extend("openai", {
+              schema = {
+                model = {
+                  default = "o3-mini",
+                },
+                reasoning_effort = {
+                  default = "high",
+                },
               },
-              reasoning_effort = {
-                default = "high",
+            })
+          end,
+          gemini = function()
+            return require("codecompanion.adapters").extend("gemini", {
+              schema = {
+                model = {
+                  default = "gemini-2.5-flash-preview-04-17",
+                },
               },
-            },
-          })
-        end,
-        gemini = function()
-          return require("codecompanion.adapters").extend("gemini", {
-            schema = {
-              model = {
-                default = "gemini-2.5-flash-preview-04-17",
+            })
+          end,
+          open_router = function()
+            return require("codecompanion.adapters").extend("openai_compatible", {
+              name = "open_router",
+              env = {
+                url = "https://openrouter.ai/api",
+                api_key = function()
+                  return os.getenv("OPENROUTER_API_KEY")
+                end,
               },
-            },
-          })
-        end,
-        copilot = function()
-          return require("codecompanion.adapters").extend("copilot", {
-            schema = {
-              model = {
-                default = "gemini-2.5-pro",
+              schema = {
+                model = {
+                  default = "anthropic/claude-sonnet-4",
+                },
               },
-            },
-          })
-        end,
-        open_router = function()
-          return require("codecompanion.adapters").extend("openai_compatible", {
-            name = "open_router",
-            env = {
-              url = "https://openrouter.ai/api",
-              api_key = function()
-                return os.getenv("OPENROUTER_API_KEY")
-              end,
-            },
-            schema = {
-              model = {},
-            },
-          })
-        end,
+              body = {
+                provider = {
+                  order = {
+                    "anthropic",
+                  },
+                },
+              },
+            })
+          end,
+        },
+        acp = {
+          gemini_cli = function()
+            return require("codecompanion.adapters").extend("gemini_cli", {
+              commands = {
+                flash = {
+                  "gemini",
+                  "--experimental-acp",
+                  "-m",
+                  "gemini-2.5-flash",
+                },
+                pro = {
+                  "gemini",
+                  "--experimental-acp",
+                  "-m",
+                  "gemini-2.5-pro",
+                },
+              },
+              defaults = {
+                -- auth_method = "gemini-api-key", -- "oauth-personal" | "gemini-api-key" | "vertex-ai"
+                auth_method = "oauth-personal",
+                -- auth_method = "vertex-ai",
+              },
+            })
+          end,
+        },
       },
       prompt_library = {
         ["Multi Translate"] = {

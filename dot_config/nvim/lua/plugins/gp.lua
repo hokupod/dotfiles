@@ -51,7 +51,20 @@ return {
     "folke/which-key.nvim",
   },
   config = function()
+    local home_dir = vim.fn.expand("$HOME/")
+    local vault_path = home_dir .. "Documents/obsidian_vault"
+    if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+    else
+      -- for WSL
+      if vim.fn.system("uname -a | grep -i microsoft") ~= "" then
+        local win_home_dir = vim.fn.expand("$WINHOME/")
+        vault_path = win_home_dir .. "Documents/obsidian_vault"
+      end
+    end
+    local chats_dir = "chats"
+
     require("gp").setup({
+      chat_dir = vault_path .. "/" .. chats_dir,
       default_chat_agent = "Gemini-2.5-Pro",
       providers = {
         anthropic = {
@@ -73,7 +86,7 @@ return {
           command = false,
           provider = "openrouter",
           -- string with model name or table with model name and parameters
-          model = { model = "google/gemini-2.5-pro-preview", temperature = 1, top_p = 1 },
+          model = { model = "google/gemini-2.5-pro", temperature = 1, top_p = 1 },
           system_prompt = system_prompt,
         },
         {
