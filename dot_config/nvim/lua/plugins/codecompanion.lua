@@ -8,16 +8,15 @@ return {
     { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves vim.ui.select
     { "echasnovski/mini.diff", version = "*" },
     "folke/snacks.nvim",
-  },
-  keys = {
-    { "<leader>aa", "<cmd>CodeCompanionActions<cr>", desc = "[AI] Code Companion Actions", mode = { "n", "x" } },
-    { "<leader>ac", "<cmd>CodeCompanion /cm<cr>", desc = "[AI] Create Communicatable Message", mode = "v" },
-  },
     "nvim-lualine/lualine.nvim",
     "j-hui/fidget.nvim",
     "folke/snacks.nvim",
     "ravitemer/mcphub.nvim",
     "ravitemer/codecompanion-history.nvim",
+  },
+  keys = {
+    { "<leader>aa", "<cmd>CodeCompanionActions<cr>", desc = "[AI] Code Companion Actions", mode = { "n", "x" } },
+    { "<leader>ac", "<cmd>CodeCompanion /cm<cr>", desc = "[AI] Create Communicatable Message", mode = "v" },
   },
   cmd = {
     "CodeCompanion",
@@ -113,7 +112,7 @@ return {
       },
       strategies = {
         chat = {
-          adapter = "gemini_cli",
+          adapter = "open_router",
           slash_commands = {
             ["file"] = {
               opts = {
@@ -174,7 +173,7 @@ return {
               },
               schema = {
                 model = {
-                  default = "anthropic/claude-sonnet-4",
+                  default = "anthropic/claude-sonnet-4.5",
                 },
               },
               body = {
@@ -416,7 +415,7 @@ return {
     -- require("plugins.codecompanion.fidget-spinner"):init()
     require("plugins.codecompanion.lualine-spinner"):init()
     require("plugins.codecompanion.snacks-spinner"):setup()
-    
+
 
     vim.cmd([[cab cc CodeCompanion]])
     vim.cmd([[cab ccc CodeCompanionChat]])

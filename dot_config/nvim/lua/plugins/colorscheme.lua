@@ -1,15 +1,12 @@
 return {
-  "zenbones-theme/zenbones.nvim",
-  dependencies = {
-    "rktjmp/lush.nvim",
-  },
+  "folke/tokyonight.nvim",
   lazy = false,
   priority = 1000,
   config = function()
-    local colorscheme = "zenbones"
+    local colorscheme = "tokyonight"
     local ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
-    vim.o.background = "light"
-    vim.g.background = "light"
+    vim.o.background = "dark"
+    vim.g.background = "dark"
     if ok then
       require("lualine").setup({
         options = { theme = "auto" },
