@@ -2,7 +2,11 @@ return {
   "epwalsh/obsidian.nvim",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "folke/which-key.nvim",
+  },
+  keys = {
+    { "<leader>on", "<cmd>ObsidianNew<cr>", desc = "[Obsidian] New", mode = "n", ft = "markdown" },
+    { "<leader>ot", "<cmd>ObsidianToday<cr>", desc = "[Obsidian] Today's Daily Note", mode = "n", ft = "markdown" },
+    { "<leader>of", "<cmd>ObsidianFollowLink<cr>", desc = "[Obsidian] Follow Link", mode = "n", ft = "markdown" },
   },
   version = "*", -- recommended, use latest release instead of latest commit
   lazy = true,
@@ -147,16 +151,10 @@ return {
     local function is_markdown()
       return vim.bo.filetype == "markdown"
     end
-    local wk = require("which-key")
     local ob = require("obsidian")
-    wk.add({
-      { "<leader>o", group = "Obsidian", mode = { "n" } },
-      { "<leader>on", "<cmd>ObsidianNew<cr>", desc = "[Obsidian] New" },
-      { "<leader>ot", "<cmd>ObsidianToday<cr>", desc = "[Obsidian] Today's Daily Note" },
-      { "<leader>ol", "<cmd>edit " .. latest_daily_note_full .. "<cr>", desc = "[Obsidian] Latest Daily Note" },
-      { "<leader>oc", ob.util.toggle_checkbox, desc = "[Obsidian] Toggle Checkbox" },
-      { "<leader>of", "<cmd>ObsidianFollowLink<cr>", desc = "[Obsidian] Follow Link" },
-    })
+    
+    vim.keymap.set("n", "<leader>ol", "<cmd>edit " .. latest_daily_note_full .. "<cr>", { desc = "[Obsidian] Latest Daily Note", buffer = true })
+    vim.keymap.set("n", "<leader>oc", ob.util.toggle_checkbox, { desc = "[Obsidian] Toggle Checkbox", buffer = true })
     vim.keymap.set("n", "gf", function()
       if require("obsidian").util.cursor_on_markdown_link() then
         return "<cmd>ObsidianFollowLink<CR>"

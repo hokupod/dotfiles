@@ -1,7 +1,6 @@
 return {
   "mfussenegger/nvim-dap",
   dependencies = {
-    "folke/which-key.nvim",
     "nvim-neotest/nvim-nio",
     "rcarriga/nvim-dap-ui",
     "theHamsta/nvim-dap-virtual-text",
@@ -17,6 +16,19 @@ return {
     "folke/neodev.nvim",
   },
   lazy = true,
+  keys = {
+    { "<leader>dd", "<cmd>lua require('dapui').toggle()<CR>", desc = "[Debug] Toggle Open/Close" },
+    { "<leader>db", '<cmd>DapToggleBreakpoint<CR>', desc = '[Debug] Toggle Breakpoint' },
+    { "<leader>dB", '<cmd>lua require("dap").set_breakpoint(vim.fn.input("Breakpoint condition(ex.\'x > 5\'): "), vim.fn.input("Hit condition(ex.\'5\',\'>=3\'): "), vim.fn.input("Log point message(ex.\'x is: {x}\'): "))<CR>', desc = '[Debug] Set Breakpoint with condition' },
+    { "<leader>dr", '<cmd>lua require("dap").repl_open()<CR>', desc = '[Debug] Open REPL' },
+    { "<leader>dp", '<cmd>lua require("dap.ui.widgets").repl_open()<CR>', desc = '[Debug] Open REPL' },
+    { "<leader>dR", '<cmd>lua require("dap").run_last()<CR>', desc = '[Debug] Run last' },
+    { '<F5>', '<cmd>lua require("dap").continue()<CR>', desc = '[Debug] Continue' },
+    { '<F10>', '<cmd>DapStepOver<CR>', desc = '[Debug] Step Over' },
+    { '<F11>', '<cmd>DapStepInto<CR>', desc = '[Debug] Step Into' },
+    { '<F12>', '<cmd>DapStepOut<CR>', desc = '[Debug] Step Out' },
+    { "<leader>de", '<cmd>lua require("dapui").eval()<CR>', desc = "[Debug] Eval", mode = "v" },
+  },
   config = function()
     require("nvim-dap-virtual-text").setup({})
     require("dap-go").setup()
@@ -52,31 +64,14 @@ return {
       require('dap').continue()
     end
 
-    local set_conditional_breakpoint = function()
-      local condition = vim.fn.input("Breakpoint condition(ex.'x > 5'): ")
-      local hit_condition = vim.fn.input("Hit condition(ex.'5','>=3'): ")
-      local log_message = vim.fn.input("Log point message(ex.'x is: {x}'): ")
-      dap.set_breakpoint(condition, hit_condition, log_message)
+    local continue = function()
+      if vim.fn.filereadable('.vscode/launch.json') then
+        require('dap.ext.vscode').load_launchjs(nil, debugger_table)
+      end
+      require('dap').continue()
     end
 
-    local wk = require("which-key")
-    wk.add({
-      { "<leader>d", group = "Debug" },
-      { "<leader>dd", "<cmd>lua require('dapui').toggle()<CR>", desc = "[Debug] Toggle Open/Close" },
-      { "<leader>db", '<cmd>DapToggleBreakpoint<CR>', desc = '[Debug] Toggle Breakpoint' },
-      { "<leader>dB", set_conditional_breakpoint, desc = '[Debug] Set Breakpoint with condition' },
-      { "<leader>dr" ,'<cmd>lua require("dap").repl_open()<CR>', desc = '[Debug] Open REPL' },
-      { "<leader>dp" ,'<cmd>lua require("dap.ui.widgets").repl_open()<CR>', desc = '[Debug] Open REPL' },
-      { "<leader>dR" ,'<cmd>lua require("dap").run_last()<CR>', desc = '[Debug] Run last' },
-    })
+    -- Update the F5 mapping to use the continue function
     vim.keymap.set('n', '<F5>', continue, { noremap = true, silent = true, desc = '[Debug] Continue' })
-    vim.keymap.set('n', '<F10>', '<cmd>DapStepOver<CR>', { noremap = true, silent = true, desc = '[Debug] Step Over' })
-    vim.keymap.set('n', '<F11>', '<cmd>DapStepInto<CR>', { noremap = true, silent = true, desc = '[Debug] Step Into' })
-    vim.keymap.set('n', '<F12>', '<cmd>DapStepOut<CR>', { noremap = true, silent = true, desc = '[Debug] Step Out' })
-
-    wk.add({
-      { "<leader>d", group = "Debug", mode = "v" },
-      { "<leader>de", '<cmd>lua require("dapui").eval()<CR>', desc = "[Debug] Eval", mode = "v" },
-    })
   end,
 }

@@ -1,9 +1,10 @@
 return {
   "mistricky/codesnap.nvim",
-  dependencies = {
-    "folke/which-key.nvim",
-  },
   build = "make",
+  keys = {
+    { "<leader>cd", ":<C-u>CodeSnapOpenDir<CR>", desc = "Open CodeSnap Directory" },
+    { "<leader>cc", ":<C-u>CodeSnapSaveAndOpenDir<CR>", desc = "Save and Open CodeSnap Directory", mode = "v" },
+  },
   config = function()
     local codesnap = require('codesnap')
     local home_dir = vim.fn.expand('$HOME/')
@@ -38,17 +39,6 @@ return {
       open_codesnap_dir()
     end
     vim.api.nvim_create_user_command('CodeSnapSaveAndOpenDir', save_and_open_codesnap_dir, {range = true})
-
-    local wk = require("which-key")
-    wk.add({
-      { "<leader>c", group = "CodeSnap" },
-      { "<leader>cd", ":<C-u>CodeSnapOpenDir<CR>", desc = "Open CodeSnap Directory" },
-    })
-
-    wk.add({
-      { "<leader>c", group = "CodeSnap", mode = "v" },
-      { "<leader>cc", ":<C-u>CodeSnapSaveAndOpenDir<CR>", desc = "Save and Open CodeSnap Directory", mode = "v" },
-    })
 
     codesnap.setup({
       has_breadcrumb = true,

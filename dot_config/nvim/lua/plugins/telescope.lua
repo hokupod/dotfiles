@@ -2,7 +2,24 @@ return {
   "nvim-telescope/telescope.nvim",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "folke/which-key.nvim",
+  },
+  keys = {
+    { "<space>:", "<cmd>Telescope command_history<cr>", desc = "[Telescope] command_history" },
+    { "<space>/", "<cmd>Telescope search_history<cr>", desc = "[Telescope] search_history" },
+    { "<space>b", "<cmd>Telescope buffers<cr>", desc = "[Telescope] buffers" },
+    { "<space>c", "<cmd>Telescope colorscheme<cr>", desc = "[Telescope] colorscheme" },
+    { "<space>h", "<cmd>Telescope highlights<cr>", desc = "[Telescope] highlights" },
+    { "<space>k", "<cmd>Telescope keymaps<cr>", desc = "[Telescope] keymaps" },
+    { "<space>u", "<cmd>Telescope oldfiles<cr>", desc = "[Telescope] oldfiles" },
+    { "<space>q", "<cmd>Telescope quickfix<cr>", desc = "[Telescope] quickfix" },
+    { "<space>gf", "<cmd>Telescope git_files<cr>", desc = "[Telescope] git_files" },
+    { "<space>gc", "<cmd>Telescope git_commits<cr>", desc = "[Telescope] git_commits" },
+    { "<space>gb", "<cmd>Telescope git_branches<cr>", desc = "[Telescope] git_branches" },
+    { "<space>gs", "<cmd>Telescope git_status<cr>", desc = "[Telescope] git_status" },
+    { "<space>gS", "<cmd>Telescope git_stash<cr>", desc = "[Telescope] git_status" },
+    { "<space>gg", "<cmd>Telescope live_grep<cr>", desc = "[Telescope] live_grep" },
+    { "<space>ff", "<cmd>Telescope find_files<cr>", desc = "[Telescope] find_files" },
+    { "<space>ft", "<cmd>Telescope filetypes<cr>", desc = "[Telescope] filetypes" },
   },
   config = function()
     -- Telescope
@@ -56,36 +73,10 @@ return {
       register = "+",
     })
 
-    local builtin = require("telescope.builtin")
     local set = vim.keymap.set
-    local wk = require("which-key")
-    wk.add({
-      mode = { "n" },
-      noremap = true,
-      silent = true,
-      { "<space>", group = "Telescope" },
-      { "<space>:", builtin.command_history, desc = "[Telescope] command_history" },
-      { "<space>/", builtin.search_history, desc = "[Telescope] search_history" },
-      { "<space>b", builtin.buffers, desc = "[Telescope] buffers" },
-      { "<space>c", builtin.colorscheme, desc = "[Telescope] colorscheme" },
-      { "<space>h", builtin.highlights, desc = "[Telescope] highlights" },
-      { "<space>k", builtin.keymaps, desc = "[Telescope] keymaps" },
-      { "<space>u", builtin.oldfiles, desc = "[Telescope] oldfiles" },
-      { "<space>q", builtin.quickfix, desc = "[Telescope] quickfix" },
-      { "<space>z", extensions("z", "list")({}), desc = "[Telescope] z" },
-
-      { "<space>g", group = "+git" },
-      { "<space>gf", builtin.git_files, desc = "[Telescope] git_files" },
-      { "<space>gc", builtin.git_commits, desc = "[Telescope] git_commits" },
-      { "<space>gb", builtin.git_branches, desc = "[Telescope] git_branches" },
-      { "<space>gs", builtin.git_status, desc = "[Telescope] git_status" },
-      { "<space>gS", builtin.git_stash, desc = "[Telescope] git_status" },
-      { "<space>gg", builtin.live_grep, desc = "[Telescope] live_grep" },
-      { "<space>gh", extensions("ghq", "list")({}), desc = "[Telescope] ghq" },
-
-      { "<space>f", group = "+file" },
-      { "<space>ff", builtin.find_files, desc = "[Telescope] find_files" },
-      { "<space>ft", builtin.filetypes, desc = "[Telescope] filetypes" },
-    })
+    
+    -- These need to be set this way because they require function calls
+    set("n", "<space>z", extensions("z", "list")({}), { desc = "[Telescope] z" })
+    set("n", "<space>gh", extensions("ghq", "list")({}), { desc = "[Telescope] ghq" })
   end,
 }

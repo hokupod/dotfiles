@@ -1,9 +1,6 @@
 return {
   "akinsho/toggleterm.nvim",
   opts = {},
-  dependencies = {
-    "folke/which-key.nvim",
-  },
   cmd = "ToggleTerm",
   init = function()
     function _G.set_terminal_keymaps()
@@ -19,11 +16,8 @@ return {
 
     -- if you only want these mappings for toggle term use term://*toggleterm#* instead
     vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
-
-    local wk = require("which-key")
-    wk.add({
-      { "<leader>t", group = "ToggleTerm" },
-      { "<leader>tt", "<cmd>ToggleTerm dir=. direction=float<CR>", desc = "[ToggleTerm] Open current directory" },
-    })
   end,
+  keys = {
+    { "<leader>tt", "<cmd>ToggleTerm dir=. direction=float<CR>", desc = "[ToggleTerm] Open current directory" },
+  },
 }

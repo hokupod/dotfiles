@@ -1,6 +1,5 @@
 return {
   "vim-denops/denops.vim",
-  "folke/which-key.nvim",
   "folke/neodev.nvim",
   {
     "nacro90/numb.nvim",

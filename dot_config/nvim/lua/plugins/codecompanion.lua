@@ -8,6 +8,11 @@ return {
     { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves vim.ui.select
     { "echasnovski/mini.diff", version = "*" },
     "folke/snacks.nvim",
+  },
+  keys = {
+    { "<leader>aa", "<cmd>CodeCompanionActions<cr>", desc = "[AI] Code Companion Actions", mode = { "n", "x" } },
+    { "<leader>ac", "<cmd>CodeCompanion /cm<cr>", desc = "[AI] Create Communicatable Message", mode = "v" },
+  },
     "nvim-lualine/lualine.nvim",
     "j-hui/fidget.nvim",
     "folke/snacks.nvim",
@@ -411,20 +416,7 @@ return {
     -- require("plugins.codecompanion.fidget-spinner"):init()
     require("plugins.codecompanion.lualine-spinner"):init()
     require("plugins.codecompanion.snacks-spinner"):setup()
-    local wk = require("which-key")
-    wk.add({
-      {
-        mode = { "n", "x" },
-        { "<leader>a", group = "AI" },
-        { "<leader>aa", "<cmd>CodeCompanionActions<cr>", desc = "[AI] Code Companion Actions" },
-      },
-      {
-        mode = { "v" },
-        { "<leader>a", group = "AI" },
-        { "<leader>aa", "<cmd>CodeCompanionActions<cr>", desc = "[AI] Code Companion Actions" },
-        { "<leader>ac", "<cmd>CodeCompanion /cm<cr>", desc = "[AI] Create Communicatable Message" },
-      },
-    })
+    
 
     vim.cmd([[cab cc CodeCompanion]])
     vim.cmd([[cab ccc CodeCompanionChat]])
