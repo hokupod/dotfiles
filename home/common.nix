@@ -8,6 +8,8 @@
     curl
     wget
     ripgrep
+    ast-grep
+    rlwrap
     mise
     neovim
     rust-bin.stable.latest.default
