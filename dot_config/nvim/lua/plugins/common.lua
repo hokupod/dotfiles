@@ -30,11 +30,6 @@ return {
     opts = {},
   },
   {
-    "rachartier/tiny-glimmer.nvim",
-    event = "VeryLazy",
-    opts = {},
-  },
-  {
     "yamatsum/nvim-cursorline",
     config = function()
       require("nvim-cursorline").setup({

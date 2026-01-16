@@ -86,11 +86,23 @@ return {
         folder = "99_Templates",
         substitutions = {
           next_daily_note = next_daily_note,
+          today = function()
+            return os.date("%Y-%m-%d", os.time())
+          end,
+          today_with_slash = function()
+            return os.date("%Y/%m/%d", os.time())
+          end,
           yesterday = function()
             return os.date("%Y-%m-%d", os.time() - 86400)
           end,
+          yesterday_with_slash = function()
+            return os.date("%Y/%m/%d", os.time() - 86400)
+          end,
           tomorrow = function()
             return os.date("%Y-%m-%d", os.time() + 86400)
+          end,
+          tomorrow_with_slash = function()
+            return os.date("%Y/%m/%d", os.time() + 86400)
           end,
           daily_title = function()
             return os.date("%Y年%m月%d日 %a")
@@ -100,6 +112,9 @@ return {
           end,
           latest_daily_note = function()
             return latest_daily_note:gsub(".md", "")
+          end,
+          omi_conv_path = function()
+            return os.date("Omi Conversations/%Y/%m/%d/overview", os.time())
           end,
         },
       },
@@ -152,7 +167,7 @@ return {
       return vim.bo.filetype == "markdown"
     end
     local ob = require("obsidian")
-    
+
     vim.keymap.set("n", "<leader>ol", "<cmd>edit " .. latest_daily_note_full .. "<cr>", { desc = "[Obsidian] Latest Daily Note", buffer = true })
     vim.keymap.set("n", "<leader>oc", ob.util.toggle_checkbox, { desc = "[Obsidian] Toggle Checkbox", buffer = true })
     vim.keymap.set("n", "gf", function()

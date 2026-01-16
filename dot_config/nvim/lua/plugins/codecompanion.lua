@@ -110,7 +110,7 @@ return {
           },
         },
       },
-      strategies = {
+      interactions = {
         chat = {
           adapter = "open_router",
           slash_commands = {
@@ -217,7 +217,7 @@ return {
           strategy = "chat",
           description = "Create Translated Text",
           opts = {
-            short_name = "tr",
+            alias = "tr",
             auto_submit = true,
             is_slash_cmd = true,
             is_default = true,
@@ -324,7 +324,7 @@ return {
           opts = {
             placement = "replace",
             -- placement = "new",
-            short_name = "cm",
+            alias = "cm",
             auto_submit = true,
             is_slash_cmd = true,
             is_default = true,

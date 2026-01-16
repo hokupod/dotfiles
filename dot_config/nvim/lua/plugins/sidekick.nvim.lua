@@ -7,6 +7,19 @@ return {
         backend = "zellij",
         enabled = true,
       },
+      tools = {
+        codex = {
+          keys = {
+            transcript = {
+              "<c-t>",
+              function(t)
+                local key = vim.api.nvim_replace_termcodes("<c-t>", true, false, true)
+                t:send(key)
+              end,
+            },
+          },
+        },
+      },
     },
   },
   -- stylua: ignore

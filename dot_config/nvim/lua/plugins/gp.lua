@@ -105,7 +105,7 @@ return {
     { "<C-g>ww", ":<C-u>'<,'>GpWhisper<cr>", desc = "Whisper", mode = "v" },
     { "<C-g>x", ":<C-u>'<,'>GpContext<cr>", desc = "Visual GpContext", mode = "v" },
 
-    -- INSERT mode mappings  
+    -- INSERT mode mappings
     { "<C-g><C-t>", "<cmd>GpChatNew tabnew<cr>", desc = "New Chat tabnew", mode = "i" },
     { "<C-g><C-v>", "<cmd>GpChatNew vsplit<cr>", desc = "New Chat vsplit", mode = "i" },
     { "<C-g><C-x>", "<cmd>GpChatNew split<cr>", desc = "New Chat split", mode = "i" },
@@ -148,7 +148,7 @@ return {
 
     require("gp").setup({
       chat_dir = vault_path .. "/" .. chats_dir,
-      default_chat_agent = "Gemini-2.5-Pro",
+      default_chat_agent = "GPT-5",
       providers = {
         anthropic = {
           disable = false,
@@ -182,18 +182,24 @@ return {
           system_prompt = system_prompt,
         },
         {
-          name = "Claude-3-7-Sonnet-Latest",
+          name = "Claude-4-5-Sonnet-Latest",
           chat = true,
           command = false,
           provider = "anthropic",
           -- string with model name or table with model name and parameters
-          model = { model = "claude-3-7-sonnet-latest", temperature = 1, top_p = 1 },
+          model = { model = "claude-4-5-sonnet-latest", temperature = 1, top_p = 1 },
+          system_prompt = system_prompt,
+        },
+        {
+          name = "GPT-5",
+          chat = true,
+          command = false,
+          provider = "openrouter",
+          -- string with model name or table with model name and parameters
+          model = { model = "openai/gpt-5", temperature = 1, top_p = 1 },
           system_prompt = system_prompt,
         },
       },
     })
-
-    -- VISUAL mode mappings
-    
   end,
 }
