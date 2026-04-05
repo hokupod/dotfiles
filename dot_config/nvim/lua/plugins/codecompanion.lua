@@ -14,6 +14,7 @@ return {
     "ravitemer/mcphub.nvim",
     "ravitemer/codecompanion-history.nvim",
   },
+  build = false,
   keys = {
     { "<leader>aa", "<cmd>CodeCompanionActions<cr>", desc = "[AI] Code Companion Actions", mode = { "n", "x" } },
     { "<leader>ac", "<cmd>CodeCompanion /cm<cr>", desc = "[AI] Create Communicatable Message", mode = "v" },
@@ -112,7 +113,7 @@ return {
       },
       interactions = {
         chat = {
-          adapter = "open_router",
+          adapter = "codex",
           slash_commands = {
             ["file"] = {
               opts = {
@@ -187,6 +188,15 @@ return {
           end,
         },
         acp = {
+          codex = function()
+            return require("codecompanion.adapters").extend("codex", {
+              defaults = {
+                model = "gpt-5.2-codex",
+                auth_method = "chatgpt",
+                reasoning_effort = "high",
+              },
+            })
+          end,
           gemini_cli = function()
             return require("codecompanion.adapters").extend("gemini_cli", {
               commands = {
@@ -415,7 +425,6 @@ return {
     -- require("plugins.codecompanion.fidget-spinner"):init()
     require("plugins.codecompanion.lualine-spinner"):init()
     require("plugins.codecompanion.snacks-spinner"):setup()
-
 
     vim.cmd([[cab cc CodeCompanion]])
     vim.cmd([[cab ccc CodeCompanionChat]])
