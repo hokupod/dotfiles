@@ -29,3 +29,5 @@ github = "cakecatz/zsh-peco-ghq"
 [plugins.zsh-abbr]
 github = "olets/zsh-abbr"
 
+[plugins.zshguy]
+github = "hokupod/zshguy"
